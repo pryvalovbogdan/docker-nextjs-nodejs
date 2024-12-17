@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    build:
+      context: ./Docker
+      dockerfile: db.Dockerfile
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: user123
+      POSTGRES_DB: db123
+    volumes:
+      - ./data:/var/lib/postgresql/data   # Persistent database storage
+    ports:
+      - "5433:5432"
+  backend:
+    build: ./back-end
+    volumes:
+      - ./back-end:/app
+      - /app/node_modules
+    ports:
+      - 13000:3000
+    env_file: .env
+    command: yarn dev
+    depends_on:
+      - db
