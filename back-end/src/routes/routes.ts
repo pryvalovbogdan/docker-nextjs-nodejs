@@ -1,15 +1,10 @@
-const express = require('express');
-const pool = require('./db');
-const port = 3000;
+import { Router } from 'express';
 
-const app = express();
+import pool from '../db';
 
-//allow to use json
-app.use(express.json());
-app.set('trust proxy', true);
+const router = Router();
 
-//routes
-app.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const data = await pool.query('SELECT * FROM equipment');
 
@@ -19,7 +14,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   console.log('req.body', req.body);
   const { name, location } = req.body;
 
@@ -31,7 +26,7 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.get('/setup', async (req, res) => {
+router.get('/setup', async (req, res) => {
   try {
     await pool.query('CREATE TABLE equipment( id SERIAL PRIMARY KEY, name VARCHAR(100), description VARCHAR(1000))');
     res.status(200).send({ message: `Succsesfuly created table` });
@@ -41,36 +36,31 @@ app.get('/setup', async (req, res) => {
 });
 
 // Endpoint to get all products
-app.get('/products', async (req, res) => {
+router.get('/products', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM products');
 
     res.json(result.rows);
   } catch (err) {
-    console.error('Error querying products:', err.message);
+    console.error('Error querying products:', (err as Error).message);
     res.status(500).send('Database error');
   }
 });
 
 // Endpoint to get all clients
-app.get('/clients', async (req, res) => {
+router.get('/clients', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM clients');
 
     res.json(result.rows);
   } catch (err) {
-    console.error('Error querying clients:', err.message);
+    console.error('Error querying clients:', (err as Error).message);
     res.status(500).send('Database error');
   }
 });
 
 // Endpoint to get all news
-app.get('/news', async (req, res) => {
-  var ip2 =
-    req.headers['x-forwarded-for'] ||
-    req.connection.remoteAddress ||
-    req.socket.remoteAddress ||
-    req.connection.socket.remoteAddress;
+router.get('/news', async (req, res) => {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
 
   console.log(
@@ -79,7 +69,6 @@ app.get('/news', async (req, res) => {
     req.headers['x-forwarded-for'],
     req.socket.remoteAddress,
     req.ip,
-    req.connection.socket,
   );
 
   try {
@@ -87,9 +76,9 @@ app.get('/news', async (req, res) => {
 
     res.json(result.rows);
   } catch (err) {
-    console.error('Error querying news:', err.message);
+    console.error('Error querying news:', (err as Error).message);
     res.status(500).send('Database error');
   }
 });
 
-app.listen(port, () => console.log('Server started at port' + port));
+export default router;
