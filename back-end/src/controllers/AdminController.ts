@@ -4,6 +4,14 @@ import jwt from 'jsonwebtoken';
 
 import pool from '../db';
 import { getUserFromWhiteList } from '../utils/utils';
+import {
+  IAddNewProductsRequestBody,
+  IAddNewsRequestBody,
+  ILoginRequestBody,
+  IRegisterRequestBody,
+  IUpdateNewsRequestBody,
+  IUpdateProductsRequestBody,
+} from './types';
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
@@ -36,11 +44,6 @@ const validate = (method: TMethodValidation) => {
     }
   }
 };
-
-interface ILoginRequestBody {
-  username: string;
-  password: string;
-}
 
 const login = async (req: Request<{}, {}, ILoginRequestBody>, res: Response): Promise<void> => {
   try {
@@ -77,20 +80,12 @@ const login = async (req: Request<{}, {}, ILoginRequestBody>, res: Response): Pr
       { expiresIn: '1h' },
     );
 
-    console.log('SECRET_KEY', SECRET_KEY, token);
-
     res.json({ message: 'Login successful', token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-interface IRegisterRequestBody {
-  username: string;
-  password: string;
-  ip: string;
-}
 
 const register = async (req: Request<{}, {}, IRegisterRequestBody>, res: Response): Promise<void> => {
   try {
@@ -136,48 +131,37 @@ const register = async (req: Request<{}, {}, IRegisterRequestBody>, res: Respons
   }
 };
 
-interface UpdateNewsRequestBody {
-  id: string;
-  title?: string;
-  description?: string;
-  images?: string[];
-  date: string;
-}
-
-const updateNews = async (req: Request<{}, {}, UpdateNewsRequestBody>, res: Response): Promise<void> => {
+const updateNews = async (req: Request<{ id: string }, {}, IUpdateNewsRequestBody>, res: Response): Promise<void> => {
   const { title, description, images, date } = req.body;
+  const { id } = req.params;
 
   try {
-    const checkQuery = 'SELECT id FROM news WHERE title = $1';
-    const checkResult = await pool.query(checkQuery, [title]);
+    const idParsed = Number(id.replace(':', ''));
 
-    if (checkResult?.rows.length > 0) {
-      const existingData = checkResult.rows[0];
-      const updateQuery = `
-        UPDATE news 
-        SET description = $1, images = $2, date = $3 
-        WHERE title = $4
+    const updateQuery = `
+        UPDATE news
+        SET
+          description = COALESCE($1, description),
+          images = COALESCE($2, images),
+          date = COALESCE($3, date),
+          title = COALESCE($4, title)
+        WHERE id = $5
         RETURNING *`;
-      const updateResult = await pool.query(updateQuery, [
-        description || existingData.description,
-        images || existingData.images,
-        date || existingData.date,
-        title || existingData.title,
-      ]);
 
+    const updateResult = await pool.query(updateQuery, [description, images, date, title, idParsed]);
+
+    if (updateResult.rows.length > 0) {
       res.status(200).json({
         message: 'News updated successfully',
         data: updateResult.rows[0],
       });
-
-      return;
     } else {
       res.status(404).json({
         message: 'News with the given ID not found',
       });
     }
   } catch (err) {
-    console.error('Error processing news:', (err as Error).message);
+    console.error('Error updating news:', (err as Error).message);
 
     res.status(500).json({
       message: 'Database error',
@@ -186,14 +170,7 @@ const updateNews = async (req: Request<{}, {}, UpdateNewsRequestBody>, res: Resp
   }
 };
 
-interface AddNewsRequestBody {
-  title: string;
-  description: string;
-  images?: string[];
-  date: string;
-}
-
-const addNews = async (req: Request<{}, {}, AddNewsRequestBody>, res: Response): Promise<void> => {
+const addNews = async (req: Request<{}, {}, IAddNewsRequestBody>, res: Response): Promise<void> => {
   const { title, description, images, date } = req.body;
 
   try {
@@ -217,54 +194,50 @@ const addNews = async (req: Request<{}, {}, AddNewsRequestBody>, res: Response):
   }
 };
 
-interface ProductsRequestBody {
-  title?: string;
-  description?: string;
-  images?: string[];
-  country?: string;
-  manufacture?: string;
-  category?: string;
-  id: string;
-}
-//title, description, images, manufacture, country, category
-const updateProducts = async (req: Request<{ id: string }, {}, ProductsRequestBody>, res: Response): Promise<void> => {
-  const { description, images, country, manufacture, title } = req.body;
+const updateProducts = async (
+  req: Request<{ id: string }, {}, IUpdateProductsRequestBody>,
+  res: Response,
+): Promise<void> => {
   const { id } = req.params;
+  const { description, images, country, manufacture, title, category } = req.body;
 
   try {
-    const checkQuery = 'SELECT * FROM products WHERE id = $1';
     const idParsed = Number(id.replace(':', ''));
-    const checkResult = await pool.query(checkQuery, [idParsed]);
 
-    if (checkResult?.rows.length > 0) {
-      const existingData = checkResult.rows[0];
-      const updateQuery = `
-        UPDATE products 
-        SET description = $1, images = $2, country = $3, manufacture = $4, title = $5
-        WHERE id = $6
-        RETURNING *`;
-      const updateResult = await pool.query(updateQuery, [
-        description || existingData.description,
-        images || existingData.images,
-        country || existingData.country,
-        manufacture || existingData.manufacture,
-        title || existingData.title,
-        idParsed,
-      ]);
+    const updateQuery = `
+      UPDATE products
+      SET
+        description = COALESCE($1, description),
+        images = COALESCE($2, images),
+        country = COALESCE($3, country),
+        manufacture = COALESCE($4, manufacture),
+        title = COALESCE($5, title),
+        category = COALESCE($6, category)
+      WHERE id = $7
+      RETURNING *`;
 
+    const updateResult = await pool.query(updateQuery, [
+      description,
+      images,
+      country,
+      manufacture,
+      title,
+      category,
+      idParsed,
+    ]);
+
+    if (updateResult.rows.length > 0) {
       res.status(200).json({
         message: 'Product updated successfully',
         data: updateResult.rows[0],
       });
-
-      return;
     } else {
       res.status(404).json({
-        message: 'Products with the given ID not found',
+        message: 'Product with the given ID not found',
       });
     }
   } catch (err) {
-    console.error('Error processing news:', (err as Error).message);
+    console.error('Error updating product:', (err as Error).message);
 
     res.status(500).json({
       message: 'Database error',
@@ -273,16 +246,7 @@ const updateProducts = async (req: Request<{ id: string }, {}, ProductsRequestBo
   }
 };
 
-interface NewProductsRequestBody {
-  title: string;
-  description: string;
-  images?: string[];
-  date?: string;
-  country: string;
-  manufacture: string;
-  category: string;
-}
-const addNewProducts = async (req: Request<{}, {}, NewProductsRequestBody>, res: Response): Promise<void> => {
+const addNewProducts = async (req: Request<{}, {}, IAddNewProductsRequestBody>, res: Response): Promise<void> => {
   const { description, images, country, manufacture, title, category } = req.body;
 
   try {
@@ -306,14 +270,26 @@ const addNewProducts = async (req: Request<{}, {}, NewProductsRequestBody>, res:
   }
 };
 
+const getClients = async (req: Request<{}, {}, {}>, res: Response): Promise<void> => {
+  try {
+    const result = await pool.query('SELECT * FROM clients');
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error querying clients:', (err as Error).message);
+    res.status(500).send('Database error');
+  }
+};
+
 const AdminController = {
+  validate,
   register,
   login,
-  validate,
   updateNews,
-  updateProducts,
   addNews,
+  updateProducts,
   addNewProducts,
+  getClients,
 };
 
 export default AdminController;

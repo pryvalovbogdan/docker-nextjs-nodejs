@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
+import { IDecodedJwtData } from './types';
+
 const SECRET_KEY = process.env.JWT_SECRET;
 
 if (!SECRET_KEY) {
@@ -19,11 +21,7 @@ export const validateAdminJWT = (req: Request, res: Response, next: NextFunction
   const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY, { algorithms: ['HS256'] }) as {
-      id: number;
-      username: string;
-      role: string;
-    };
+    const decoded = jwt.verify(token, SECRET_KEY, { algorithms: ['HS256'] }) as IDecodedJwtData;
 
     (req as any).user = decoded;
 

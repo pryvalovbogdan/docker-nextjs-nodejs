@@ -7,10 +7,10 @@ const port = 3000;
 
 const app = express();
 
-//allow to use json
+// allow to use json
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//routes
+// routes
 app.use('/api', customerRouter);
 app.use('/api/admin', adminRouter);
 
