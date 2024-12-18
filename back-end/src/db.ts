@@ -8,4 +8,13 @@ const pool = new Pool({
   database: process.env.DB_NAME || 'db123',
 });
 
+pool.on('error', err => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
+pool.on('connect', () => {
+  console.log('Connect to DB was successful');
+});
+
 export default pool;

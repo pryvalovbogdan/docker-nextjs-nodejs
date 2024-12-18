@@ -1,16 +1,17 @@
 import express from 'express';
 
-import router from './routes/routes';
+import adminRouter from './routes/admin';
+import customerRouter from './routes/customer';
 
 const port = 3000;
 
 const app = express();
 
-//allow to use json
+// allow to use json
 app.use(express.json());
-app.set('trust proxy', true);
-
-//routes
-app.use('/api', router);
+app.use(express.urlencoded({ extended: false }));
+// routes
+app.use('/api', customerRouter);
+app.use('/api/admin', adminRouter);
 
 app.listen(port, () => console.log('Server started at port' + port));

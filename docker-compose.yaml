@@ -1,6 +1,7 @@
-version: "3"
+version: '3.8'
 services:
   db:
+    container_name: nextjs-nodejs-db
     build:
       context: ./Docker
       dockerfile: db.Dockerfile
@@ -13,14 +14,15 @@ services:
       - ./data:/var/lib/postgresql/data   # Persistent database storage
     ports:
       - "5433:5432"
+
   backend:
     build: ./back-end
+    env_file: .env
     volumes:
       - ./back-end:/app
       - /app/node_modules
     ports:
       - 13000:3000
-    env_file: .env
     command: yarn dev
     depends_on:
       - db
