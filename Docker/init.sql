@@ -30,6 +30,17 @@ CREATE TABLE IF NOT EXISTS news (
     date DATE NOT NULL
     );
 
+
+-- Modify the admins table to add admin_ip
+CREATE TABLE IF NOT EXISTS admins (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL, -- To store hashed password
+    role VARCHAR(50) DEFAULT 'admin', -- Default to 'admin', can be 'user' as well
+    admin_ip VARCHAR(255) DEFAULT NULL, -- Store the allowed IP address for the admin
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
 -- Insert sample data into products
 INSERT INTO products (title, description, images, manufacture, country, category)
 VALUES
@@ -49,3 +60,9 @@ INSERT INTO news (title, description, images, date)
 VALUES
     ('New Product Launch', 'We are excited to announce our new product!', ARRAY['news1.jpg'], '2024-03-01'),
     ('Company Milestone', 'Our company reached 1M customers!', ARRAY['news2.jpg', 'news3.jpg'], '2024-03-15');
+
+-- Insert a sample admin user with IP restriction
+INSERT INTO admins (username, password_hash, role, admin_ip)
+VALUES
+    ('adminuser', 'hashedpasswordhere', 'admin', '192.168.0.1'); -- Replace '192.168.0.1' with the allowed admin IP
+
