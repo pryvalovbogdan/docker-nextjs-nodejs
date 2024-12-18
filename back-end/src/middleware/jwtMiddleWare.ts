@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = process.env.JWT_SECRET as string;
+const SECRET_KEY = process.env.JWT_SECRET;
 
 if (!SECRET_KEY) {
   throw new Error('JWT_SECRET is not defined in environment variables');
