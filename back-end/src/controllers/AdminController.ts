@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body, query, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 import pool from '../db';
@@ -9,8 +9,10 @@ import {
   IAddNewsRequestBody,
   ILoginRequestBody,
   IRegisterRequestBody,
+  IUpdateClientsRequestBody,
   IUpdateNewsRequestBody,
   IUpdateProductsRequestBody,
+  TMethodValidation,
 } from './types';
 
 const SECRET_KEY = process.env.JWT_SECRET;
@@ -18,8 +20,6 @@ const SECRET_KEY = process.env.JWT_SECRET;
 if (!SECRET_KEY) {
   throw new Error('JWT_SECRET is not defined in the environment variables');
 }
-
-type TMethodValidation = 'login' | 'register' | 'news' | 'product' | 'productId';
 
 const validate = (method: TMethodValidation) => {
   switch (method) {
@@ -40,7 +40,11 @@ const validate = (method: TMethodValidation) => {
     }
 
     case 'productId': {
-      return [body('id').not().isEmpty()];
+      return [query('id').not().isEmpty()];
+    }
+
+    case 'clients': {
+      return [query('id').not().isEmpty()];
     }
   }
 };
@@ -136,7 +140,7 @@ const updateNews = async (req: Request<{ id: string }, {}, IUpdateNewsRequestBod
   const { id } = req.params;
 
   try {
-    const idParsed = Number(id.replace(':', ''));
+    const newsId = parseInt(id, 10);
 
     const updateQuery = `
         UPDATE news
@@ -148,7 +152,7 @@ const updateNews = async (req: Request<{ id: string }, {}, IUpdateNewsRequestBod
         WHERE id = $5
         RETURNING *`;
 
-    const updateResult = await pool.query(updateQuery, [description, images, date, title, idParsed]);
+    const updateResult = await pool.query(updateQuery, [description, images, date, title, newsId]);
 
     if (updateResult.rows.length > 0) {
       res.status(200).json({
@@ -202,7 +206,7 @@ const updateProducts = async (
   const { description, images, country, manufacture, title, category } = req.body;
 
   try {
-    const idParsed = Number(id.replace(':', ''));
+    const productId = parseInt(id, 10);
 
     const updateQuery = `
       UPDATE products
@@ -223,7 +227,7 @@ const updateProducts = async (
       manufacture,
       title,
       category,
-      idParsed,
+      productId,
     ]);
 
     if (updateResult.rows.length > 0) {
@@ -281,6 +285,113 @@ const getClients = async (req: Request<{}, {}, {}>, res: Response): Promise<void
   }
 };
 
+const updateClients = async (
+  req: Request<{ id: string }, {}, IUpdateClientsRequestBody>,
+  res: Response,
+): Promise<void> => {
+  const { id } = req.params;
+  const { name, phone, date, product_id, status } = req.body;
+
+  try {
+    const clientId = parseInt(id, 10);
+
+    const updateQuery = `
+      UPDATE clients
+      SET
+        name = COALESCE($1, name),
+        phone = COALESCE($2, phone),
+        date = COALESCE($3, date),
+        product_id = COALESCE($4, product_id),
+        status = COALESCE($5, status)
+      WHERE id = $6
+      RETURNING *`;
+
+    const updateResult = await pool.query(updateQuery, [name, phone, date, product_id, status, clientId]);
+
+    if (updateResult.rows.length > 0) {
+      res.status(200).json({
+        message: 'Clients updated successfully',
+        data: updateResult.rows[0],
+      });
+    } else {
+      res.status(404).json({
+        message: 'Clients with the given ID not found',
+      });
+    }
+  } catch (err) {
+    console.error('Error updating clients:', (err as Error).message);
+
+    res.status(500).json({
+      message: 'Database error',
+      error: (err as Error).message,
+    });
+  }
+};
+
+const deleteProducts = async (req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+    const productId = parseInt(id, 10);
+    const deleteQuery = `
+      DELETE FROM products
+      WHERE id = $1
+      RETURNING *`;
+
+    const deleteResult = await pool.query(deleteQuery, [productId]);
+
+    if (deleteResult.rows.length > 0) {
+      res.status(200).json({
+        message: 'Product deleted successfully',
+        data: deleteResult.rows[0],
+      });
+    } else {
+      res.status(404).json({
+        message: 'Product with the given ID not found',
+      });
+    }
+  } catch (err) {
+    console.error('Error deleting product:', (err as Error).message);
+
+    res.status(500).json({
+      message: 'Database error',
+      error: (err as Error).message,
+    });
+  }
+};
+
+const deleteClients = async (req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+    const clientId = parseInt(id, 10);
+    const deleteQuery = `
+      DELETE FROM clients
+      WHERE id = $1
+      RETURNING *`;
+
+    const deleteResult = await pool.query(deleteQuery, [clientId]);
+
+    if (deleteResult.rows.length > 0) {
+      res.status(200).json({
+        message: 'Client deleted successfully',
+        data: deleteResult.rows[0],
+      });
+    } else {
+      res.status(404).json({
+        message: 'Client with the given ID not found',
+      });
+    }
+  } catch (err) {
+    console.error('Error deleting client:', (err as Error).message);
+
+    res.status(500).json({
+      message: 'Database error',
+      error: (err as Error).message,
+    });
+  }
+};
+
 const AdminController = {
   validate,
   register,
@@ -290,6 +401,9 @@ const AdminController = {
   updateProducts,
   addNewProducts,
   getClients,
+  updateClients,
+  deleteClients,
+  deleteProducts,
 };
 
 export default AdminController;

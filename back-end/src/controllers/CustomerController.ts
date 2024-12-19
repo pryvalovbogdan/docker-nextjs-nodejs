@@ -17,11 +17,20 @@ const getProductsById = async (req: Request<{ id: string }, {}, {}>, res: Respon
   const { id } = req.params;
 
   try {
-    const idParsed = Number(id.replace(':', ''));
+    const productId = parseInt(id, 10);
 
-    const result = await pool.query('SELECT * FROM products WHERE id = $1', [idParsed]);
+    const result = await pool.query('SELECT * FROM products WHERE id = $1', [productId]);
 
-    res.json(result.rows);
+    if (result.rows.length > 0) {
+      res.status(200).json({
+        message: 'Product data reached successfully',
+        data: result.rows[0],
+      });
+    } else {
+      res.status(404).json({
+        message: 'Product with the given ID not found',
+      });
+    }
   } catch (err) {
     console.error('Error querying products:', (err as Error).message);
     res.status(500).send('Database error');
