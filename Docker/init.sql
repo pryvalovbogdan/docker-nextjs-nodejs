@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS products (
     images TEXT[], -- Array of strings to store image URLs
     manufacture VARCHAR(255),
     country VARCHAR(255),
-    category VARCHAR(255)
+    category VARCHAR(255),
+    price DECIMAL(10, 2) DEFAULT NULL
     );
 
 -- Table: clients
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS clients (
     phone BIGINT NOT NULL,
     date DATE NOT NULL,
     product_id INT, -- Related to products table
+    status VARCHAR(50) NOT NULL DEFAULT 'active',
     CONSTRAINT fk_product
     FOREIGN KEY (product_id) REFERENCES products (id)
     ON DELETE SET NULL
@@ -42,18 +44,18 @@ CREATE TABLE IF NOT EXISTS admins (
     );
 
 -- Insert sample data into products
-INSERT INTO products (title, description, images, manufacture, country, category)
+INSERT INTO products (title, description, images, manufacture, country, category, price)
 VALUES
-    ('Laptop Pro', 'High-end laptop for professionals', ARRAY['image1.jpg', 'image2.jpg'], 'TechCorp', 'USA', 'Electronics'),
-    ('Smartphone X', 'Latest smartphone with advanced features', ARRAY['phone1.jpg', 'phone2.jpg'], 'PhoneInc', 'China', 'Mobile Devices'),
-    ('Headphones Max', 'Noise-cancelling over-ear headphones', ARRAY['headphone1.jpg'], 'AudioTech', 'Germany', 'Accessories');
+    ('Laptop Pro', 'High-end laptop for professionals', ARRAY['image1.jpg', 'image2.jpg'], 'TechCorp', 'USA', 'Electronics', 1999.99),
+    ('Smartphone X', 'Latest smartphone with advanced features', ARRAY['phone1.jpg', 'phone2.jpg'], 'PhoneInc', 'China', 'Mobile Devices', 999.99),
+    ('Headphones Max', 'Noise-cancelling over-ear headphones', ARRAY['headphone1.jpg'], 'AudioTech', 'Germany', 'Accessories', 299.99);
 
 -- Insert sample data into clients
-INSERT INTO clients (name, phone, date, product_id)
+INSERT INTO clients (name, phone, date, product_id, status)
 VALUES
-    ('John Doe', 1234567890, '2024-01-01', 1),
-    ('Jane Smith', 9876543210, '2024-02-15', 2),
-    ('Alice Johnson', 1122334455, '2024-03-01', 3);
+    ('John Doe', 1234567890, '2024-01-01', 1, 'completed'),
+    ('Jane Smith', 9876543210, '2024-02-15', 2, 'pending'),
+    ('Alice Johnson', 1122334455, '2024-03-01', 3, 'active');
 
 -- Insert sample data into news
 INSERT INTO news (title, description, images, date)

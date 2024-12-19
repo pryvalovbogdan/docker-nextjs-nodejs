@@ -43,3 +43,14 @@ export interface IAddNewProductsRequestBody {
   manufacture: string;
   category: string;
 }
+
+export interface IUpdateClientsRequestBody {
+  name?: string;
+  phone?: string;
+  date?: string;
+  product_id?: string;
+  status?: string;
+  id: string;
+}
+
+export type TMethodValidation = 'login' | 'register' | 'news' | 'product' | 'productId' | 'clients';
