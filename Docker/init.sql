@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS products (
     );
 
 -- Table: clients
-CREATE TABLE IF NOT EXISTS clients (
+CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     phone BIGINT NOT NULL,
@@ -51,7 +51,7 @@ VALUES
     ('Headphones Max', 'Noise-cancelling over-ear headphones', ARRAY['headphone1.jpg'], 'AudioTech', 'Germany', 'Accessories', 299.99);
 
 -- Insert sample data into clients
-INSERT INTO clients (name, phone, date, product_id, status)
+INSERT INTO orders (name, phone, date, product_id, status)
 VALUES
     ('John Doe', 1234567890, '2024-01-01', 1, 'completed'),
     ('Jane Smith', 9876543210, '2024-02-15', 2, 'pending'),

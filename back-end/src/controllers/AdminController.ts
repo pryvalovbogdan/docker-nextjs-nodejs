@@ -1,18 +1,18 @@
 import { Request, Response } from 'express';
-import { body, query, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
 import pool from '../db';
 import { getUserFromWhiteList } from '../utils/utils';
+import { validateAdminProps } from '../utils/validation';
 import {
   IAddNewProductsRequestBody,
   IAddNewsRequestBody,
   ILoginRequestBody,
   IRegisterRequestBody,
-  IUpdateClientsRequestBody,
   IUpdateNewsRequestBody,
+  IUpdateOrdersRequestBody,
   IUpdateProductsRequestBody,
-  TMethodValidation,
 } from './types';
 
 const SECRET_KEY = process.env.JWT_SECRET;
@@ -20,34 +20,6 @@ const SECRET_KEY = process.env.JWT_SECRET;
 if (!SECRET_KEY) {
   throw new Error('JWT_SECRET is not defined in the environment variables');
 }
-
-const validate = (method: TMethodValidation) => {
-  switch (method) {
-    case 'login': {
-      return [body('username').not().isEmpty(), body('password').not().isEmpty()];
-    }
-
-    case 'register': {
-      return [body('username').not().isEmpty(), body('password').not().isEmpty()];
-    }
-
-    case 'news': {
-      return [body('title').not().isEmpty(), body('description').not().isEmpty()];
-    }
-
-    case 'product': {
-      return [body('title').not().isEmpty(), body('description').not().isEmpty(), body('category').not().isEmpty()];
-    }
-
-    case 'productId': {
-      return [query('id').not().isEmpty()];
-    }
-
-    case 'clients': {
-      return [query('id').not().isEmpty()];
-    }
-  }
-};
 
 const login = async (req: Request<{}, {}, ILoginRequestBody>, res: Response): Promise<void> => {
   try {
@@ -274,19 +246,19 @@ const addNewProducts = async (req: Request<{}, {}, IAddNewProductsRequestBody>, 
   }
 };
 
-const getClients = async (req: Request<{}, {}, {}>, res: Response): Promise<void> => {
+const getOrders = async (req: Request<{}, {}, {}>, res: Response): Promise<void> => {
   try {
-    const result = await pool.query('SELECT * FROM clients');
+    const result = await pool.query('SELECT * FROM orders');
 
     res.json(result.rows);
   } catch (err) {
-    console.error('Error querying clients:', (err as Error).message);
+    console.error('Error querying orders:', (err as Error).message);
     res.status(500).send('Database error');
   }
 };
 
-const updateClients = async (
-  req: Request<{ id: string }, {}, IUpdateClientsRequestBody>,
+const updateOrders = async (
+  req: Request<{ id: string }, {}, IUpdateOrdersRequestBody>,
   res: Response,
 ): Promise<void> => {
   const { id } = req.params;
@@ -296,7 +268,7 @@ const updateClients = async (
     const clientId = parseInt(id, 10);
 
     const updateQuery = `
-      UPDATE clients
+      UPDATE orders
       SET
         name = COALESCE($1, name),
         phone = COALESCE($2, phone),
@@ -310,12 +282,12 @@ const updateClients = async (
 
     if (updateResult.rows.length > 0) {
       res.status(200).json({
-        message: 'Clients updated successfully',
+        message: 'Orders updated successfully',
         data: updateResult.rows[0],
       });
     } else {
       res.status(404).json({
-        message: 'Clients with the given ID not found',
+        message: 'Orders with the given ID not found',
       });
     }
   } catch (err) {
@@ -360,13 +332,13 @@ const deleteProducts = async (req: Request<{ id: string }, {}, {}>, res: Respons
   }
 };
 
-const deleteClients = async (req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> => {
+const deleteOrders = async (req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> => {
   const { id } = req.params;
 
   try {
     const clientId = parseInt(id, 10);
     const deleteQuery = `
-      DELETE FROM clients
+      DELETE FROM orders
       WHERE id = $1
       RETURNING *`;
 
@@ -374,16 +346,16 @@ const deleteClients = async (req: Request<{ id: string }, {}, {}>, res: Response
 
     if (deleteResult.rows.length > 0) {
       res.status(200).json({
-        message: 'Client deleted successfully',
+        message: 'Order deleted successfully',
         data: deleteResult.rows[0],
       });
     } else {
       res.status(404).json({
-        message: 'Client with the given ID not found',
+        message: 'Order with the given ID not found',
       });
     }
   } catch (err) {
-    console.error('Error deleting client:', (err as Error).message);
+    console.error('Error deleting order:', (err as Error).message);
 
     res.status(500).json({
       message: 'Database error',
@@ -393,17 +365,17 @@ const deleteClients = async (req: Request<{ id: string }, {}, {}>, res: Response
 };
 
 const AdminController = {
-  validate,
   register,
   login,
   updateNews,
   addNews,
   updateProducts,
   addNewProducts,
-  getClients,
-  updateClients,
-  deleteClients,
+  getOrders,
+  updateOrders,
+  deleteOrders,
   deleteProducts,
+  validate: validateAdminProps,
 };
 
 export default AdminController;
