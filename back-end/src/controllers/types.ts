@@ -44,7 +44,7 @@ export interface IAddNewProductsRequestBody {
   category: string;
 }
 
-export interface IUpdateClientsRequestBody {
+export interface IUpdateOrdersRequestBody {
   name?: string;
   phone?: string;
   date?: string;
@@ -52,5 +52,3 @@ export interface IUpdateClientsRequestBody {
   status?: string;
   id: string;
 }
-
-export type TMethodValidation = 'login' | 'register' | 'news' | 'product' | 'productId' | 'clients';
