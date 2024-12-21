@@ -52,3 +52,12 @@ export interface IUpdateOrdersRequestBody {
   status?: string;
   id: string;
 }
+
+export interface ISaveOrderRequestBody {
+  name?: string;
+  phone?: string;
+  date?: string;
+  product_id?: string;
+  status?: string;
+  id: string;
+}

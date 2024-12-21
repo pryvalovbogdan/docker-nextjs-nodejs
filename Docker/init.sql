@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS products (
 -- Table: clients
 CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     phone BIGINT NOT NULL,
     date DATE NOT NULL,
     product_id INT, -- Related to products table
@@ -51,11 +52,11 @@ VALUES
     ('Headphones Max', 'Noise-cancelling over-ear headphones', ARRAY['headphone1.jpg'], 'AudioTech', 'Germany', 'Accessories', 299.99);
 
 -- Insert sample data into clients
-INSERT INTO orders (name, phone, date, product_id, status)
+INSERT INTO orders (first_name, last_name, phone, date, product_id, status)
 VALUES
-    ('John Doe', 1234567890, '2024-01-01', 1, 'completed'),
-    ('Jane Smith', 9876543210, '2024-02-15', 2, 'pending'),
-    ('Alice Johnson', 1122334455, '2024-03-01', 3, 'active');
+    ('John', 'Doe', 1234567890, '2024-01-01', 1, 'completed'),
+    ('Jane', 'Smith', 9876543210, '2024-02-15', 2, 'pending'),
+    ('Alice', 'Johnson', 1122334455, '2024-03-01', 3, 'active');
 
 -- Insert sample data into news
 INSERT INTO news (title, description, images, date)
