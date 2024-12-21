@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 
 import { limiter } from './configs/rateLimit.config';
@@ -8,6 +9,7 @@ const port = 3000;
 
 const app = express();
 
+app.use(cors());
 // Apply rate limiting middleware to all routes
 app.use(limiter);
 // Allow to use json

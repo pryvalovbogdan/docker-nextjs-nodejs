@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 
 import pool from '../db';
+import EmailService from '../services/EmailService';
+import { IEmailBody } from '../services/types';
 import responseHandler from '../utils/responseHandler';
 
 class CustomerController {
@@ -15,7 +17,7 @@ class CustomerController {
     }
   }
 
-  static async getProductsOffset(req: Request<{}, {}, {}>, res: Response): Promise<void> {
+  public static async getProductsOffset(req: Request<{}, {}, {}>, res: Response): Promise<void> {
     const { page = 1, limit = 10 } = req.query;
     const offset = (Number(page) - 1) * Number(limit);
 
@@ -29,7 +31,7 @@ class CustomerController {
     }
   }
 
-  static async getProductsById(req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> {
+  public static async getProductsById(req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> {
     const { id } = req.params;
 
     try {
@@ -47,7 +49,7 @@ class CustomerController {
     }
   }
 
-  static async getProductsByCategory(req: Request<{ category: string }, {}, {}>, res: Response): Promise<void> {
+  public static async getProductsByCategory(req: Request<{ category: string }, {}, {}>, res: Response): Promise<void> {
     const { category } = req.params;
 
     try {
@@ -64,7 +66,7 @@ class CustomerController {
     }
   }
 
-  static async getNews(req: Request<{}, {}, {}>, res: Response): Promise<void> {
+  public static async getNews(req: Request<{}, {}, {}>, res: Response): Promise<void> {
     try {
       const result = await pool.query('SELECT * FROM news');
 
@@ -75,7 +77,7 @@ class CustomerController {
     }
   }
 
-  static async getCategories(req: Request<{}, {}, {}>, res: Response): Promise<void> {
+  public static async getCategories(req: Request<{}, {}, {}>, res: Response): Promise<void> {
     try {
       const result = await pool.query('SELECT DISTINCT category FROM products');
 
@@ -90,6 +92,33 @@ class CustomerController {
       }
     } catch (err) {
       console.error('Error querying categories:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Database error');
+    }
+  }
+
+  public static async saveOrder(req: Request<{}, {}, IEmailBody>, res: Response): Promise<void> {
+    const { name, phone, lastName, productId, status = 'active' } = req.body;
+
+    try {
+      const insertQuery = `
+        INSERT INTO orders (first_name, last_name, phone, date, product_id, status)
+        VALUES ($1, $2, $3, $4, $5, $6)`;
+
+      const currentDate = new Date().toISOString();
+
+      await pool.query(insertQuery, [name, lastName, phone, currentDate, productId, status]);
+
+      const mailResult = await EmailService.sendMessage(req.body);
+
+      if (mailResult.status === 'Error') {
+        responseHandler.sendFailResponse(res, 'Failed to send email');
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Order added successfully', {});
+    } catch (err) {
+      console.error('Error updating order:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
   }
