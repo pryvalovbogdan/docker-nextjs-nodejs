@@ -10,7 +10,8 @@ class EmailService {
         port: 465,
         host: 'smtp.gmail.com',
         auth: {
-          user: 'robinsontom753@gmail.com',
+          user: 'email.com',
+          // Pass for apps could expire if you change password. To regenerate use https://security.google.com/settings/security/apppasswords
           pass: process.env.EMAIL_PASSWORD,
         },
       });

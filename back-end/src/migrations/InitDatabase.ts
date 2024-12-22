@@ -71,7 +71,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
       -- Insert a sample admin user with IP restriction
       INSERT INTO admins (username, password_hash, role, admin_ip)
       VALUES
-          ('adminuser', 'hashedpasswordhere', 'admin', '192.168.65.1');
+          ('adminuser', 'hashedpasswordhere', 'admin', '192.168.0.1');
     `);
   }
 
