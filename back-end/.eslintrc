@@ -50,7 +50,8 @@
       "importOrder": ["<THIRD_PARTY_MODULES>", "^@", "^src/(.*)$",  "^[./]"],
       "importOrderSeparation": true,
       "importOrderSortSpecifiers": true,
-      "plugins": ["@trivago/prettier-plugin-sort-imports"]
+      "plugins": ["@trivago/prettier-plugin-sort-imports"],
+      "importOrderParserPlugins": ["typescript", "decorators-legacy"]
     }],
 
     "unused-imports/no-unused-imports": "error",

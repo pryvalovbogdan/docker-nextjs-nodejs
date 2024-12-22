@@ -1,11 +1,13 @@
 import cors from 'cors';
 import express from 'express';
+import 'reflect-metadata';
 
 import { limiter } from './configs/rateLimit.config';
+import { AppDataSource } from './data-source';
 import adminRouter from './routes/admin';
 import customerRouter from './routes/customer';
 
-const port = 3000;
+const PORT = 3000;
 
 const app = express();
 
@@ -19,4 +21,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api', customerRouter);
 app.use('/api/admin', adminRouter);
 
-app.listen(port, () => console.log('Server started at port' + port));
+AppDataSource.initialize()
+  .then(async () => {
+    app.listen(PORT, () => {
+      console.log('Server started at port http://localhost:' + PORT);
+    });
+
+    console.log('Data Source has been initialized!');
+  })
+  .catch(error => console.log(error));

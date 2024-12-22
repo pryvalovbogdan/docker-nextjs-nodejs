@@ -7,12 +7,10 @@ class EmailService {
     try {
       const { name, lastName, email, phone, product } = data;
       const transporter = createTransport({
-        host: 'smtp.gmail.com',
         port: 465,
-        secure: true,
+        host: 'smtp.gmail.com',
         auth: {
-          user: 'email.com',
-          // Pass for apps could expire if you change password. To regenerate use https://security.google.com/settings/security/apppasswords
+          user: 'robinsontom753@gmail.com',
           pass: process.env.EMAIL_PASSWORD,
         },
       });
@@ -20,7 +18,7 @@ class EmailService {
       const mailData = {
         from: data.name,
         to: 'emaill.com',
-        subject: `Message From ${name - lastName}`,
+        subject: `Message From ${name} - ${lastName}`,
         text: `Email sender: ${email}. Message: ${product}`,
         html: `<div>Email sender: ${email}. <br />Message: ${product} <br />Phone: ${phone}</div>`,
       };

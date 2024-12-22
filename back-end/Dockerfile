@@ -1,12 +1,20 @@
+# Use the official Node.js image as a parent image
 FROM node:18-alpine
 
-WORKDIR /back-end
+# Set the working directory
+WORKDIR /app
 
+# Copy package.json and yarn.lock
 COPY package.json yarn.lock ./
+
+# Install dependencies
 RUN yarn install
 
-COPY .. .
+# Copy the rest of the application code
+COPY . .
 
+# Expose the backend port
 EXPOSE 3000
 
-CMD ["yarn", "dev"]
+# Run migrations and then start the application
+CMD ["sh", "-c", "yarn migration && yarn dev"]

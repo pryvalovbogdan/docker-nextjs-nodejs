@@ -51,6 +51,8 @@ export interface IUpdateOrdersRequestBody {
   product_id?: string;
   status?: string;
   id: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface ISaveOrderRequestBody {
