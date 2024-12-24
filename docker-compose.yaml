@@ -9,6 +9,11 @@ services:
       - ./data:/var/lib/postgresql/data   # Persistent database storage
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./back-end
@@ -19,4 +24,5 @@ services:
     ports:
       - "13000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy

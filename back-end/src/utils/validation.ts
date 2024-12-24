@@ -5,11 +5,11 @@ import { TMethodValidation } from './types';
 export const validateAdminProps = (method: TMethodValidation) => {
   switch (method) {
     case 'login': {
-      return [body('username').not().isEmpty(), body('password').not().isEmpty()];
+      return [body('username').not().isEmpty(), body('passwordHash').not().isEmpty()];
     }
 
     case 'register': {
-      return [body('username').not().isEmpty(), body('password').not().isEmpty()];
+      return [body('username').not().isEmpty(), body('passwordHash').not().isEmpty()];
     }
 
     case 'news': {

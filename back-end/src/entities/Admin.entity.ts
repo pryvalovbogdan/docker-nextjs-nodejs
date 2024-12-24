@@ -8,15 +8,15 @@ export class Admin {
   @Column({ type: 'varchar', length: 255, unique: true })
   username: string;
 
-  @Column({ type: 'text' })
+  @Column({ name: 'passwordhash', type: 'text' })
   passwordHash: string;
 
   @Column({ type: 'varchar', length: 50, default: 'admin' })
   role: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, name: 'adminip' })
   adminIp: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'createdat' })
   createdAt: Date;
 }

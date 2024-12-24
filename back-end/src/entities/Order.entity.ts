@@ -7,10 +7,10 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'firstname' })
   firstName: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, name: 'lastname' })
   lastName: string;
 
   @Column({ type: 'int' })
@@ -23,6 +23,6 @@ export class Order {
   status: string;
 
   @ManyToOne(() => Product, product => product.orders, { nullable: true })
-  @JoinColumn({ name: 'product_id' })
+  @JoinColumn({ name: 'productid' })
   product: Product;
 }
