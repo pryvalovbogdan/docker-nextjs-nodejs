@@ -2,11 +2,7 @@ import { Admin, News, Order, Product } from '../entities';
 import AdminRepository from '../repositories/AdminRepository';
 
 class AdminService {
-  private repository: AdminRepository;
-
-  constructor() {
-    this.repository = new AdminRepository();
-  }
+  private repository: AdminRepository = new AdminRepository();
 
   async login(username: string, password: string): Promise<{ data?: Admin; errors: string[] }> {
     try {

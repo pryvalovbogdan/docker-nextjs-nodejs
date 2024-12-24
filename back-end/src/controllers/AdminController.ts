@@ -6,11 +6,7 @@ import { encrypt } from '../utils/encrypt';
 import responseHandler from '../utils/responseHandler';
 
 class AdminController {
-  private service: AdminService;
-
-  constructor() {
-    this.service = new AdminService();
-  }
+  private service: AdminService = new AdminService();
 
   login = async (req: Request, res: Response): Promise<void> => {
     const errors = validationResult(req);

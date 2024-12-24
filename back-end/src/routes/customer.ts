@@ -4,11 +4,13 @@ import CustomerController from '../controllers/CustomerController';
 
 const router = Router();
 
-router.get('/products', CustomerController.getProducts);
-router.get('/products/:id', CustomerController.getProductsById);
-router.get('/news', CustomerController.getNews);
-router.get('/categories', CustomerController.getCategories);
-router.get('/products/category/:category', CustomerController.getProductsByCategory);
-router.post('/order', CustomerController.saveOrder);
+const customerController = new CustomerController();
+
+router.get('/products', customerController.getProducts);
+router.get('/products/:id', customerController.getProductsById);
+router.get('/news', customerController.getNews);
+router.get('/categories', customerController.getCategories);
+router.get('/products/category/:category', customerController.getProductsByCategory);
+router.post('/order', customerController.saveOrder);
 
 export default router;

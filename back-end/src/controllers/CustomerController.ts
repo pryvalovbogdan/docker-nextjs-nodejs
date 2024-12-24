@@ -1,45 +1,46 @@
 import { Request, Response } from 'express';
 
-import pool from '../db';
+import CustomerService from '../services/CustomerService';
 import EmailService from '../services/EmailService';
-import { IEmailBody } from '../services/types';
 import responseHandler from '../utils/responseHandler';
 
 class CustomerController {
-  public static async getProducts(req: Request<{}, {}, {}>, res: Response): Promise<void> {
-    try {
-      const result = await pool.query('SELECT * FROM products');
+  private service: CustomerService = new CustomerService();
 
-      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.rows);
+  getProducts = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await this.service.getProducts();
+
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 
-  public static async getProductsOffset(req: Request<{}, {}, {}>, res: Response): Promise<void> {
+  getProductsOffset = async (req: Request, res: Response): Promise<void> => {
     const { page = 1, limit = 10 } = req.query;
     const offset = (Number(page) - 1) * Number(limit);
 
     try {
-      const result = await pool.query('SELECT * FROM products LIMIT $1 OFFSET $2', [Number(limit), offset]);
+      const result = await this.service.getProductsOffset(Number(limit), offset);
 
-      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.rows);
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 
-  public static async getProductsById(req: Request<{ id: string }, {}, {}>, res: Response): Promise<void> {
+  getProductsById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
     try {
       const productId = parseInt(id, 10);
-      const result = await pool.query('SELECT * FROM products WHERE id = $1', [productId]);
+      const result = await this.service.getProductById(productId);
 
-      if (result.rows.length > 0) {
-        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.rows[0]);
+      if (result.data) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
       } else {
         responseHandler.sendFailResponse(res, 'Product with the given ID not found');
       }
@@ -47,16 +48,16 @@ class CustomerController {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 
-  public static async getProductsByCategory(req: Request<{ category: string }, {}, {}>, res: Response): Promise<void> {
+  getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
     const { category } = req.params;
 
     try {
-      const result = await pool.query('SELECT * FROM products WHERE category = $1', [category]);
+      const result = await this.service.getProductsByCategory(category);
 
-      if (result.rows.length > 0) {
-        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.rows);
+      if (result.data) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
       } else {
         responseHandler.sendFailResponse(res, 'No products found in this category');
       }
@@ -64,29 +65,26 @@ class CustomerController {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 
-  public static async getNews(req: Request<{}, {}, {}>, res: Response): Promise<void> {
+  getNews = async (req: Request, res: Response): Promise<void> => {
     try {
-      const result = await pool.query('SELECT * FROM news');
+      console.log('this.service', this.service);
+      const result = await this.service.getNews();
 
-      responseHandler.sendSuccessResponse(res, 'News retrieved successfully', result.rows);
+      responseHandler.sendSuccessResponse(res, 'News retrieved successfully', result.data);
     } catch (err) {
       console.error('Error querying news:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 
-  public static async getCategories(req: Request<{}, {}, {}>, res: Response): Promise<void> {
+  getCategories = async (req: Request, res: Response): Promise<void> => {
     try {
-      const result = await pool.query('SELECT DISTINCT category FROM products');
+      const result = await this.service.getCategories();
 
-      if (result.rows.length > 0) {
-        responseHandler.sendSuccessResponse(
-          res,
-          'Categories retrieved successfully',
-          result.rows.map(row => row.category),
-        );
+      if (result.data) {
+        responseHandler.sendSuccessResponse(res, 'Categories retrieved successfully', result.data);
       } else {
         responseHandler.sendFailResponse(res, 'No categories found');
       }
@@ -94,19 +92,19 @@ class CustomerController {
       console.error('Error querying categories:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 
-  public static async saveOrder(req: Request<{}, {}, IEmailBody>, res: Response): Promise<void> {
-    const { name, phone, lastName, productId, status = 'active' } = req.body;
-
+  saveOrder = async (req: Request, res: Response): Promise<void> => {
     try {
-      const insertQuery = `
-        INSERT INTO orders (first_name, last_name, phone, date, product_id, status)
-        VALUES ($1, $2, $3, $4, $5, $6)`;
+      const result = await this.service.saveOrder(req.body);
 
-      const currentDate = new Date().toISOString();
+      console.log('ressss', result);
 
-      await pool.query(insertQuery, [name, lastName, phone, currentDate, productId, status]);
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
 
       const mailResult = await EmailService.sendMessage(req.body);
 
@@ -121,7 +119,7 @@ class CustomerController {
       console.error('Error updating order:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
-  }
+  };
 }
 
 export default CustomerController;
