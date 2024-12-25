@@ -13,7 +13,7 @@ class CustomerService {
     } catch (err) {
       console.error('Error retrieving products:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error retrieving products'] };
     }
   }
 
@@ -27,7 +27,7 @@ class CustomerService {
     } catch (err) {
       console.error('Error retrieving products with pagination:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error retrieving products'] };
     }
   }
 
@@ -43,7 +43,7 @@ class CustomerService {
     } catch (err) {
       console.error('Error retrieving product by ID:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error retrieving product by ID'] };
     }
   }
 
@@ -59,7 +59,7 @@ class CustomerService {
     } catch (err) {
       console.error('Error retrieving products by category:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error retrieving products by category'] };
     }
   }
 
@@ -71,7 +71,7 @@ class CustomerService {
     } catch (err) {
       console.error('Error retrieving news:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error retrieving news:'] };
     }
   }
 
@@ -87,7 +87,7 @@ class CustomerService {
     } catch (err) {
       console.error('Error retrieving categories:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error retrieving categories'] };
     }
   }
 
@@ -95,7 +95,7 @@ class CustomerService {
     const { firstName, phone, lastName, productId, status = 'active' } = orderData;
 
     try {
-      const result = await this.repository.saveOrder({
+      await this.repository.saveOrder({
         firstName,
         lastName,
         phone: Number(phone),
@@ -104,13 +104,11 @@ class CustomerService {
         status,
       });
 
-      console.log('ressss save ord', result);
-
       return { errors: [] };
     } catch (err) {
       console.error('Error saving order:', err);
 
-      return { errors: ['Database error'] };
+      return { errors: ['Error saving order'] };
     }
   }
 }

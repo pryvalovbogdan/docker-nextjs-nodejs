@@ -5,7 +5,7 @@ import { IEmailBody } from './types';
 class EmailService {
   public static async sendMessage(data: IEmailBody): Promise<{ status: string }> {
     try {
-      const { name, lastName, email, phone, product } = data;
+      const { firstName, lastName, email, phone, product } = data;
       const transporter = createTransport({
         port: 465,
         host: 'smtp.gmail.com',
@@ -17,9 +17,9 @@ class EmailService {
       });
 
       const mailData = {
-        from: data.name,
+        from: firstName,
         to: 'emaill.com',
-        subject: `Message From ${name} - ${lastName}`,
+        subject: `Message From ${firstName} - ${lastName}`,
         text: `Email sender: ${email}. Message: ${product}`,
         html: `<div>Email sender: ${email}. <br />Message: ${product} <br />Phone: ${phone}</div>`,
       };

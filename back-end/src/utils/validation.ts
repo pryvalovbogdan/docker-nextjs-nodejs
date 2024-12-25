@@ -2,7 +2,7 @@ import { body, query } from 'express-validator';
 
 import { TMethodValidation } from './types';
 
-export const validateAdminProps = (method: TMethodValidation) => {
+export const validateProps = (method: TMethodValidation) => {
   switch (method) {
     case 'login': {
       return [body('username').not().isEmpty(), body('passwordHash').not().isEmpty()];
@@ -26,6 +26,10 @@ export const validateAdminProps = (method: TMethodValidation) => {
 
     case 'orders': {
       return [query('id').not().isEmpty()];
+    }
+
+    case 'category': {
+      return [query('category').not().isEmpty()];
     }
   }
 };

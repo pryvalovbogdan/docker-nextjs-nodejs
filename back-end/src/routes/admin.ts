@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import AdminController from '../controllers/AdminController';
 import { validateAdminJWT } from '../middleware/jwtMiddleWare';
-import { validateAdminProps } from '../utils/validation';
+import { validateProps } from '../utils/validation';
 
 const router = Router();
 
@@ -10,18 +10,18 @@ const router = Router();
 const adminController = new AdminController();
 
 // Route to authenticate admin user
-router.post('/login', validateAdminProps('login'), adminController.login);
+router.post('/login', validateProps('login'), adminController.login);
 
 // Protect all admin routes
 router.use(validateAdminJWT);
 
 router.get('/orders', adminController.getOrders);
-router.post('/register', validateAdminProps('register'), adminController.register);
-router.post('/products', validateAdminProps('product'), adminController.addProduct);
-router.post('/products/:id', validateAdminProps('productId'), adminController.updateProduct);
-router.post('/orders/:id', validateAdminProps('orders'), adminController.updateOrder);
-router.delete('/products/:id', validateAdminProps('productId'), adminController.deleteProduct);
-router.delete('/orders/:id', validateAdminProps('orders'), adminController.deleteOrder);
-router.post('/news', validateAdminProps('news'), adminController.addNews);
-router.post('/news/:id', validateAdminProps('news'), adminController.updateNews);
+router.post('/register', validateProps('register'), adminController.register);
+router.post('/products', validateProps('product'), adminController.addProduct);
+router.post('/products/:id', validateProps('productId'), adminController.updateProduct);
+router.post('/orders/:id', validateProps('orders'), adminController.updateOrder);
+router.delete('/products/:id', validateProps('productId'), adminController.deleteProduct);
+router.delete('/orders/:id', validateProps('orders'), adminController.deleteOrder);
+router.post('/news', validateProps('news'), adminController.addNews);
+router.post('/news/:id', validateProps('news'), adminController.updateNews);
 export default router;

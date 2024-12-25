@@ -11,6 +11,12 @@ class CustomerController {
     try {
       const result = await this.service.getProducts();
 
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
       responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
@@ -24,6 +30,12 @@ class CustomerController {
 
     try {
       const result = await this.service.getProductsOffset(Number(limit), offset);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
 
       responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
     } catch (err) {
@@ -39,10 +51,14 @@ class CustomerController {
       const productId = parseInt(id, 10);
       const result = await this.service.getProductById(productId);
 
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
       if (result.data) {
         responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
-      } else {
-        responseHandler.sendFailResponse(res, 'Product with the given ID not found');
       }
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
@@ -56,21 +72,30 @@ class CustomerController {
     try {
       const result = await this.service.getProductsByCategory(category);
 
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
       if (result.data) {
         responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
-      } else {
-        responseHandler.sendFailResponse(res, 'No products found in this category');
       }
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
-      responseHandler.sendCatchResponse(res, 'Database error');
+      responseHandler.sendCatchResponse(res, 'Error retrieving products by category');
     }
   };
 
   getNews = async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log('this.service', this.service);
       const result = await this.service.getNews();
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
 
       responseHandler.sendSuccessResponse(res, 'News retrieved successfully', result.data);
     } catch (err) {
@@ -83,10 +108,14 @@ class CustomerController {
     try {
       const result = await this.service.getCategories();
 
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
       if (result.data) {
         responseHandler.sendSuccessResponse(res, 'Categories retrieved successfully', result.data);
-      } else {
-        responseHandler.sendFailResponse(res, 'No categories found');
       }
     } catch (err) {
       console.error('Error querying categories:', (err as Error).message);

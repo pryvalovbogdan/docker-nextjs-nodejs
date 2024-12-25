@@ -6,60 +6,64 @@ export interface ILoginRequestBody {
 export interface IRegisterRequestBody {
   username: string;
   password: string;
-  ip: string;
+  adminIp: string;
+  passwordHash: string;
+  role: string;
+  id: number;
+  createdAt: Date;
 }
 
 export interface IUpdateNewsRequestBody {
-  id: string;
+  id: number;
   title?: string;
   description?: string;
   images?: string[];
-  date: string;
+  date?: string;
 }
 
 export interface IAddNewsRequestBody {
   title: string;
-  description: string;
+  description?: string;
   images?: string[];
   date: string;
 }
 
 export interface IUpdateProductsRequestBody {
+  id: number;
   title?: string;
   description?: string;
   images?: string[];
-  country?: string;
   manufacture?: string;
+  country?: string;
   category?: string;
-  id: string;
+  price?: number;
 }
 
 export interface IAddNewProductsRequestBody {
   title: string;
-  description: string;
+  description?: string;
   images?: string[];
-  date?: string;
-  country: string;
-  manufacture: string;
-  category: string;
+  manufacture?: string;
+  country?: string;
+  category?: string;
+  price: number;
 }
 
 export interface IUpdateOrdersRequestBody {
-  name?: string;
-  phone?: string;
+  id: number;
+  firstName?: string;
+  lastName?: string;
+  phone?: number;
   date?: string;
-  product_id?: string;
+  productId?: number;
   status?: string;
-  id: string;
-  firstName: string;
-  lastName: string;
 }
 
 export interface ISaveOrderRequestBody {
-  name?: string;
-  phone?: string;
-  date?: string;
-  product_id?: string;
-  status?: string;
-  id: string;
+  firstName: string;
+  lastName: string;
+  phone: number;
+  date: string;
+  productId: number;
+  status: string;
 }
