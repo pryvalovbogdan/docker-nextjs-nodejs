@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
-import { Admin, News, Order, Product } from './entities';
+import { Admin, News, Order, Product } from '../entities';
 
 dotenv.config();
 

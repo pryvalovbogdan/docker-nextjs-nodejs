@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 
-import { AppDataSource } from '../data-source';
+import { AppDataSource } from '../configs/data-source';
 import { News } from '../entities';
 
 class NewsRepository {
