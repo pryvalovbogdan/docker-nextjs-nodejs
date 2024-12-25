@@ -1,11 +1,13 @@
 import { Pool } from 'pg';
 
+const { POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB } = process.env;
+
 const pool = new Pool({
-  host: process.env.DB_HOST || 'db',
-  port: Number(process.env.DB_PORT) || 5432,
-  user: process.env.DB_USER || 'user123',
-  password: process.env.DB_PASSWORD || '123',
-  database: process.env.DB_NAME || 'db123',
+  host: POSTGRES_HOST,
+  port: Number(POSTGRES_PORT),
+  user: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  database: POSTGRES_DB,
 });
 
 pool.on('error', err => {

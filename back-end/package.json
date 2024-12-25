@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev src/server.ts"
+    "dev": "ts-node-dev src/server.ts",
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration": "yarn typeorm migration:run -- -d ./src/data-source.ts",
+    "migration:create": "npm run build && npm run typeorm migration:create -- -n",
+    "migration:generate": "npm run build && npm run typeorm migration:generate -- -n",
+    "migration:run": "npm run build && npm run typeorm migration:run"
   },
   "keywords": [],
   "author": "",
@@ -13,16 +20,20 @@
   "dependencies": {
     "@types/cors": "^2.8.17",
     "@types/nodemailer": "^6.4.17",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
     "express-validator": "^7.2.0",
     "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
-    "ts-node-dev": "^2.0.0"
+    "reflect-metadata": "^0.2.2",
+    "ts-node-dev": "^2.0.0",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.2",

@@ -1,14 +1,20 @@
 import { Router } from 'express';
 
-import CustomerController from '../controllers/CustomerController';
+import { NewsController, OrderController, ProductController } from '../controllers';
+import { validateProps } from '../utils/validation';
 
 const router = Router();
 
-router.get('/products', CustomerController.getProducts);
-router.get('/products/:id', CustomerController.getProductsById);
-router.get('/news', CustomerController.getNews);
-router.get('/categories', CustomerController.getCategories);
-router.get('/products/category/:category', CustomerController.getProductsByCategory);
-router.post('/order', CustomerController.saveOrder);
+// Create an instance is internally instantiated
+const newsController = new NewsController();
+const orderController = new OrderController();
+const productController = new ProductController();
+
+router.get('/products', productController.getProducts);
+router.get('/products/:id', productController.getProductsById);
+router.get('/news', newsController.getNews);
+router.get('/categories', productController.getCategories);
+router.get('/categories/:category', validateProps('category'), productController.getProductsByCategory);
+router.post('/order', orderController.saveOrder);
 
 export default router;

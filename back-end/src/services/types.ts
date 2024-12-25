@@ -1,5 +1,5 @@
 export interface IEmailBody {
-  name: string;
+  firstName: string;
   email: string;
   lastName: string;
   product?: string;

@@ -1,25 +1,30 @@
 import { Router } from 'express';
 
-import AdminController from '../controllers/AdminController';
+import { AdminController, NewsController, OrderController, ProductController } from '../controllers';
 import { validateAdminJWT } from '../middleware/jwtMiddleWare';
-import { validateAdminProps } from '../utils/validation';
+import { validateProps } from '../utils/validation';
 
 const router = Router();
 
+// Create an instance is internally instantiated
+const adminController = new AdminController();
+const newsController = new NewsController();
+const orderController = new OrderController();
+const productController = new ProductController();
+
 // Route to authenticate admin user
-router.post('/login', validateAdminProps('login'), AdminController.login);
+router.post('/login', validateProps('login'), adminController.login);
 
 // Protect all admin routes
 router.use(validateAdminJWT);
 
-router.get('/orders', AdminController.getOrders);
-router.post('/register', validateAdminProps('register'), AdminController.register);
-router.post('/news', validateAdminProps('news'), AdminController.addNews);
-router.post('/news/:id', validateAdminProps('news'), AdminController.updateNews);
-router.post('/products', validateAdminProps('product'), AdminController.addNewProducts);
-router.post('/products/:id', validateAdminProps('productId'), AdminController.updateProducts);
-router.post('/orders/:id', validateAdminProps('orders'), AdminController.updateOrders);
-router.delete('/products/:id', validateAdminProps('productId'), AdminController.deleteProducts);
-router.delete('/orders/:id', validateAdminProps('orders'), AdminController.deleteOrders);
-
+router.get('/orders', orderController.getOrders);
+router.post('/register', validateProps('register'), adminController.register);
+router.post('/products', validateProps('product'), productController.addProduct);
+router.post('/products/:id', validateProps('productId'), productController.updateProduct);
+router.delete('/products/:id', validateProps('productId'), productController.deleteProduct);
+router.post('/orders/:id', validateProps('orders'), orderController.updateOrder);
+router.delete('/orders/:id', validateProps('orders'), orderController.deleteOrder);
+router.post('/news', validateProps('news'), newsController.addNews);
+router.post('/news/:id', validateProps('news'), newsController.updateNews);
 export default router;

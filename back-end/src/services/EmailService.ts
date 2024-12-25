@@ -5,11 +5,10 @@ import { IEmailBody } from './types';
 class EmailService {
   public static async sendMessage(data: IEmailBody): Promise<{ status: string }> {
     try {
-      const { name, lastName, email, phone, product } = data;
+      const { firstName, lastName, email, phone, product } = data;
       const transporter = createTransport({
-        host: 'smtp.gmail.com',
         port: 465,
-        secure: true,
+        host: 'smtp.gmail.com',
         auth: {
           user: 'email.com',
           // Pass for apps could expire if you change password. To regenerate use https://security.google.com/settings/security/apppasswords
@@ -18,9 +17,9 @@ class EmailService {
       });
 
       const mailData = {
-        from: data.name,
+        from: firstName,
         to: 'emaill.com',
-        subject: `Message From ${name - lastName}`,
+        subject: `Message From ${firstName} - ${lastName}`,
         text: `Email sender: ${email}. Message: ${product}`,
         html: `<div>Email sender: ${email}. <br />Message: ${product} <br />Phone: ${phone}</div>`,
       };
