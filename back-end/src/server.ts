@@ -3,7 +3,7 @@ import express from 'express';
 import 'reflect-metadata';
 
 import { limiter } from './configs/rateLimit.config';
-import { AppDataSource } from './data-source';
+import { AppDataSource } from './configs/data-source';
 import adminRouter from './routes/admin';
 import customerRouter from './routes/customer';
 
