@@ -1,9 +1,47 @@
-import { News, Product } from '../entities';
-import CustomerRepository from '../repositories/CustomerRepository';
-import { IEmailBody } from './types';
+import { Product } from '../entities';
+import { ProductRepository } from '../repositories';
 
-class CustomerService {
-  private repository: CustomerRepository = new CustomerRepository();
+class ProductService {
+  private repository: ProductRepository = new ProductRepository();
+
+  async addProduct(productData: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
+    try {
+      const product = new Product();
+
+      Object.assign(product, productData);
+      const savedProduct = await this.repository.saveProduct(product);
+
+      return { data: savedProduct, errors: [] };
+    } catch (error) {
+      console.error('Error in addProduct:', error);
+
+      return { errors: ['Failed to add product'] };
+    }
+  }
+
+  async updateProduct(productId: number, data: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
+    try {
+      const updatedProduct = await this.repository.updateProduct(productId, data);
+
+      return { data: updatedProduct, errors: [] };
+    } catch (error) {
+      console.error('Error in updateProduct:', error);
+
+      return { errors: ['Failed to update product'] };
+    }
+  }
+
+  async deleteProduct(productId: number): Promise<{ data?: Product | null; errors: string[] }> {
+    try {
+      const deletedProduct = await this.repository.deleteProduct(productId);
+
+      return { data: deletedProduct, errors: [] };
+    } catch (error) {
+      console.error('Error in deleteProduct:', error);
+
+      return { errors: ['Failed to delete product'] };
+    }
+  }
 
   async getProducts(): Promise<{ data?: Product[]; errors: string[] }> {
     try {
@@ -63,18 +101,6 @@ class CustomerService {
     }
   }
 
-  async getNews(): Promise<{ data?: News[]; errors: string[] }> {
-    try {
-      const news = await this.repository.getNews();
-
-      return { data: news, errors: [] };
-    } catch (err) {
-      console.error('Error retrieving news:', err);
-
-      return { errors: ['Error retrieving news:'] };
-    }
-  }
-
   async getCategories(): Promise<{ data?: string[]; errors: string[] }> {
     try {
       const categories = await this.repository.getCategories();
@@ -90,27 +116,6 @@ class CustomerService {
       return { errors: ['Error retrieving categories'] };
     }
   }
-
-  async saveOrder(orderData: IEmailBody): Promise<{ errors: string[] }> {
-    const { firstName, phone, lastName, productId, status = 'active' } = orderData;
-
-    try {
-      await this.repository.saveOrder({
-        firstName,
-        lastName,
-        phone: Number(phone),
-        productId: Number(productId),
-        date: new Date(),
-        status,
-      });
-
-      return { errors: [] };
-    } catch (err) {
-      console.error('Error saving order:', err);
-
-      return { errors: ['Error saving order'] };
-    }
-  }
 }
 
-export default CustomerService;
+export default ProductService;

@@ -1,11 +1,58 @@
 import { Request, Response } from 'express';
 
-import CustomerService from '../services/CustomerService';
-import EmailService from '../services/EmailService';
+import { ProductService } from '../services';
 import responseHandler from '../utils/responseHandler';
 
-class CustomerController {
-  private service: CustomerService = new CustomerService();
+class ProductController {
+  private service: ProductService = new ProductService();
+
+  addProduct = async (req: Request, res: Response): Promise<void> => {
+    const result = await this.service.addProduct(req.body);
+
+    if (result.errors.length) {
+      responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+      return;
+    }
+
+    responseHandler.sendSuccessResponse(res, 'Product added successfully', result.data);
+  };
+
+  updateProduct = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    const result = await this.service.updateProduct(Number(id), req.body);
+
+    if (result.errors.length) {
+      responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+      return;
+    }
+
+    if (result.data) {
+      responseHandler.sendSuccessResponse(res, 'Product updated successfully', result.data);
+    } else {
+      responseHandler.sendFailResponse(res, 'Product not found');
+    }
+  };
+
+  deleteProduct = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    const result = await this.service.deleteProduct(Number(id));
+
+    if (result.errors.length) {
+      responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+      return;
+    }
+
+    if (result.data) {
+      responseHandler.sendSuccessResponse(res, 'Product deleted successfully', result.data);
+    } else {
+      responseHandler.sendFailResponse(res, 'Product not found');
+    }
+  };
 
   getProducts = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -87,23 +134,6 @@ class CustomerController {
     }
   };
 
-  getNews = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const result = await this.service.getNews();
-
-      if (result.errors.length) {
-        responseHandler.sendFailResponse(res, result.errors.join(', '));
-
-        return;
-      }
-
-      responseHandler.sendSuccessResponse(res, 'News retrieved successfully', result.data);
-    } catch (err) {
-      console.error('Error querying news:', (err as Error).message);
-      responseHandler.sendCatchResponse(res, 'Database error');
-    }
-  };
-
   getCategories = async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await this.service.getCategories();
@@ -122,33 +152,6 @@ class CustomerController {
       responseHandler.sendCatchResponse(res, 'Database error');
     }
   };
-
-  saveOrder = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const result = await this.service.saveOrder(req.body);
-
-      console.log('ressss', result);
-
-      if (result.errors.length) {
-        responseHandler.sendFailResponse(res, result.errors.join(', '));
-
-        return;
-      }
-
-      const mailResult = await EmailService.sendMessage(req.body);
-
-      if (mailResult.status === 'Error') {
-        responseHandler.sendFailResponse(res, 'Failed to send email');
-
-        return;
-      }
-
-      responseHandler.sendSuccessResponse(res, 'Order added successfully', {});
-    } catch (err) {
-      console.error('Error updating order:', (err as Error).message);
-      responseHandler.sendCatchResponse(res, 'Database error');
-    }
-  };
 }
 
-export default CustomerController;
+export default ProductController;
