@@ -3,11 +3,12 @@ import express from 'express';
 import 'reflect-metadata';
 
 import { limiter } from './configs/rateLimit.config';
-import { AppDataSource } from './configs/data-source';
+import { AppDataSource } from './data-source';
 import adminRouter from './routes/admin';
 import customerRouter from './routes/customer';
+import { AdminService } from './services';
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 const app = express();
 
@@ -21,10 +22,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api', customerRouter);
 app.use('/api/admin', adminRouter);
 
+const adminService = new AdminService();
+
 AppDataSource.initialize()
   .then(async () => {
-    app.listen(PORT, () => {
+    app.listen(PORT, async () => {
       console.log('Server started at port http://localhost:' + PORT);
+
+      await adminService.initializePrimaryAdmin();
     });
 
     console.log('Data Source has been initialized!');
