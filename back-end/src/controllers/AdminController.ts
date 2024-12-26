@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 
-import AdminService from '../services/AdminService';
+import { AdminService } from '../services';
 import { encrypt } from '../utils/encrypt';
 import responseHandler from '../utils/responseHandler';
 
@@ -20,8 +20,6 @@ class AdminController {
     const { username, passwordHash } = req.body;
 
     const result = await this.service.login(username, passwordHash);
-
-    console.log('result', result);
 
     if (result.errors.length) {
       responseHandler.sendFailResponse(res, result.errors.join(', '));

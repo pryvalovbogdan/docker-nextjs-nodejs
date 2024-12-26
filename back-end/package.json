@@ -9,7 +9,7 @@
     "build": "tsc",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration": "yarn typeorm migration:run -- -d src/configs/data-source.ts",
+    "migration": "yarn typeorm migration:run -- -d src/data-source.ts",
     "migration:create": "yarn typeorm migration:create",
     "migration:generate": "yarn typeorm migration:generate"
   },
