@@ -11,7 +11,9 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration": "yarn typeorm migration:run -- -d src/data-source.ts",
     "migration:create": "yarn typeorm migration:create",
-    "migration:generate": "yarn typeorm migration:generate"
+    "migration:generate": "yarn typeorm migration:generate",
+    "migrate:dev": "yarn migration:run -- -d src/data-source.ts",
+    "migrate:prod": "NODE_ENV=production yarn migration:run -- -d dist/data-source.js"
   },
   "keywords": [],
   "author": "",

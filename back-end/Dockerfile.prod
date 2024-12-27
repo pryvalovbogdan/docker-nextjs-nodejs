@@ -1,0 +1,34 @@
+# Stage 1: Build
+FROM node:18-alpine as builder
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
+
+# Install dependencies
+RUN yarn install --frozen-lockfile
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the project
+RUN yarn build
+
+# Stage 2: Run
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy built files and dependencies from the builder stage
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY package.json ./
+
+# Expose the backend port
+EXPOSE 3000
+
+# Use a shell to run the commands
+CMD ["sh", "-c", "yarn migration && node dist/server.js"]
