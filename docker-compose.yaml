@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   db:
-    container_name: nextjs-nodejs-db
     image: postgres:15-alpine
     restart: always
     env_file: .env
@@ -16,7 +15,7 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
+  server:
     build:
       context: ./back-end
       dockerfile: ${DOCKERFILE:-Dockerfile.dev}
@@ -31,3 +30,21 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:13000/health || exit 1"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+
+  client:
+    build:
+      context: ./front-end
+      dockerfile: ${DOCKERFILE:-Dockerfile.dev}
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:13000
+    ports:
+      - "3000:3000"
+    depends_on:
+      server:
+        condition: service_healthy
+    entrypoint: /bin/sh -c "until curl -s http://backend:13000/api/news; do echo 'Waiting for backend...'; sleep 5; done; yarn start"
