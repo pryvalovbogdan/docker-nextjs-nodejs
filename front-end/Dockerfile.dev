@@ -1,0 +1,21 @@
+# Base image
+FROM node:18-alpine
+
+# Install bash and curl
+RUN apk add --no-cache bash curl
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# Copy project files
+COPY . .
+
+# Expose the port
+EXPOSE 3000
+
+# Start the application
+CMD ["yarn", "dev"]

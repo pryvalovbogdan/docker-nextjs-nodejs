@@ -1,6 +1,9 @@
 # Use the official Node.js image as a parent image
 FROM node:18-alpine
 
+# Install bash and curl
+RUN apk add --no-cache bash curl
+
 # Set the working directory
 WORKDIR /app
 
@@ -12,6 +15,9 @@ RUN yarn install
 
 # Copy the rest of the application code
 COPY . .
+
+# Build the project (assuming a build step is needed for TypeScript)
+RUN yarn build
 
 # Expose the backend port
 EXPOSE 3000
