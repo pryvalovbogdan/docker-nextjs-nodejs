@@ -40,8 +40,7 @@ services:
     build:
       context: ./front-end
       dockerfile: ${DOCKERFILE:-Dockerfile.dev}
-    environment:
-      NEXT_PUBLIC_API_BASE_URL: http://localhost:13000
+    env_file: .env
     ports:
       - "3000:3000"
     depends_on:

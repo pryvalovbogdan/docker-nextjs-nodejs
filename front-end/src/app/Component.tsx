@@ -1,17 +1,15 @@
 'use client'
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 
 const Component = () => {
     useEffect(() => {
-        setTimeout(() => {
-            fetch('http://localhost:13000/api/news').then(res => {
-                console.log('ress', res)
-                return res.json()
-            }).then(res => {
-                console.log('res22', res)
-            })
-        }, 5000)
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}news`).then(res => {
+            console.log('res', res)
+            return res.json()
+        }).then(res => {
+            console.log('parsed', res)
+        })
     }, []);
 
     return null;

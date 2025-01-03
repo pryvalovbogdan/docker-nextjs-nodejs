@@ -14,9 +14,6 @@ RUN yarn install
 # Copy project files
 COPY . .
 
-# Build the Next.js application
-RUN yarn build
-
 # Expose the port
 EXPOSE 3000
 
