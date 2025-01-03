@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     container_name: nextjs-nodejs-db
@@ -16,8 +17,12 @@ services:
       retries: 5
 
   backend:
-    build: ./back-end
+    build:
+      context: ./back-end
+      dockerfile: ${DOCKERFILE:-Dockerfile.dev}
     env_file: .env
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
     volumes:
       - ./back-end:/app
       - /app/node_modules
