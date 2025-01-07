@@ -8,7 +8,7 @@ import adminRouter from './routes/admin';
 import customerRouter from './routes/customer';
 import { AdminService } from './services';
 
-const PORT = process.env.PORT;
+const PORT = process.env.BACK_END_PORT;
 
 const app = express();
 
