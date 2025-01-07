@@ -31,7 +31,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY package.json ./
 
 # Expose the backend port
-EXPOSE 3000
+EXPOSE 8080
 
 # Use a shell to run the commands
 CMD ["sh", "-c", "yarn migration && node dist/server.js"]

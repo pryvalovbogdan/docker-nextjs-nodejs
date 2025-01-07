@@ -20,7 +20,7 @@ COPY . .
 RUN yarn build
 
 # Expose the backend port
-EXPOSE 3000
+EXPOSE 8080
 
 # Run migrations and then start the application
 CMD ["sh", "-c", "yarn migration && yarn dev"]
