@@ -1,5 +1,5 @@
-# Stage 1: Build
-FROM node:18-alpine as builder
+# Stage 1: Build Stage
+FROM --platform=linux/amd64 node:18-alpine AS builder
 
 # Install bash and curl
 RUN apk add --no-cache bash curl
@@ -20,15 +20,19 @@ COPY . .
 RUN yarn build
 
 # Stage 2: Run
-FROM node:18-alpine
+FROM --platform=linux/amd64 node:18-alpine
 
 # Set the working directory
 WORKDIR /app
 
-# Copy built files and dependencies from the builder stage
+# Install production-only dependencies
+COPY package.json yarn.lock ./
+RUN yarn install --production --frozen-lockfile
+
+# Copy compiled files and required runtime files from the build stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY package.json ./
+COPY --from=builder /app/src/data-source.js ./src/data-source.js
+COPY --from=builder /app/src/migrations ./src/migrations
 
 # Expose the backend port
 EXPOSE 8080
