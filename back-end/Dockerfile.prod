@@ -1,11 +1,9 @@
 # Stage 1: Build Stage
-FROM --platform=linux/amd64 node:18-alpine AS builder
-
-# Install bash and curl
-RUN apk add --no-cache bash curl
-
-# Set the working directory
+FROM --platform=linux/amd64 node:18-alpine AS deps
 WORKDIR /app
+
+# Install required packages
+RUN apk add --no-cache libc6-compat bash curl
 
 # Copy package.json and yarn.lock
 COPY package.json yarn.lock ./
@@ -13,26 +11,39 @@ COPY package.json yarn.lock ./
 # Install dependencies
 RUN yarn install --frozen-lockfile
 
-# Copy the rest of the application code
+# Stage 2: Build
+FROM --platform=linux/amd64 node:18-alpine AS builder
+
+# Copy dependencies from the previous stage
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy the application source code
 COPY . .
 
 # Build the project
 RUN yarn build
 
-# Stage 2: Run
-FROM --platform=linux/amd64 node:18-alpine
-
-# Set the working directory
+# Stage 3: Run
+FROM --platform=linux/amd64 node:18-alpine AS runner
 WORKDIR /app
 
-# Install production-only dependencies
+# Environment setup
+ENV NODE_ENV production
+
+# Create and configure a non-root user for security
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
+
+# Install production dependencies
 COPY package.json yarn.lock ./
 RUN yarn install --production --frozen-lockfile
 
 # Copy compiled files and required runtime files from the build stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/src/data-source.js ./src/data-source.js
 COPY --from=builder /app/src/migrations ./src/migrations
+
+# Set permissions for the application folder
+RUN chown -R nextjs:nodejs /app
 
 # Expose the backend port
 EXPOSE 8080
