@@ -33,7 +33,7 @@ jobs:
 
       - run: yarn install
         working-directory: ./front-end
-      - run: yarn build --if-present
+      - run: yarn build
         working-directory: ./front-end
 
 

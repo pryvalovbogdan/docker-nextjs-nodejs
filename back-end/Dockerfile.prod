@@ -1,52 +1,43 @@
 # Stage 1: Build Stage
-FROM --platform=linux/amd64 node:18-alpine AS deps
+FROM --platform=linux/amd64 node:18-alpine AS build
+
+# Install bash and curl for compatibility
+RUN apk add --no-cache bash curl
+
+# Set the working directory
 WORKDIR /app
 
-# Install required packages
-RUN apk add --no-cache libc6-compat bash curl
-
-# Copy package.json and yarn.lock
+# Copy package.json and yarn.lock first for caching dependencies
 COPY package.json yarn.lock ./
 
-# Install dependencies
+# Install production and development dependencies
 RUN yarn install --frozen-lockfile
 
-# Stage 2: Build
-FROM --platform=linux/amd64 node:18-alpine AS builder
-
-# Copy dependencies from the previous stage
-COPY --from=deps /app/node_modules ./node_modules
-
-# Copy the application source code
+# Copy the rest of the application code
 COPY . .
 
 # Build the project
 RUN yarn build
 
-# Stage 3: Run
-FROM --platform=linux/amd64 node:18-alpine AS runner
+# Stage 2: Production Image
+FROM --platform=linux/amd64 node:18-alpine
+
+# Install bash for script compatibility
+RUN apk add --no-cache bash
+
+# Set NODE_ENV to production
+ENV NODE_ENV=production
+
+# Set the working directory
 WORKDIR /app
 
-# Environment setup
-ENV NODE_ENV production
-
-# Create and configure a non-root user for security
-RUN addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nextjs
-
-# Install production dependencies
-COPY package.json yarn.lock ./
-RUN yarn install --production --frozen-lockfile
-
-# Copy compiled files and required runtime files from the build stage
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/src/migrations ./src/migrations
-
-# Set permissions for the application folder
-RUN chown -R nextjs:nodejs /app
+# Copy only the necessary files from the build stage
+COPY --from=build /app/package.json /app/yarn.lock ./
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
 
 # Expose the backend port
 EXPOSE 8080
 
-# Use a shell to run the commands
+# Run database migrations and start the application
 CMD ["sh", "-c", "yarn migration && node dist/server.js"]

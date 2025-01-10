@@ -11,16 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Debug Secrets
+        run: |
+          echo "AWS Access Key: ${AWS_ACCESS_KEY_ID}"
+          echo "AWS Secret Access Key: ${AWS_SECRET_ACCESS_KEY}"
+          echo "AWS Region: ${AWS_REGION}"
+          echo "Instance ID: ${AWS_INSTANCE_ID}"
+
       - name: AWS SSM Send-Command
         uses: peterkimzz/aws-ssm-send-command@v1.1.1
         with:
-          # AWS access key id
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          # AWS secret access key
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          # Where EC2 instance is
           aws-region: ${{ secrets.AWS_REGION }}
-          # AWS EC2 Instance id or ids
           instance-ids: ${{ secrets.AWS_INSTANCE_ID }}
           # Command execution location
           # !!! The line below may vary depending on where your docker-compose file is located.
@@ -33,4 +36,4 @@ jobs:
             sudo docker-compose up -d
             sudo docker image prune -af
           # Comment for Send-Command
-          comment: docker-compose.yml file re-pulls newer versions of book-portal images and runs them on the instance.
+          comment: docker-compose.yml file re-pulls newer versions of images and runs them on the instance.
