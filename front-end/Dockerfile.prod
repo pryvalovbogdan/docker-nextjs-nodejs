@@ -1,24 +1,43 @@
-# Base image
-FROM node:18-alpine
-
-# Install bash and curl
-RUN apk add --no-cache bash curl
-
-# Set working directory
+FROM --platform=linux/amd64 node:18-alpine AS deps
 WORKDIR /app
 
-# Copy package.json and yarn.lock
-COPY package.json yarn.lock ./
-RUN yarn install
+RUN apk add --no-cache libc6-compat
 
-# Copy project files
+COPY package*.json ./
+
+RUN npm install
+
+
+FROM --platform=linux/amd64 node:18-alpine AS builder
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+
 COPY . .
 
-# Build the Next.js application
-RUN yarn build
+RUN npm run build
 
-# Expose the port
+
+FROM --platform=linux/amd64 node:18-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
 EXPOSE 3000
 
-# Start the application
-CMD ["yarn", "start"]
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["node", "server.js"]

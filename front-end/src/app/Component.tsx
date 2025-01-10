@@ -1,15 +1,15 @@
 'use client'
 import { useEffect } from "react";
 
-
 const Component = () => {
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}news`).then(res => {
-            console.log('res', res)
-            return res.json()
-        }).then(res => {
-            console.log('parsed', res)
-        })
+        console.log('process.env', process.env)
+        fetch(`/api/news`) // Relative URL
+            .then(res => res.json())
+            .then(data => {
+                console.log('Parsed data:', data);
+            })
+            .catch(err => console.error('Fetch error:', err));
     }, []);
 
     return null;
