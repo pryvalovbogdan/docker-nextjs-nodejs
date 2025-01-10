@@ -3,8 +3,7 @@ import { useEffect } from "react";
 
 const Component = () => {
     useEffect(() => {
-        console.log('process.env changed', process.env);
-        console.log('changed with pipeline');
+        console.log('changed with pipeline hell ya');
         fetch(`/api/news`) // Relative URL
             .then(res => res.json())
             .then(data => {
