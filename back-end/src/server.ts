@@ -28,6 +28,7 @@ AppDataSource.initialize()
   .then(async () => {
     app.listen(PORT, async () => {
       console.log('Server started at port http://localhost:' + PORT);
+      console.log('Updated with pipeline');
 
       await adminService.initializePrimaryAdmin();
     });
