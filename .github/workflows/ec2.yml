@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  on-success:
+  ec2-deploy:
 
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +51,8 @@ jobs:
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             BACK_END_PORT=${{ secrets.BACK_END_PORT }}
+            AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
+            AWS_REGION=${{ secrets.AWS_REGION }}
             EOT
             
             sudo docker-compose stop
