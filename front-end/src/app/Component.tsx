@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const Component = () => {
     useEffect(() => {
-        console.log('force pipeline with ecr');
+        console.log('force pipeline with ecr another one');
         fetch(`/api/news`) // Relative URL
             .then(res => res.json())
             .then(data => {
