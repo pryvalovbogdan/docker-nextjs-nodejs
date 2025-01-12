@@ -6,8 +6,12 @@ import { Admin } from '../entities';
 class AdminRepository {
   private adminRepository: Repository<Admin> = AppDataSource.manager.getRepository(Admin);
 
-  findAdminByUsername = async (username: string, adminIp: string): Promise<Admin | null> => {
-    return this.adminRepository.findOne({ where: { username, adminIp } });
+  findAdminByUsername = async (username: string): Promise<Admin | null> => {
+    return this.adminRepository.findOne({ where: { username } });
+  };
+
+  findAdminByAdminIp = async (adminIp: string): Promise<Admin | null> => {
+    return this.adminRepository.findOne({ where: { adminIp } });
   };
 
   saveAdmin = async (admin: Admin): Promise<Admin> => {
