@@ -1,9 +1,9 @@
 name: AWS-EC2 Instance CD
 
 on:
-  workflow_run:
-    workflows: ["Client CI"]
-    types: [completed]
+  push:
+    branches:
+      - main
 
 jobs:
   on-success:
@@ -26,14 +26,42 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           instance-ids: ${{ secrets.AWS_INSTANCE_ID }}
           # Command execution location
-          # !!! The line below may vary depending on where your docker-compose file is located.
+          # To check ur repo command: pwd
+          # Example Output: /home/ubuntu
           working-directory: /home/ubuntu
           # Bash commands you want to execute
           command: |
+            # Check if the .env file exists and delete it
+            if [ -f .env ]; then
+              echo ".env file exists. Deleting..."
+              rm .env
+            fi
+            
+            # Create the .env file and add all secrets
+            cat <<EOT >> .env
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            PRIMARY_ADMIN_USERNAME=${{ secrets.PRIMARY_ADMIN_USERNAME }}
+            PRIMARY_ADMIN_PASSWORD=${{ secrets.PRIMARY_ADMIN_PASSWORD }}
+            PRIMARY_ADMIN_IP=${{ secrets.PRIMARY_ADMIN_IP }}
+            EMAIL_USER=${{ secrets.EMAIL_USER }}
+            EMAIL_RECIPIENT=${{ secrets.EMAIL_RECIPIENT }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            BACK_END_PORT=${{ secrets.BACK_END_PORT }}
+            EOT
+            
             sudo docker-compose stop
             sudo docker-compose rm -f
             sudo docker-compose pull
             sudo docker-compose up -d
             sudo docker image prune -af
+            
+            # Remove the .env file for security
+            echo "Removing .env file..."
+            rm .env
           # Comment for Send-Command
           comment: docker-compose.yml file re-pulls newer versions of images and runs them on the instance.

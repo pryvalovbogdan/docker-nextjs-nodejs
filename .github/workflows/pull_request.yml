@@ -1,17 +1,14 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches:
-      - 'main'
   pull_request:
     branches:
       - 'main'
 
 jobs:
-  build-backend:
+  build:
 
-    name: Backend - NodeJS Install and Build
+    name: NodeJS Install
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,7 +24,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-          cache-dependency-path: './back-end/yarn.lock'
+
+  build-backend:
+
+    needs: build
+    name: Backend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - run: yarn install
         working-directory: ./back-end
@@ -36,23 +42,13 @@ jobs:
 
   build-frontend:
 
-    name: Frontend - NodeJS Install and Build
+    needs: build
+    name: Frontend Build
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-          cache-dependency-path: './front-end/yarn.lock'
 
       - run: yarn install
         working-directory: ./front-end
