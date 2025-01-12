@@ -55,6 +55,10 @@ jobs:
             AWS_REGION=${{ secrets.AWS_REGION }}
             EOT
             
+            # Log in to ECR before pulling the Docker images
+            aws ecr get-login-password --region $AWS_REGION | sudo docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            
+            # Pull the Docker images
             sudo docker-compose stop
             sudo docker-compose rm -f
             sudo docker-compose pull
