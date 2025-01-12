@@ -23,7 +23,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
 
   build-backend:
 
@@ -35,9 +34,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - run: yarn install
+      - name: Cache Backend Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./back-end/node_modules
+          key: backend-${{ runner.os }}-${{ hashFiles('back-end/yarn.lock') }}
+          restore-keys: |
+            backend-${{ runner.os }}-
+
+      - name: Install Dependencies (Backend)
+        run: yarn install
         working-directory: ./back-end
-      - run: yarn build
+
+      - name: Build Backend
+        run: yarn build
         working-directory: ./back-end
 
   build-frontend:
@@ -50,9 +60,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - run: yarn install
+      - name: Cache Frontend Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./front-end/node_modules
+          key: frontend-${{ runner.os }}-${{ hashFiles('front-end/yarn.lock') }}
+          restore-keys: |
+            frontend-${{ runner.os }}-
+
+      - name: Install Dependencies (Frontend)
+        run: yarn install
         working-directory: ./front-end
-      - run: yarn build
+
+      - name: Build Frontend
+        run: yarn build
         working-directory: ./front-end
 
   docker:
