@@ -5,9 +5,9 @@ import { encrypt } from '../utils/encrypt';
 class AdminService {
   private repository: AdminRepository = new AdminRepository();
 
-  async login(username: string, passwordHash: string): Promise<{ data?: Admin; errors: string[] }> {
+  async login(passwordHash: string, adminIp: string): Promise<{ data?: Admin; errors: string[] }> {
     try {
-      const admin = await this.repository.findAdminByUsername(username);
+      const admin = await this.repository.findAdminByAdminIp(adminIp);
 
       const isPasswordValid = admin && (await encrypt.comparePassword(passwordHash, admin?.passwordHash as string));
 

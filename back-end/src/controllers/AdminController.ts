@@ -17,9 +17,19 @@ class AdminController {
       return;
     }
 
-    const { username, passwordHash } = req.body;
+    const { passwordHash } = req.body;
 
-    const result = await this.service.login(username, passwordHash);
+    let ipHeader = req.headers['x-forwarded-for'];
+
+    if (ipHeader && Array.isArray(ipHeader)) {
+      ipHeader = ipHeader[0];
+    }
+
+    let ip = ipHeader || req.ip || req.socket.remoteAddress || '';
+    const adminIp = ip.replace(/^::ffff:/, '');
+
+    console.log('adminIp', adminIp);
+    const result = await this.service.login(passwordHash, adminIp);
 
     if (result.errors.length) {
       responseHandler.sendFailResponse(res, result.errors.join(', '));

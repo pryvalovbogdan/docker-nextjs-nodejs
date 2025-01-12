@@ -1,0 +1,122 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+
+    name: NodeJS Install
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+  build-backend:
+
+    needs: build
+    name: Backend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Cache Backend Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./back-end/node_modules
+          key: backend-${{ runner.os }}-${{ hashFiles('back-end/yarn.lock') }}
+          restore-keys: |
+            backend-${{ runner.os }}-
+
+      - name: Install Dependencies (Backend)
+        run: yarn install
+        working-directory: ./back-end
+
+      - name: Build Backend
+        run: yarn build
+        working-directory: ./back-end
+
+  build-frontend:
+
+    needs: build
+    name: Frontend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Cache Frontend Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./front-end/node_modules
+          key: frontend-${{ runner.os }}-${{ hashFiles('front-end/yarn.lock') }}
+          restore-keys: |
+            frontend-${{ runner.os }}-
+
+      - name: Install Dependencies (Frontend)
+        run: yarn install
+        working-directory: ./front-end
+
+      - name: Build Frontend
+        run: yarn build
+        working-directory: ./front-end
+
+  docker:
+
+    needs:
+      - build-backend
+      - build-frontend
+    name: Docker Build and Push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN_TWO }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push Backend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./back-end
+          file: ./back-end/Dockerfile.prod
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/med-store-backend:latest
+
+      - name: Build and push Frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: ./front-end
+          file: ./front-end/Dockerfile.prod
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/med-store-frontend:latest
+
+      - name: Build and push Nginx
+        uses: docker/build-push-action@v3
+        with:
+          context: ./nginx
+          file: ./nginx/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/med-store-nginx:latest

@@ -40,4 +40,4 @@ COPY --from=build /app/node_modules ./node_modules
 EXPOSE 8080
 
 # Run database migrations and start the application
-CMD ["sh", "-c", "yarn migration && node dist/server.js"]
+CMD ["sh", "-c", "yarn migration:prod && node dist/server.js"]
