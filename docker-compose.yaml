@@ -35,10 +35,13 @@ services:
       context: ./front-end
       dockerfile: ${DOCKERFILE:-Dockerfile.dev}
     env_file: .env
+    volumes:
+      - ./front-end:/app
     ports:
       - "3000:3000"
     depends_on:
       - server
+    restart: always
 
   nginx:
     build:
@@ -50,3 +53,4 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./front-end/build:/usr/share/nginx/html
+    restart: always

@@ -1,5 +1,5 @@
 # Use the official Node.js image as a parent image
-FROM --platform=linux/amd64 node:18-alpine
+FROM node:18-alpine
 
 # Install bash and curl
 RUN apk add --no-cache bash curl

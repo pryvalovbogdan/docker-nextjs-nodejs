@@ -1,21 +1,33 @@
 import { Request, Response } from 'express';
 
+import { Product } from '../entities';
 import { ProductService } from '../services';
+import S3Service from '../services/S3Service';
 import responseHandler from '../utils/responseHandler';
+import { randomImageName } from '../utils/utils';
 
 class ProductController {
   private service: ProductService = new ProductService();
 
+  private s3Service = new S3Service();
+
   addProduct = async (req: Request, res: Response): Promise<void> => {
-    const result = await this.service.addProduct(req.body);
+    try {
+      if (req.file) {
+        const imageKey = randomImageName();
 
-    if (result.errors.length) {
-      responseHandler.sendFailResponse(res, result.errors.join(', '));
+        await this.s3Service.uploadFileS3(imageKey, req.file.buffer, req.file.mimetype);
 
-      return;
+        req.body.images = [imageKey];
+      }
+
+      const result = await this.service.addProduct(req.body);
+
+      responseHandler.sendSuccessResponse(res, 'Product added successfully', result.data);
+    } catch (error) {
+      console.error('Error adding product:', error);
+      responseHandler.sendCatchResponse(res, 'Failed to add product');
     }
-
-    responseHandler.sendSuccessResponse(res, 'Product added successfully', result.data);
   };
 
   updateProduct = async (req: Request, res: Response): Promise<void> => {
@@ -38,6 +50,15 @@ class ProductController {
 
   deleteProduct = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+    const existingProduct = await this.service.getProductById(Number(id));
+
+    if (existingProduct.data?.images.length) {
+      try {
+        existingProduct.data.images.map(async image => await this.s3Service.deleteFileS3(image));
+      } catch (e) {
+        console.warn('Failed to delete image:', e);
+      }
+    }
 
     const result = await this.service.deleteProduct(Number(id));
 
@@ -64,7 +85,18 @@ class ProductController {
         return;
       }
 
-      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
+      // Generate signed S3 URLs for product images
+      const productsWithSignedUrls = await Promise.all(
+        result.data?.map(async (product: Product) => {
+          if (product.images && product.images.length > 0) {
+            product.images = await Promise.all(product.images.map((image: string) => this.s3Service.getFileS3(image)));
+          }
+
+          return product;
+        }) || [],
+      );
+
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', productsWithSignedUrls);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
