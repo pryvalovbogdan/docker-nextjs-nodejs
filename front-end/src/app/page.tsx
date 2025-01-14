@@ -1,9 +1,10 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import Component from "components/app/Component";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{background: 'grey'}}>
       <main className={styles.main}>
         <Image
           className={styles.logo}
@@ -19,7 +20,7 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
-
+        <Component />
         <div className={styles.ctas}>
           <a
             className={styles.primary}
