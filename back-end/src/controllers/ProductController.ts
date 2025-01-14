@@ -4,6 +4,7 @@ import { Product } from '../entities';
 import { ProductService } from '../services';
 import S3Service from '../services/S3Service';
 import responseHandler from '../utils/responseHandler';
+import { File } from '../utils/types';
 import { randomImageName } from '../utils/utils';
 
 class ProductController {
@@ -13,12 +14,19 @@ class ProductController {
 
   addProduct = async (req: Request, res: Response): Promise<void> => {
     try {
-      if (req.file) {
-        const imageKey = randomImageName();
+      const files = req.files as File[];
 
-        await this.s3Service.uploadFileS3(imageKey, req.file.buffer, req.file.mimetype);
+      if (files?.length) {
+        const imageKeys: string[] = [];
 
-        req.body.images = [imageKey];
+        files.forEach(file => {
+          const imageKey = randomImageName();
+
+          this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
+          imageKeys.push(imageKey);
+        });
+
+        req.body.images = imageKeys;
       }
 
       const result = await this.service.addProduct(req.body);
