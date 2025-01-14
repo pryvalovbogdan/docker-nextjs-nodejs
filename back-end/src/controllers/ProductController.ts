@@ -17,14 +17,15 @@ class ProductController {
       const files = req.files as File[];
 
       if (files?.length) {
-        const imageKeys: string[] = [];
+        const imageKeys: string[] = await Promise.all(
+          files.map(async file => {
+            const imageKey = randomImageName();
 
-        files.forEach(file => {
-          const imageKey = randomImageName();
+            await this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
 
-          this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
-          imageKeys.push(imageKey);
-        });
+            return imageKey;
+          }),
+        );
 
         req.body.images = imageKeys;
       }

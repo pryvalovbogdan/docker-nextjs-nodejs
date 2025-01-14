@@ -17,7 +17,9 @@ const Component = () => {
     const [caption, setCaption] = useState("");
 
     const fileSelected = (event: ChangeEvent<HTMLInputElement>) => {
-        setFile(Array.from(event.target.files));
+        if (event.target.files) {
+            setFile(Array.from(event.target.files));
+        }
     };
 
     const submit = async (event: FormEvent<HTMLFormElement>) => {
