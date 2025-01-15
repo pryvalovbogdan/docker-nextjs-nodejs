@@ -53,6 +53,10 @@ jobs:
             BACK_END_PORT=${{ secrets.BACK_END_PORT }}
             AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
             AWS_REGION=${{ secrets.AWS_REGION }}
+            BUCKET_NAME=${{ secrets.BUCKET_NAME }}
+            BUCKET_REGION=${{ secrets.BUCKET_REGION }}
+            CLOUDFRONT_URL=${{ secrets.CLOUDFRONT_URL }}
+            CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
             EOT
             
             # Log in to ECR before pulling the Docker images
