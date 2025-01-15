@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 
-import { Product } from '../entities';
 import { ProductService } from '../services';
 import S3Service from '../services/S3Service';
 import responseHandler from '../utils/responseHandler';
@@ -15,17 +14,15 @@ class ProductController {
   addProduct = async (req: Request, res: Response): Promise<void> => {
     try {
       const files = req.files as File[];
+      const imageKeys: string[] = [];
 
       if (files?.length) {
-        const imageKeys: string[] = await Promise.all(
-          files.map(async file => {
-            const imageKey = randomImageName();
+        for (let file of files) {
+          const imageKey = randomImageName();
 
-            await this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
-
-            return imageKey;
-          }),
-        );
+          await this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
+          imageKeys.push(imageKey);
+        }
 
         req.body.images = imageKeys;
       }
@@ -62,10 +59,8 @@ class ProductController {
     const existingProduct = await this.service.getProductById(Number(id));
 
     if (existingProduct.data?.images.length) {
-      try {
-        existingProduct.data.images.map(async image => await this.s3Service.deleteFileS3(image));
-      } catch (e) {
-        console.warn('Failed to delete image:', e);
+      for (let image of existingProduct.data.images) {
+        await this.s3Service.deleteFileS3(image);
       }
     }
 
@@ -88,24 +83,19 @@ class ProductController {
     try {
       const result = await this.service.getProducts();
 
-      if (result.errors.length) {
+      if (result.errors.length || !result.data) {
         responseHandler.sendFailResponse(res, result.errors.join(', '));
 
         return;
       }
 
-      // Generate signed S3 URLs for product images
-      const productsWithSignedUrls = await Promise.all(
-        result.data?.map(async (product: Product) => {
-          if (product.images && product.images.length > 0) {
-            product.images = await Promise.all(product.images.map((image: string) => this.s3Service.getFileS3(image)));
-          }
+      for (let product of result.data) {
+        if (product.images) {
+          product.images = product.images.map(item => process.env.CLOUDFRONT_URL + item);
+        }
+      }
 
-          return product;
-        }) || [],
-      );
-
-      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', productsWithSignedUrls);
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
