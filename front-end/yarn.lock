@@ -39,7 +39,7 @@
   dependencies:
     "@babel/types" "^7.26.7"
 
-"@babel/runtime@^7.16.3":
+"@babel/runtime@^7.16.3", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.9":
   version "7.26.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.7.tgz#f4e7fe527cd710f8dc0618610b61b4b060c3c341"
   integrity sha512-AOPI3D+a8dXnja+iwsUqGRjr1BbZIe771sXdapOtYI531gSqpi92vXivKcq2asu/DFpdl1ceFAKZyRzK2PCVcQ==
@@ -433,6 +433,19 @@
     javascript-natural-sort "^0.7.1"
     lodash "^4.17.21"
 
+"@types/cookie@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.6.0.tgz#eac397f28bf1d6ae0ae081363eca2f425bedf0d5"
+  integrity sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==
+
+"@types/hoist-non-react-statics@^3.3.5":
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.6.tgz#6bba74383cdab98e8db4e20ce5b4a6b98caed010"
+  integrity sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/json-schema@^7.0.9":
   version "7.0.15"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
@@ -455,7 +468,7 @@
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-19.0.3.tgz#0804dfd279a165d5a0ad8b53a5b9e65f338050a4"
   integrity sha512-0Knk+HJiMP/qOZgMyNFamlIjw9OFCsyC2ZbigmEEyXXixgre6IQpm/4V+r3qH4GC1JPvRJKInw+on2rV6YZLeA==
 
-"@types/react@^19":
+"@types/react@*", "@types/react@^19":
   version "19.0.8"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-19.0.8.tgz#7098e6159f2a61e4f4cef2c1223c044a9bec590e"
   integrity sha512-9P/o1IGdfmQxrujGbIMDyYaaCykhLKc0NGCtYcECNUr9UAaDe4gwvV9bR6tvd5Br1SG0j+PBpbKr2UYY8CwqSw==
@@ -960,6 +973,11 @@ confusing-browser-globals@^1.0.10:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/confusing-browser-globals/-/confusing-browser-globals-1.0.11.tgz#ae40e9b57cdd3915408a2805ebd3a5585608dc81"
   integrity sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==
+
+cookie@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.7.2.tgz#556369c472a2ba910f2979891b526b3436237ed7"
+  integrity sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==
 
 cross-spawn@^7.0.0, cross-spawn@^7.0.2:
   version "7.0.6"
@@ -1847,6 +1865,41 @@ hasown@^2.0.0, hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
+
+html-parse-stringify@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz#dfc1017347ce9f77c8141a507f233040c59c55d2"
+  integrity sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==
+  dependencies:
+    void-elements "3.1.0"
+
+i18next-browser-languagedetector@^8.0.0:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-8.0.2.tgz#037ca25c26877cad778f060a9e177054d9f8eaa3"
+  integrity sha512-shBvPmnIyZeD2VU5jVGIOWP7u9qNG3Lj7mpaiPFpbJ3LVfHZJvVzKR4v1Cb91wAOFpNw442N+LGPzHOHsten2g==
+  dependencies:
+    "@babel/runtime" "^7.23.2"
+
+i18next-resources-to-backend@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/i18next-resources-to-backend/-/i18next-resources-to-backend-1.2.1.tgz#fded121e63e3139ce839c9901b9449dbbea7351d"
+  integrity sha512-okHbVA+HZ7n1/76MsfhPqDou0fptl2dAlhRDu2ideXloRRduzHsqDOznJBef+R3DFZnbvWoBW+KxJ7fnFjd6Yw==
+  dependencies:
+    "@babel/runtime" "^7.23.2"
+
+i18next@^23.11.5:
+  version "23.16.8"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.16.8.tgz#3ae1373d344c2393f465556f394aba5a9233b93a"
+  integrity sha512-06r/TitrM88Mg5FdUXAKL96dJMzgqLE5dv3ryBAra4KCwD9mJ4ndOTS95ZuymIGoE+2hzfdaMak2X11/es7ZWg==
+  dependencies:
+    "@babel/runtime" "^7.23.2"
+
 ignore@^5.2.0, ignore@^5.3.1:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.3.2.tgz#3cd40e729f3643fd87cb04e50bf0eb722bc596f5"
@@ -2538,6 +2591,15 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+react-cookie@^7.1.4:
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/react-cookie/-/react-cookie-7.2.2.tgz#a7559e552ea9cca39a4b3686723a5acf504b8f84"
+  integrity sha512-e+hi6axHcw9VODoeVu8WyMWyoosa1pzpyjfvrLdF7CexfU+WSGZdDuRfHa4RJgTpfv3ZjdIpHE14HpYBieHFhg==
+  dependencies:
+    "@types/hoist-non-react-statics" "^3.3.5"
+    hoist-non-react-statics "^3.3.2"
+    universal-cookie "^7.0.0"
+
 react-dom@^19.0.0:
   version "19.0.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-19.0.0.tgz#43446f1f01c65a4cd7f7588083e686a6726cfb57"
@@ -2545,7 +2607,15 @@ react-dom@^19.0.0:
   dependencies:
     scheduler "^0.25.0"
 
-react-is@^16.13.1:
+react-i18next@^14.1.2:
+  version "14.1.3"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-14.1.3.tgz#85525c4294ef870ddd3f5d184e793cae362f47cb"
+  integrity sha512-wZnpfunU6UIAiJ+bxwOiTmBOAaB14ha97MjOEnLGac2RJ+h/maIYXZuTHlmyqQVX1UVHmU1YDTQ5vxLmwfXTjw==
+  dependencies:
+    "@babel/runtime" "^7.23.9"
+    html-parse-stringify "^3.0.1"
+
+react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -3100,12 +3170,25 @@ undici-types@~6.19.2:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.19.8.tgz#35111c9d1437ab83a7cdc0abae2f26d88eda0a02"
   integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
 
+universal-cookie@^7.0.0:
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-7.2.2.tgz#93ae9ec55baab89b24300473543170bb8112773c"
+  integrity sha512-fMiOcS3TmzP2x5QV26pIH3mvhexLIT0HmPa3V7Q7knRfT9HG6kTwq02HZGLPw0sAOXrAmotElGRvTLCMbJsvxQ==
+  dependencies:
+    "@types/cookie" "^0.6.0"
+    cookie "^0.7.2"
+
 uri-js@^4.2.2:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.4.1.tgz#9b1a52595225859e55f669d928f88c6c57f2a77e"
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+void-elements@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
+  integrity sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==
 
 which-boxed-primitive@^1.1.0, which-boxed-primitive@^1.1.1:
   version "1.1.1"

@@ -94,7 +94,10 @@ module.exports = {
 		],
 
 		"import/no-extraneous-dependencies": 0,
-		"camelcase": 0
+		"camelcase": 0,
+		"import/prefer-default-export": 0,
+		"react-hooks/rules-of-hooks": 1,
+		"no-param-reassign": 1,
 	},
 	settings: {
 		"import/resolver": {
@@ -102,6 +105,7 @@ module.exports = {
 				"extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".module.css"]
 			},
 			typescript: {
+				alwaysTryTypes: true,
 				project: './tsconfig.json',
 			},
 		}
