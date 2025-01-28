@@ -1,9 +1,15 @@
 import { Advent_Pro } from 'next/font/google';
 
+import { Box, Button, Heading, Text } from '@chakra-ui/react';
 import ImageSendForm from '@components/ImageSendForm';
 import LanguageSwitcher from '@components/LanguageSwitcher';
+import MainLayout from '@components/MainLayout';
+import BrandsSection from '@components/sections/BrandSection';
+import CategoriesSection from '@components/sections/CategoriesSections';
+import ContactSection from '@components/sections/ContactSections';
+import ProductsSection from '@components/sections/ProductsSections';
+import TopSalesSection from '@components/sections/TopSales';
 import { fallbackLng, languages } from '@i18n/settings';
-import styles from '@styles/page.module.css';
 
 const font = Advent_Pro({ subsets: ['latin'], variable: '--font-advent-pro' });
 
@@ -17,13 +23,12 @@ export default async function Page({
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
   return (
-    <div className={styles.page} style={{ background: 'grey' }}>
-      <div className={font.className}>
-        <main className={styles.main}>
-          <LanguageSwitcher />
-          <ImageSendForm />
-        </main>
-      </div>
-    </div>
+    <MainLayout>
+      <BrandsSection />
+      {/*<CategoriesSection />*/}
+      {/*<TopSalesSection />*/}
+      {/*<ProductsSection />*/}
+      <ContactSection />
+    </MainLayout>
   );
 }

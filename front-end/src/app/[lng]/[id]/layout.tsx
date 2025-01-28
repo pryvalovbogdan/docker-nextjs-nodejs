@@ -1,7 +1,6 @@
 import { dir } from 'i18next';
 import React from 'react';
 
-import { Provider } from '@components/ui/provider';
 import { useTranslation } from '@i18n/config';
 import { fallbackLng, languages } from '@i18n/settings';
 
@@ -42,9 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
-      <Provider>
-        <body>{children}</body>
-      </Provider>
+      <body>{children}</body>
     </html>
   );
 }

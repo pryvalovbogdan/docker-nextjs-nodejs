@@ -11,6 +11,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           images TEXT[], -- Array of strings to store image URLs
           manufacture VARCHAR(255),
           country VARCHAR(255),
+          brand VARCHAR(255),
           category VARCHAR(255),
           price DECIMAL(10, 2) DEFAULT NULL
       );
@@ -51,9 +52,9 @@ export class InitDatabase1734879537080 implements MigrationInterface {
       -- Insert sample data into products
       INSERT INTO products (title, description, images, manufacture, country, category, price)
       VALUES
-          ('Laptop Pro', 'High-end laptop for professionals', ARRAY['image1.jpg', 'image2.jpg'], 'TechCorp', 'USA', 'Electronics', 1999.99),
-          ('Smartphone X', 'Latest smartphone with advanced features', ARRAY['phone1.jpg', 'phone2.jpg'], 'PhoneInc', 'China', 'Mobile Devices', 999.99),
-          ('Headphones Max', 'Noise-cancelling over-ear headphones', ARRAY['headphone1.jpg'], 'AudioTech', 'Germany', 'Accessories', 299.99);
+          ('Laptop Pro', 'High-end laptop for professionals', ARRAY['image1.jpg', 'image2.jpg'], 'TechCorp', 'USA', 'canon', 'Electronics', 1999.99),
+          ('Smartphone X', 'Latest smartphone with advanced features', ARRAY['phone1.jpg', 'phone2.jpg'], 'PhoneInc', 'China', 'olympus', 'Mobile Devices', 999.99),
+          ('Headphones Max', 'Noise-cancelling over-ear headphones', ARRAY['headphone1.jpg'], 'AudioTech', 'Germany', 'hitachi', 'Accessories', 299.99);
 
       -- Insert sample data into orders
       INSERT INTO orders (firstName, lastName, phone, date, productId, status)
