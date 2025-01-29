@@ -5,7 +5,7 @@ import { IEmailBody } from './types';
 class EmailService {
   public static async sendMessage(data: IEmailBody): Promise<{ status: string }> {
     try {
-      const { firstName, lastName, email, phone, product } = data;
+      const { name, email, phone, message } = data;
       const transporter = createTransport({
         port: 465,
         host: 'smtp.gmail.com',
@@ -16,15 +16,31 @@ class EmailService {
         },
       });
 
+      // notify medica
       const mailData = {
-        from: firstName,
+        from: name,
         to: process.env.EMAIL_RECIPIENT,
-        subject: `Message From ${firstName} - ${lastName}`,
-        text: `Email sender: ${email}. Message: ${product}`,
-        html: `<div>Email sender: ${email}. <br />Message: ${product} <br />Phone: ${phone}</div>`,
+        subject: `Повідомлення від замовника ${name}`,
+        html: `<div>${name && "Ім'я замовника: " + name}
+                <br />Пошта замовника: ${email}.
+                <br />${phone && 'Номер телефону: ' + phone}
+                <br />Повідомлення: ${message}
+            </div>`,
       };
 
       await transporter.sendMail(mailData);
+
+      // notify user
+      const mailDataUser = {
+        from: 'Medica',
+        to: email,
+        subject: `Повідомлення від Medica`,
+        html: `<div>Дякуємо за звернення, найближчим часом наш консультант звєяжиться з вами.
+             <br />Якщо виникли запитання можна звернутись на гарячу лінію по номеру: +380660000000
+            </div>`,
+      };
+
+      await transporter.sendMail(mailDataUser);
 
       return { status: 'Success' };
     } catch (err) {

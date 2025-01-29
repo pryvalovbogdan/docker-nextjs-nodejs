@@ -53,6 +53,16 @@ class ProductRepository {
 
     return categories.map(c => c.category);
   };
+
+  getBrands = async (): Promise<string[]> => {
+    const brands = await this.productRepository
+      .createQueryBuilder('product')
+      .select('DISTINCT product.brand', 'brand')
+      .where('product.brand IS NOT NULL')
+      .getRawMany();
+
+    return brands.map(b => b.brand);
+  };
 }
 
 export default ProductRepository;

@@ -42,12 +42,11 @@ class OrderService {
   }
 
   async saveOrder(orderData: IEmailBody): Promise<{ errors: string[] }> {
-    const { firstName, phone, lastName, productId, status = 'active' } = orderData;
+    const { name, phone, productId, status = 'active' } = orderData;
 
     try {
       await this.repository.saveOrder({
-        firstName,
-        lastName,
+        name,
         phone: Number(phone),
         productId: Number(productId),
         date: new Date(),

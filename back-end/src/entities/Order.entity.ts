@@ -7,11 +7,8 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, name: 'firstname' })
-  firstName: string;
-
-  @Column({ type: 'varchar', length: 255, name: 'lastname' })
-  lastName: string;
+  @Column({ type: 'varchar', length: 255 })
+  name: string;
 
   @Column({ type: 'int' })
   phone: number;

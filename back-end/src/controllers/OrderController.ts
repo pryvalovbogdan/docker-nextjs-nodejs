@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 import { OrderService } from '../services';
 import EmailService from '../services/EmailService';
@@ -78,6 +79,34 @@ class OrderController {
       console.error('Error updating order:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
     }
+  };
+
+  contact = async (req: Request, res: Response): Promise<void> => {
+    const errors = validationResult(req);
+
+    console.log('req.bodreq.bod', req.body, errors);
+
+    if (!errors.isEmpty()) {
+      responseHandler.sendValidationResponse(res, errors.array());
+
+      return;
+    }
+
+    if (!req.body.email || !req.body.message) {
+      responseHandler.sendFailResponse(res, 'Email and message are required');
+
+      return;
+    }
+
+    const mailResult = await EmailService.sendMessage(req.body);
+
+    if (mailResult.status === 'Error') {
+      responseHandler.sendFailResponse(res, 'Failed to send email');
+
+      return;
+    }
+
+    responseHandler.sendSuccessResponse(res, 'Request contact send successfully', {});
   };
 }
 

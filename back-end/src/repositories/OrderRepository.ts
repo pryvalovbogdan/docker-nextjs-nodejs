@@ -29,14 +29,13 @@ class OrderRepository {
   };
 
   saveOrder = async (orderData: {
-    firstName: string;
-    lastName: string;
+    name: string;
     phone: number;
     productId: number;
     status: string;
     date: Date;
   }): Promise<Order> => {
-    const { firstName, lastName, phone, productId, status, date } = orderData;
+    const { name, phone, productId, status, date } = orderData;
 
     const product = await this.productRepository.findOne({ where: { id: productId } });
 
@@ -47,8 +46,7 @@ class OrderRepository {
     }
 
     const newOrder = this.orderRepository.create({
-      firstName,
-      lastName,
+      name,
       phone,
       date: date.toISOString().split('T')[0], // Convert Date to string (YYYY-MM-DD)
       product, // Pass the full product entity
