@@ -44,7 +44,6 @@ const brandData = [
 ];
 
 const BrandsSection = ({ lng }: { lng: string }) => {
-  console.log('lnglnglngln11g', lng);
   const { t } = useTranslation(lng);
 
   return (
