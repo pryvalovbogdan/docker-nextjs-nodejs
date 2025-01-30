@@ -9,14 +9,10 @@ export async function generateStaticParams() {
   return languages.map(lng => ({ lng }));
 }
 
-export async function generateMetadata({
-  params: { lng },
-}: {
-  params: {
-    lng: string;
-  };
-}) {
-  if (languages.indexOf(lng) < 0) lng = fallbackLng;
+export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
+  let { lng } = await params;
+
+  if (!languages.includes(lng)) lng = fallbackLng;
 
   const { t } = await useTranslation(lng);
 
@@ -31,16 +27,14 @@ export async function generateMetadata({
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  params: { lng },
+  params,
 }: {
   children: React.ReactNode;
-  params: {
-    lng: string;
-  };
+  params: Promise<{ lng: string }>;
 }) {
-  console.log('lng', lng);
+  const { lng } = await params;
 
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>

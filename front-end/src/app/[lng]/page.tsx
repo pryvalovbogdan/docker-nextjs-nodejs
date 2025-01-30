@@ -3,14 +3,10 @@ import BrandsSection from '@components/sections/BrandSection';
 import ContactSection from '@components/sections/ContactSections';
 import { fallbackLng, languages } from '@i18n/settings';
 
-export default async function Page({
-  params: { lng },
-}: {
-  params: {
-    lng: string;
-  };
-}) {
-  if (languages.indexOf(lng) < 0) lng = fallbackLng;
+export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
+  let { lng } = await params;
+
+  if (!languages.includes(lng)) lng = fallbackLng;
 
   return (
     <MainLayout>
