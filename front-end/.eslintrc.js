@@ -98,6 +98,10 @@ module.exports = {
 		"import/prefer-default-export": 0,
 		"react-hooks/rules-of-hooks": 1,
 		"no-param-reassign": 1,
+		"react/function-component-definition": 0,
+		"react/require-default-props": 0,
+		"react/jsx-props-no-spreading": 0,
+		"react/jsx-no-bind": 0,
 	},
 	settings: {
 		"import/resolver": {

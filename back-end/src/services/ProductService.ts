@@ -116,6 +116,22 @@ class ProductService {
       return { errors: ['Error retrieving categories'] };
     }
   }
+
+  async getProductByBrandName(name: string): Promise<{ data?: Product[]; errors: string[] }> {
+    try {
+      const products = await this.repository.getProductsByBrand(name);
+
+      if (products.length > 0) {
+        return { data: products, errors: [] };
+      } else {
+        return { errors: ['No products found in this brand name'] };
+      }
+    } catch (err) {
+      console.error('Error retrieving products by brand name:', err);
+
+      return { errors: ['Error retrieving products by brand name'] };
+    }
+  }
 }
 
 export default ProductService;

@@ -31,5 +31,9 @@ export const validateProps = (method: TMethodValidation) => {
     case 'category': {
       return [query('category').not().isEmpty()];
     }
+
+    case 'contact': {
+      return [body('email').not().isEmpty(), body('name').not().isEmpty(), body('message').not().isEmpty()];
+    }
   }
 };

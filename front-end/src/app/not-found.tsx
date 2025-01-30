@@ -7,7 +7,7 @@ function Custom404() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/ua');
+    router.push('/uk');
   }, [router]);
 }
 

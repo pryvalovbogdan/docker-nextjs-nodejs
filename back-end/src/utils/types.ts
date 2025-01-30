@@ -1,6 +1,14 @@
 import { Readable } from 'stream';
 
-export type TMethodValidation = 'login' | 'register' | 'news' | 'product' | 'productId' | 'orders' | 'category';
+export type TMethodValidation =
+  | 'login'
+  | 'register'
+  | 'news'
+  | 'product'
+  | 'productId'
+  | 'orders'
+  | 'category'
+  | 'contact';
 
 export interface File {
   fieldname: string;

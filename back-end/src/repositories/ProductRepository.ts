@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
 import { Product } from '../entities';
@@ -45,6 +45,14 @@ class ProductRepository {
     return this.productRepository.find({ where: { category } });
   };
 
+  getProductsByBrand = async (brand: string): Promise<Product[]> => {
+    return this.productRepository.find({
+      where: {
+        brand: ILike(`%${brand}%`), // Case-insensitive match
+      },
+    });
+  };
+
   getCategories = async (): Promise<string[]> => {
     const categories = await this.productRepository
       .createQueryBuilder('product')
@@ -52,6 +60,16 @@ class ProductRepository {
       .getRawMany();
 
     return categories.map(c => c.category);
+  };
+
+  getBrands = async (): Promise<string[]> => {
+    const brands = await this.productRepository
+      .createQueryBuilder('product')
+      .select('DISTINCT product.brand', 'brand')
+      .where('product.brand IS NOT NULL')
+      .getRawMany();
+
+    return brands.map(b => b.brand);
   };
 }
 

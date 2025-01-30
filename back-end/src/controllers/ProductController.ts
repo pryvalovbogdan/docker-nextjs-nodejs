@@ -183,6 +183,27 @@ class ProductController {
       responseHandler.sendCatchResponse(res, 'Database error');
     }
   };
+
+  getProductsByBrandName = async (req: Request, res: Response): Promise<void> => {
+    const { name } = req.params;
+
+    try {
+      const result = await this.service.getProductByBrandName(name);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      if (result.data) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+      }
+    } catch (err) {
+      console.error('Error querying products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Error retrieving products by brand name');
+    }
+  };
 }
 
 export default ProductController;

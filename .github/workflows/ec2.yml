@@ -57,6 +57,7 @@ jobs:
             BUCKET_REGION=${{ secrets.BUCKET_REGION }}
             CLOUDFRONT_URL=${{ secrets.CLOUDFRONT_URL }}
             CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+            BACKEND_URL=${{ secrets.BACKEND_URL }}
             EOT
             
             # Log in to ECR before pulling the Docker images

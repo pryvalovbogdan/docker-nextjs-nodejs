@@ -29,33 +29,33 @@ class OrderRepository {
   };
 
   saveOrder = async (orderData: {
-    firstName: string;
-    lastName: string;
+    name: string;
     phone: number;
     productId: number;
     status: string;
+    email: string;
     date: Date;
   }): Promise<Order> => {
-    const { firstName, lastName, phone, productId, status, date } = orderData;
+    const { name, phone, productId, status, date, email } = orderData;
 
     const product = await this.productRepository.findOne({ where: { id: productId } });
-
-    console.log('productIdproductIdproductId', productId, product);
 
     if (!product) {
       throw new Error(`Product with ID ${productId} not found`);
     }
 
     const newOrder = this.orderRepository.create({
-      firstName,
-      lastName,
+      name,
       phone,
       date: date.toISOString().split('T')[0], // Convert Date to string (YYYY-MM-DD)
       product, // Pass the full product entity
+      email,
       status,
     });
 
-    return this.orderRepository.save(newOrder);
+    const order = await this.orderRepository.save(newOrder);
+
+    return order;
   };
 }
 

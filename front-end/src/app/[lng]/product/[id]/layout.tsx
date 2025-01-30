@@ -1,7 +1,6 @@
 import { dir } from 'i18next';
 import React from 'react';
 
-import { Provider } from '@components/ui/provider';
 import { useTranslation } from '@i18n/config';
 import { fallbackLng, languages } from '@i18n/settings';
 
@@ -12,7 +11,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
   let { lng } = await params;
 
-  if (!languages.includes(lng)) lng = fallbackLng;
+  if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
   const { t } = await useTranslation(lng);
 
@@ -34,13 +33,13 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ lng: string }>;
 }) {
-  const { lng } = await params;
+  let { lng } = await params;
+
+  if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
-      <Provider>
-        <body>{children}</body>
-      </Provider>
+      <body>{children}</body>
     </html>
   );
 }
