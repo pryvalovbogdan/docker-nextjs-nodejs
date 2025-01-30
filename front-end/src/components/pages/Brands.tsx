@@ -45,11 +45,11 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                 w='full'
                 maxHeight={300}
               />
-              <VStack align='start' p={4} spacing={2}>
+              <VStack align='start' p={4}>
                 <Text fontSize='lg' fontWeight='bold'>
                   {product.title}
                 </Text>
-                <Text fontSize='sm' color='gray.500' noOfLines={2}>
+                <Text fontSize='sm' color='gray.500'>
                   {product.description}
                 </Text>
                 <Flex w='100%' alignItems='center' justify='space-between'>

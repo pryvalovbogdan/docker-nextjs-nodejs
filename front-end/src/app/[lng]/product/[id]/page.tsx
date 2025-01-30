@@ -21,14 +21,10 @@ async function fetchProduct(id: string): Promise<any> {
   }
 }
 
-export default async function Page({
-  params: { lng, id },
-}: {
-  params: {
-    lng: string;
-    id: string;
-  };
-}) {
+export default async function Page({ params }: { params: Promise<{ lng: string; id: string }> }) {
+  // eslint-disable-next-line prefer-const
+  let { lng, id } = await params;
+
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
   const product = await fetchProduct(id);

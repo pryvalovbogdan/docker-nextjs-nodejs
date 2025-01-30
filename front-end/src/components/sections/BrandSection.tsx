@@ -52,7 +52,7 @@ const BrandsSection = ({ lng }: { lng: string }) => {
       <Heading as='h3' fontSize='48px' textAlign='center' mb={10}>
         Бренди
       </Heading>
-      <SimpleGrid columns={{ base: 2, sm: 3, md: 4 }} spacing={6} maxW='container.xl' mx='auto' gap={10}>
+      <SimpleGrid columns={{ base: 2, sm: 3, md: 4 }} maxW='container.xl' mx='auto' gap={10}>
         {brandData.map(brand => {
           return (
             <Link href={`/uk/brand/${brand.name}`} key={brand.src}>
@@ -77,7 +77,7 @@ const BrandsSection = ({ lng }: { lng: string }) => {
                 </Box>
                 <Card.Body gap='2'>
                   <Card.Title>{brand.name}</Card.Title>
-                  <Card.Description>{t(brand.name.toLowerCase())}</Card.Description>
+                  <Card.Description>{t(brand.name.toLowerCase() as any)}</Card.Description>
                 </Card.Body>
               </Card.Root>
             </Link>

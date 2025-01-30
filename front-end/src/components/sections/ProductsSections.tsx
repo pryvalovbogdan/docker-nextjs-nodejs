@@ -7,7 +7,7 @@ const ProductsSection = () => (
     <Heading as='h3' size='lg' textAlign='center' mb={10}>
       Our Products
     </Heading>
-    <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={6} maxW='container.xl' mx='auto'>
+    <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} maxW='container.xl' mx='auto'>
       {['CT Scanner', 'Ultrasound Machine', 'Surgical Instruments', 'ECG Machine', 'Ventilators', 'X-Ray Machine'].map(
         product => (
           <Box key={product} bg='white' shadow='md' borderRadius='md' overflow='hidden'>

@@ -72,16 +72,7 @@ const ContactSection = ({ lng }: { lng: string }) => {
       <Heading as='h3' fontSize='48px' textAlign='center' mb='52px' color='#062126'>
         {t('contactUs')}
       </Heading>
-      <Box
-        as='form'
-        maxW='lg'
-        mx='auto'
-        spacing={4}
-        display='flex'
-        alignItems='center'
-        flexDirection='column'
-        onSubmit={onSubmit}
-      >
+      <Box as='form' maxW='lg' mx='auto' display='flex' alignItems='center' flexDirection='column' onSubmit={onSubmit}>
         <Input
           name='name'
           placeholder={t('yourName')}

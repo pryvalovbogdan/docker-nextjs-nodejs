@@ -2,8 +2,6 @@ import { createSystem, defaultConfig } from '@chakra-ui/react';
 
 export const system = createSystem(defaultConfig, {
   theme: {
-    initialColorMode: 'light',
-    useSystemColorMode: false,
     tokens: {
       fonts: {
         heading: { value: `'Figtree', sans-serif` },
@@ -38,15 +36,6 @@ export const system = createSystem(defaultConfig, {
           700: { value: '#0088a3' },
           800: { value: '#005f7a' },
           900: { value: '#003a4d' },
-        },
-      },
-
-      styles: {
-        global: {
-          body: {
-            bg: 'cyan.50',
-            color: 'gray.800',
-          },
         },
       },
     },

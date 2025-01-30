@@ -173,8 +173,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
 
                 {/* Order Form */}
                 <Box>
-                  <label>{t('name')}</label>
+                  <label htmlFor='name'>{t('name')}</label>
                   <Input
+                    id='name'
                     name='name'
                     placeholder={t('enterName')}
                     onChange={handleChange}
@@ -189,8 +190,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 </Box>
 
                 <Box mt={4}>
-                  <label>{t('phone')}</label>
+                  <label htmlFor='phone'>{t('phone')}</label>
                   <Input
+                    id='phone'
                     type='tel'
                     name='phone'
                     placeholder={t('enterPhone')}
@@ -206,8 +208,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 </Box>
 
                 <Box mt={4}>
-                  <label>{t('email')}</label>
+                  <label htmlFor='email'>{t('email')}</label>
                   <Input
+                    id='email'
                     type='email'
                     name='email'
                     placeholder={t('enterEmail')}
