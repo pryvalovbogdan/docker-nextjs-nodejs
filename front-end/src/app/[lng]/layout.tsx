@@ -30,15 +30,7 @@ export async function generateMetadata({
   };
 }
 
-export default function RootLayout({
-  children,
-  params: { lng },
-}: {
-  children: React.ReactNode;
-  params: {
-    lng: string;
-  };
-}) {
+export default function RootLayout({ children, params: { lng } }: { children: React.ReactNode; params: any }) {
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
       <body>{children}</body>
