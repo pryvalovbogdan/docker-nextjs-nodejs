@@ -4,6 +4,13 @@ import React from 'react';
 
 import { Box, Flex, Heading, Link, Text } from '@chakra-ui/react';
 
+const links = [
+  { name: 'Головна', url: '/uk' },
+  { name: 'Бренди', url: '/uk#brands' },
+  { name: 'Категорії', url: '/uk/categories' },
+  { name: "Зв'язатись з нами", url: '/uk#contact' },
+];
+
 const Header: React.FC = () => {
   return (
     <Box
@@ -19,17 +26,13 @@ const Header: React.FC = () => {
     >
       <Flex maxW='container.xl' mx='auto' justify='space-between' align='center'>
         <Heading as='h1' size='lg' ml={4}>
-          MediCare Solutions
+          Медіка
         </Heading>
         <Flex flex={1} justify='space-around'>
-          {['Home', 'Brands', 'Categories', 'Top Sales', 'Contact'].map(item => (
-            <Text key={item}>
-              <Link
-                href={`#${item.toLowerCase().replace(/ /g, '-')}`}
-                _hover={{ textDecoration: 'underline' }}
-                color='rgba(6, 33, 38, 0.60)'
-              >
-                {item}
+          {links.map(item => (
+            <Text key={item.url}>
+              <Link href={item.url} _hover={{ textDecoration: 'underline' }} color='rgba(6, 33, 38, 0.60)'>
+                {item.name}
               </Link>
             </Text>
           ))}

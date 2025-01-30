@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
 import { Product } from '../entities';
@@ -43,6 +43,14 @@ class ProductRepository {
 
   getProductsByCategory = async (category: string): Promise<Product[]> => {
     return this.productRepository.find({ where: { category } });
+  };
+
+  getProductsByBrand = async (brand: string): Promise<Product[]> => {
+    return this.productRepository.find({
+      where: {
+        brand: ILike(`%${brand}%`), // Case-insensitive match
+      },
+    });
   };
 
   getCategories = async (): Promise<string[]> => {

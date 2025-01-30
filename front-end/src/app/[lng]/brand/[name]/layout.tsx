@@ -32,11 +32,12 @@ export async function generateMetadata({
 
 export default function RootLayout({
   children,
-  params: { lng },
+  params: { lng, id },
 }: {
   children: React.ReactNode;
   params: {
     lng: string;
+    id: string;
   };
 }) {
   return (

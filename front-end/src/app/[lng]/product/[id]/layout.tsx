@@ -1,7 +1,6 @@
 import { dir } from 'i18next';
 import React from 'react';
 
-import { Provider } from '@components/ui/provider';
 import { useTranslation } from '@i18n/config';
 import { fallbackLng, languages } from '@i18n/settings';
 
@@ -33,20 +32,17 @@ export async function generateMetadata({
 
 export default function RootLayout({
   children,
-  params: { lng },
+  params: { lng, id },
 }: {
   children: React.ReactNode;
   params: {
     lng: string;
+    id: string;
   };
 }) {
-  console.log('lng', lng);
-
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
-      <Provider>
-        <body>{children}</body>
-      </Provider>
+      <body>{children}</body>
     </html>
   );
 }

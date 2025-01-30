@@ -21,6 +21,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) NOT NULL,
           phone BIGINT NOT NULL,
+          email VARCHAR(255) NOT NULL,
           date DATE NOT NULL,
           productId INT, -- Related to products table
           status VARCHAR(50) NOT NULL DEFAULT 'active',
@@ -71,11 +72,11 @@ export class InitDatabase1734879537080 implements MigrationInterface {
               'Пропускна спроможність: 400 тестів/год або 640 тестів включаючи ISE для K+, Na+, Cl-, Li+ (опційно); Інноваційна довговічна та енергоекономічна технологія джерела світла на основі LED+HCF світлодіодів; Вбудовані довжини хвиль: 340, 405, 505, 535, 560, 600, 635, 670 нм; Мінімальний об’єм реакційної суміші від 180 мкл, дозволить зменшити витрати на реагенти; Програмований об’єм: зразка 2-40 мкл, крок 0,1 мкл, реагенту R1: 90-450 та R2: 10-300 мкл; Позицій для зразків - 135 (90 зі штрих-кодом); Позицій під реагенти - 88 з автономним охолодженням (5-8°C), що дозволить зберігати їх безпосередньо в аналізаторі; Реакційний ротор на 120 кювет з підтримкою температури 37°C, забезпечить стабільне проходження реакції; Потужна миюча станція з низьким споживанням води (лише 14 л/год) - дозволить багаторазово використовувати реакційні кювети; Інтуїтивно зрозумілий графічний інтерфейс.');
 
       -- Insert sample data into orders
-      INSERT INTO orders (name, phone, date, productId, status)
+      INSERT INTO orders (name, phone, email, date, productId, status)
       VALUES
-          ('John Doe', 1234567890, '2024-01-01', 1, 'completed'),
-          ('Jane Smith', 9876543210, '2024-02-15', 2, 'pending'),
-          ('Alice Johnson', 1122334455, '2024-03-01', 3, 'active');
+          ('John Doe', 1234567890, 'johndoe@example.com', '2024-01-01', 1, 'completed'),
+          ('Jane Smith', 9876543210, 'janesmith@example.com', '2024-02-15', 2, 'pending'),
+          ('Alice Johnson', 1122334455, 'alicej@example.com', '2024-03-01', 3, 'active');
 
       -- Insert sample data into news
       INSERT INTO news (title, description, images, date)

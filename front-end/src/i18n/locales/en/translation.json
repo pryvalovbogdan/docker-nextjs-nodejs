@@ -21,5 +21,22 @@
   "hitachi": "A multinational company focusing on IT and industrial systems.",
   "olympus": "Known for optical and medical technologies, including cameras and endoscopes.",
   "villa": "Providing innovative solutions in radiology and imaging diagnostics.",
-  "vinno": "Pioneering high-end ultrasound imaging technology."
+  "vinno": "Pioneering high-end ultrasound imaging technology.",
+  "order": "Order",
+  "confirmOrder": "Confirm Your Order",
+  "name": "Name",
+  "enterName": "Enter your name",
+  "phone": "Phone",
+  "enterPhone": "Enter your phone number",
+  "enterEmail": "Enter your email",
+  "date": "Date",
+  "submitOrder": "Submit Order",
+  "cancel": "Cancel",
+  "hideDetails": "Hide details",
+  "showMore": "Show more",
+  "detailedDescription": "Detailed Description",
+  "characteristics": "Characteristics",
+  "email": "Email",
+  "phoneRequired": "Phone is required",
+  "nameRequired": "Name is required"
 }

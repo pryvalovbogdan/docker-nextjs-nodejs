@@ -16,6 +16,9 @@ export class Order {
   @Column({ type: 'date' })
   date: string;
 
+  @Column({ type: 'varchar', length: 255 })
+  email: string;
+
   @Column({ type: 'varchar', length: 50, default: 'active' })
   status: string;
 

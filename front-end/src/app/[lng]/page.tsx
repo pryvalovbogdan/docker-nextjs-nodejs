@@ -19,11 +19,11 @@ export default async function Page({
 
   return (
     <MainLayout>
-      <BrandsSection />
+      <BrandsSection lng={lng} />
       {/* <CategoriesSection /> */}
       {/* <TopSalesSection /> */}
       {/* <ProductsSection /> */}
-      <ContactSection />
+      <ContactSection lng={lng} />
       <ImageSendForm />
     </MainLayout>
   );
