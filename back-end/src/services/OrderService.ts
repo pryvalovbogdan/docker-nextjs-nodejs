@@ -41,19 +41,20 @@ class OrderService {
     }
   }
 
-  async saveOrder(orderData: IEmailBody): Promise<{ errors: string[] }> {
-    const { name, phone, productId, status = 'active' } = orderData;
+  async saveOrder(orderData: IEmailBody): Promise<{ errors: string[]; data?: Order }> {
+    const { name, phone, productId, status = 'active', email } = orderData;
 
     try {
-      await this.repository.saveOrder({
+      const data = await this.repository.saveOrder({
         name,
         phone: Number(phone),
         productId: Number(productId),
         date: new Date(),
+        email,
         status,
       });
 
-      return { errors: [] };
+      return { errors: [], data };
     } catch (err) {
       console.error('Error saving order:', err);
 

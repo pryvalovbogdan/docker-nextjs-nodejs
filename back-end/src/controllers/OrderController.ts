@@ -66,7 +66,35 @@ class OrderController {
         return;
       }
 
-      const mailResult = await EmailService.sendMessage(req.body);
+      const product = result.data?.product;
+
+      if (!product) {
+        responseHandler.sendFailResponse(res, 'Product not found');
+
+        return;
+      }
+
+      const orderDetails = `
+      <div>
+        <p><strong>Номер замовлення:</strong> ${product.id || 'Невідомо'}</p>
+        <p><strong>Продукт:</strong> ${product.title}</p>
+        <p><strong>Бренд:</strong> ${product.brand || 'Невідомо'}</p>
+        <p><strong>Країна:</strong> ${product.description || 'Невідомо'}</p>
+        <p><strong>Опис:</strong> ${product.description.substring(0, 50) || 'Невідомо'}</p>
+        ${product.price ? `<p><strong>Ціна:</strong> ${product.price} UAH</p>` : ''}
+        ${
+          product.images?.length
+            ? `<p><strong>Зображення:</strong></p> 
+            ${product.images
+              .map(img => `<img src="${img}" alt="Product Image" width="150" style="margin:5px;"/>`)
+              .join('')}
+            `
+            : ''
+        }
+      </div>
+    `;
+
+      const mailResult = await EmailService.sendOrderEmail({ ...req.body, orderDetails });
 
       if (mailResult.status === 'Error') {
         responseHandler.sendFailResponse(res, 'Failed to send email');
@@ -98,7 +126,7 @@ class OrderController {
       return;
     }
 
-    const mailResult = await EmailService.sendMessage(req.body);
+    const mailResult = await EmailService.sendContactUsEmail(req.body);
 
     if (mailResult.status === 'Error') {
       responseHandler.sendFailResponse(res, 'Failed to send email');

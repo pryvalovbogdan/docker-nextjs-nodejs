@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import React, { useState } from 'react';
 
 import { Badge, Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
@@ -67,21 +68,21 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
     console.log('Submitting Order:', orderData);
 
     try {
-      const response = await fetch('http://localhost:8080/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      await axios.post(
+        '/api/order',
+        JSON.stringify({
           ...orderData,
           productId: product.id,
           status: 'active',
         }),
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-      if (response.ok) {
-        alert('Order placed successfully!');
-      } else {
-        alert('Error placing order.');
-      }
+      console.log('Order submistted');
     } catch (error) {
       console.error('Order submission failed:', error);
     }

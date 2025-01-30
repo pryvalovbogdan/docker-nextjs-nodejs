@@ -6,5 +6,6 @@ export interface IEmailBody {
   phone: number;
   productId: string;
   status?: string;
-  message: string;
+  message?: string;
+  orderDetails?: string;
 }
