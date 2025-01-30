@@ -9,8 +9,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
-  const resolvedParams = await params;
-  let { lng } = resolvedParams;
+  let { lng } = await params;
 
   if (!languages.includes(lng)) lng = fallbackLng;
 
@@ -34,8 +33,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ lng: string }>;
 }) {
-  const resolvedParams = await params;
-  const { lng } = resolvedParams;
+  const { lng } = await params;
 
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>

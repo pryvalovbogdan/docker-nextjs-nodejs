@@ -7,20 +7,16 @@ import styles from '@styles/page.module.css';
 
 const font = Advent_Pro({ subsets: ['latin'], variable: '--font-advent-pro' });
 
-export default async function Page({
-  params: { lng },
-}: {
-  params: {
-    lng: string;
-  };
-}) {
-  if (languages.indexOf(lng) < 0) lng = fallbackLng;
+export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
+  let { lng } = await params;
+
+  if (!languages.includes(lng)) lng = fallbackLng;
 
   return (
     <div className={styles.page} style={{ background: 'grey' }}>
       <div className={font.className}>
         <main className={styles.main}>
-          <LanguageSwitcher />
+          <LanguageSwitcher currentLocale={lng} />
           <ImageSendForm />
         </main>
       </div>
