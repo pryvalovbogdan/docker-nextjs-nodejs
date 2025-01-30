@@ -58,12 +58,6 @@ class S3Service {
   };
 
   private invalidateCloudFrontCache = async (key: string): Promise<void> => {
-    if (!CLOUDFRONT_DISTRIBUTION_ID) {
-      console.warn('CloudFront distribution ID is not set. Skipping cache invalidation.');
-
-      return;
-    }
-
     try {
       const paths = [`/${key}`];
 

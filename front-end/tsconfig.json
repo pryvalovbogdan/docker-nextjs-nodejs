@@ -19,7 +19,10 @@
       }
     ],
     "paths": {
-      "components/*": ["./src/*"]
+      "@components/*": ["./src/components/*"],
+      "@i18n/*": ["./src/i18n/*"],
+      "@app/*": ["./src/app/*"],
+      "@styles/*": ["./src/styles/*"]
     }
   },
   "include": [
