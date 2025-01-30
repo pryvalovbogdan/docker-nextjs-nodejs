@@ -8,8 +8,9 @@ export async function generateStaticParams() {
   return languages.map(lng => ({ lng }));
 }
 
-export async function generateMetadata({ params }: { params: { lng: string } }) {
-  let { lng } = params;
+export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
+  const resolvedParams = await params;
+  let { lng } = resolvedParams;
 
   if (!languages.includes(lng)) lng = fallbackLng;
 
