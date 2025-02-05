@@ -3,7 +3,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-import { Badge, Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
+import { Product } from '@/entities/product/model/types';
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -12,20 +12,9 @@ import {
   DialogHeader,
   DialogRoot,
   DialogTrigger,
-} from '@components/ui/dialog';
+} from '@/shared/ui/dialog';
+import { Badge, Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
-
-export interface Product {
-  id: number;
-  title: string;
-  description: string;
-  characteristics?: string | null;
-  images: string[];
-  brand?: string;
-  country?: string;
-  category?: string;
-  price?: number | null;
-}
 
 interface ProductProps {
   product: Product;

@@ -23,7 +23,9 @@
       "@i18n/*": ["./src/i18n/*"],
       "@app/*": ["./src/app/*"],
       "@styles/*": ["./src/styles/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@widgets/*": ["./src/widgets/*"],
+      "@features/*": ["./src/features/*"]
     }
   },
   "include": [

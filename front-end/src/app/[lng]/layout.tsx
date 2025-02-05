@@ -1,7 +1,7 @@
 import { dir } from 'i18next';
 import React from 'react';
 
-import { Provider } from '@components/ui/provider';
+import { Provider } from '@/shared/ui/provider';
 import { useTranslation } from '@i18n/config';
 import { fallbackLng, languages } from '@i18n/settings';
 

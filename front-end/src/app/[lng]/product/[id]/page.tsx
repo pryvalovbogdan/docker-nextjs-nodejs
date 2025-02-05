@@ -1,39 +1,23 @@
-import axios from 'axios';
-
-import MainLayout from '@components/MainLayout';
-import { Product } from '@components/pages/Brands';
-import ProductView from '@components/pages/ProductPreview';
+import { fetchProductById } from '@/entities/product/api';
+import ProductView from '@/views/ProductPreview';
 import { fallbackLng, languages } from '@i18n/settings';
+import { generateMetadata, generateStaticParams } from '@i18n/utils';
+import Layout from '@widgets/layout/layout';
 
-async function fetchProduct(id: string): Promise<any> {
-  try {
-    const baseURL = process.env.BACKEND_URL || 'http://host.docker.internal:8080';
-    // special DNS name host.docker.internal which resolves to the internal IP address used by the hos
-    const { data } = await axios.get(`${baseURL}/api/products/${id}`);
-
-    console.log('data', data);
-
-    return data;
-  } catch (error) {
-    console.log('error', error);
-
-    return null;
-  }
-}
-
+export { generateStaticParams, generateMetadata };
 export default async function Page({ params }: { params: Promise<{ lng: string; id: string }> }) {
   // eslint-disable-next-line prefer-const
   let { lng, id } = await params;
 
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
-  const product = await fetchProduct(id);
+  const product = await fetchProductById(id);
 
   console.log('productss', product, id);
 
   return (
-    <MainLayout>
-      <ProductView product={product.data as Product} lng={lng} />
-    </MainLayout>
+    <Layout>
+      <ProductView product={product} lng={lng} />
+    </Layout>
   );
 }
