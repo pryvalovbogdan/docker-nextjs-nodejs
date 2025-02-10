@@ -2,9 +2,9 @@
 
 import React from 'react';
 
+import { Box } from '@chakra-ui/react';
 import Footer from '@widgets/footer/footer';
 import Header from '@widgets/header/header';
-import { Box } from '@chakra-ui/react';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (

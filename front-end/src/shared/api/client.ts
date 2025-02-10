@@ -1,40 +1,24 @@
-import axios, { AxiosRequestConfig } from 'axios';
+export async function fetchWrapper<T>(url: string, options: RequestInit = {}): Promise<T> {
+  const response = await fetch(url, options);
 
-const REQUEST_CONTENT_TYPE = 'application/json';
-const REQUEST_ACCEPT = 'application/json, text/javascript, */*; q=0.01';
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
 
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.headers.common.Accept = REQUEST_ACCEPT;
-axios.defaults.headers.post['Content-Type'] = REQUEST_CONTENT_TYPE;
+  // Detect and parse based on Content-Type
+  const contentType = response.headers.get('content-type');
 
-axios.interceptors.response.use(
-  response => {
-    return response && response.data ? response.data : response;
-  },
+  if (contentType?.includes('application/json')) {
+    return response.json() as Promise<T>;
+  }
 
-  error => {
-    console.error('HTTP Error:', error);
+  if (contentType?.includes('text/plain')) {
+    return response.text() as unknown as T;
+  }
 
-    return Promise.reject(error);
-  },
-);
+  if (contentType?.includes('application/octet-stream')) {
+    return response.blob() as unknown as T;
+  }
 
-export async function httpGet<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {
-  return axios.get<T>(url, config);
-}
-
-export async function httpPut<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
-  return axios.put<T>(url, data, config);
-}
-
-export async function httpPost<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
-  return axios.post<T>(url, data, config);
-}
-
-export async function httpDelete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {
-  return axios.delete<T>(url, config);
-}
-
-export async function httpPatch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
-  return axios.patch<T>(url, data, config);
+  return response.arrayBuffer() as unknown as T;
 }

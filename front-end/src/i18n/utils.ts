@@ -5,7 +5,7 @@ export function generateStaticParams() {
   return languages.map(lng => ({ lng }));
 }
 
-export async function generateMetadata(
+export async function generateMetadataGeneral(
   lng: string,
   metaConfig?: {
     titleKey?: string;
