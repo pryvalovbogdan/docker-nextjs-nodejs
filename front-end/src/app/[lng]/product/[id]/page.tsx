@@ -1,8 +1,7 @@
 import { fetchProductById } from '@/entities/product/api';
-import ProductView from '@/views/ProductPreview';
+import { ProductView } from '@/views';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
-import Layout from '@widgets/layout/layout';
 
 export { generateStaticParams };
 export async function generateMetadata({ params }: { params: Promise<{ lng: string; id: string }> }) {
@@ -25,9 +24,5 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
 
   const product = await fetchProductById(id);
 
-  return (
-    <Layout>
-      <ProductView product={product} lng={lng} />
-    </Layout>
-  );
+  return <ProductView product={product} lng={lng} />;
 }

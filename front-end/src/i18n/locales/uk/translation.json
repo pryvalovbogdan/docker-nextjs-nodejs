@@ -38,5 +38,46 @@
   "characteristics": "Характеристики",
   "email": "Пошта",
   "phoneRequired": "Телефон є обов'язковим",
-  "nameRequired": "Ім'я є обов'язкове"
+  "nameRequired": "Ім'я є обов'язкове",
+  "login": {
+    "title": "Адмін панель",
+    "username": "Ім'я користувача",
+    "password": "Пароль",
+    "submit": "Увійти",
+    "errorUsername": "Ім'я користувача обов'язкове",
+    "errorPassword": "Пароль обов'язковий",
+    "loginSuccess": "Ви успішно ввійшли",
+    "loginFailed": "Не вдалось ввійшли"
+  },
+  "tabs": {
+    "orders": "Замовлення",
+    "admins": "Адміністратори",
+    "products": "Продукти",
+    "news": "Новини"
+  },
+  "actions": {
+    "edit": "Редагувати",
+    "submit": "Підтвердити"
+  },
+  "columns": {
+    "id": "ID",
+    "username": "Ім'я користувача",
+    "role": "Роль",
+    "adminIp": "IP адміністратора",
+    "createdAt": "Дата створення",
+    "title": "Заголовок",
+    "description": "Опис",
+    "date": "Дата",
+    "name": "Ім'я",
+    "phone": "Телефон",
+    "email": "Email",
+    "status": "Статус",
+    "price": "Ціна",
+    "brand": "Бренд",
+    "category": "Категорія",
+    "country": "Країна"
+  },
+  "pagination": {
+    "page": "Сторінка"
+  }
 }

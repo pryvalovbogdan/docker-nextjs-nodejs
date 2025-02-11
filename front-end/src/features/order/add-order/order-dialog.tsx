@@ -75,7 +75,18 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
     <>
       <DialogRoot size={isMobile ? 'full' : 'md'} lazyMount open={isOpen} onOpenChange={e => setIsOpen(e.open)}>
         <DialogTrigger asChild>
-          <Button size='sm' mt='30px' bg='#24BEE0' color='white' borderRadius='27px' onClick={() => setIsOpen(true)}>
+          <Button
+            size='sm'
+            mt='30px'
+            bg='#24BEE0'
+            color='white'
+            borderRadius='27px'
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+          >
             {t('order')}
           </Button>
         </DialogTrigger>

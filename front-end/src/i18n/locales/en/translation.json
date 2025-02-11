@@ -38,5 +38,46 @@
   "characteristics": "Characteristics",
   "email": "Email",
   "phoneRequired": "Phone is required",
-  "nameRequired": "Name is required"
+  "nameRequired": "Name is required",
+  "login": {
+    "title": "Admin dashboard",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login",
+    "errorUsername": "Username is required",
+    "errorPassword": "Password is required",
+    "loginSuccess": "You have been logged successfully",
+    "loginFailed": "Login failed"
+  },
+  "tabs": {
+    "orders": "Orders",
+    "admins": "Admins",
+    "products": "Products",
+    "news": "News"
+  },
+  "actions": {
+    "edit": "Edit",
+    "submit": "Submit"
+  },
+  "columns": {
+    "id": "ID",
+    "username": "Username",
+    "role": "Role",
+    "adminIp": "Admin IP",
+    "createdAt": "Created At",
+    "title": "Title",
+    "description": "Description",
+    "date": "Date",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "status": "Status",
+    "price": "Price",
+    "brand": "Brand",
+    "category": "Category",
+    "country": "Country"
+  },
+  "pagination": {
+    "page": "Page"
+  }
 }

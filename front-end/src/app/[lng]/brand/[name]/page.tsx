@@ -1,7 +1,6 @@
 import { fetchBrandProducts } from '@/entities/product/api';
+import { ProductsBrandView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
-import { Layout } from '@widgets/layout';
-import { BrandProducts } from '@widgets/prducts-by-brand-list/index';
 
 export { generateStaticParams };
 
@@ -20,14 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   return generateMetadataGeneral(lng, { keywordsKeys: keys, titleKey: name });
 }
 
-export default async function Page({ params }: { params: Promise<{ name: string }> }) {
-  const { name } = await params;
+export default async function Page({ params }: { params: Promise<{ name: string; lng: string }> }) {
+  const { name, lng } = await params;
 
   const products = await fetchBrandProducts(name);
 
-  return (
-    <Layout>
-      <BrandProducts products={products} brandName={name} />
-    </Layout>
-  );
+  return <ProductsBrandView products={products} brandName={name} lng={lng} />;
 }
