@@ -16,7 +16,7 @@ export const AppDataSource = new DataSource({
   password: POSTGRES_PASSWORD || 'password',
   database: POSTGRES_DB || 'nextjsnodejsdb',
   entities: [Product, Order, News, Admin],
-  migrations: [__dirname + '/migrations/*.ts'],
+  migrations: [__dirname + '/migrations/*.ts', __dirname + '/migrations/*.js'],
   synchronize: false, // Always false in production
   logging: true,
 } as DataSourceOptions);

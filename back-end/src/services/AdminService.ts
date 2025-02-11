@@ -19,7 +19,7 @@ class AdminService {
     } catch (error) {
       console.error('Error in login:', error);
 
-      return { errors: ['Failed to log in admin'] };
+      return { errors: [`Failed to log in admin for ip: ${adminIp}`] };
     }
   }
 
