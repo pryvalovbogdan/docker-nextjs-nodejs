@@ -15,7 +15,7 @@ class AdminService {
         return { data: admin, errors: [] };
       }
 
-      return { errors: ['Invalid credentials'] };
+      return { errors: [`Invalid credentials for ip: ${adminIp}`] };
     } catch (error) {
       console.error('Error in login:', error);
 
