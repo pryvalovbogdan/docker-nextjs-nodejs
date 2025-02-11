@@ -20,10 +20,12 @@ export async function generateMetadataGeneral(
   const { t } = await useTranslation(lng);
 
   return {
-    title: t(metaConfig?.titleKey || 'titleMain'),
-    description: t(metaConfig?.descriptionKey || 'descriptionMain'),
-    keywords: metaConfig?.keywordsKeys?.map(t) || [t('buyTech'), t('medTech')],
-    creator: t(metaConfig?.creatorKey || 'creator'),
+    title: t((metaConfig?.titleKey as any) || 'titleMain'),
+    description: t((metaConfig?.descriptionKey as any) || 'descriptionMain'),
+    keywords: metaConfig?.keywordsKeys
+      ? metaConfig.keywordsKeys.map(key => t(key as any))
+      : [t('buyTech'), t('medTech')],
+    creator: t((metaConfig?.creatorKey as any) || 'creator'),
     icons: {
       icon: metaConfig?.iconPath || '/favicon.ico',
     },

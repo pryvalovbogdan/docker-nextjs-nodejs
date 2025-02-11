@@ -6,6 +6,8 @@ import { Box, Button, Flex, HStack, IconButton, Input, Text, VStack, createIcon 
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
+type EditedDataType = Record<number, Record<string, string>>;
+
 const initialData = {
   admins: [
     { id: 1, username: 'admin1', role: 'Super Admin', adminIp: '192.168.1.1', createdAt: '2025-02-10' },
@@ -16,8 +18,15 @@ const initialData = {
     { id: 2, title: 'Product Update', description: 'We added new features.', date: '2025-02-11' },
   ],
   orders: [
-    { id: 1, name: 'John Doe', phone: 123456789, date: '2025-02-10', email: 'john@example.com', status: 'active' },
-    { id: 2, name: 'Alice Smith', phone: 987654321, date: '2025-02-11', email: 'alice@example.com', status: 'pending' },
+    { id: 1, name: 'John Doe', phone: '123456789', date: '2025-02-10', email: 'john@example.com', status: 'active' },
+    {
+      id: 2,
+      name: 'Alice Smith',
+      phone: '987654321',
+      date: '2025-02-11',
+      email: 'alice@example.com',
+      status: 'pending',
+    },
   ],
   products: [
     { id: 1, title: 'Laptop', price: '1000.00', brand: 'Apple', category: 'Electronics', country: 'USA' },
@@ -35,25 +44,28 @@ const HeartIcon = createIcon({
   ),
 });
 
-const PAGE_SIZE = 2; // Number of rows per page
+const PAGE_SIZE = 2;
 
 export default function Dashboard({ lng }: { lng: string }) {
   const [selectedTab, setSelectedTab] = useState('orders');
   const [data, setData] = useState(initialData);
-  const [editedData, setEditedData] = useState({});
+  const [editedData, setEditedData] = useState<EditedDataType>({});
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation(lng);
+
   const handleEdit = (rowId: number, field: string, value: string) => {
     setEditedData(prev => ({
       ...prev,
-      [rowId]: { ...prev[rowId], [field]: value },
+      [rowId]: { ...(prev[rowId] || {}), [field]: value },
     }));
   };
 
   const handleSubmit = (rowId: number) => {
     setData(prev => ({
       ...prev,
-      [selectedTab]: prev[selectedTab].map(row => (row.id === rowId ? { ...row, ...editedData[rowId] } : row)),
+      [selectedTab]: (prev[selectedTab as keyof typeof prev] as (typeof prev)[keyof typeof prev]).map(row =>
+        row.id === rowId ? { ...row, ...editedData[rowId] } : row,
+      ),
     }));
 
     setEditedData(prev => {
@@ -69,16 +81,17 @@ export default function Dashboard({ lng }: { lng: string }) {
     admins: ['id', 'username', 'role', 'adminIp', 'createdAt'],
     news: ['id', 'title', 'description', 'date'],
     orders: ['id', 'name', 'phone', 'date', 'email', 'status'],
-
     products: ['id', 'title', 'price', 'brand', 'category', 'country'],
   };
 
-  const displayedData = data[selectedTab].slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  type TabKey = keyof typeof data;
+  type TabKeyColumn = keyof typeof columns;
+
+  const displayedData = data[selectedTab as TabKey].slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   return (
     <Layout lng={lng}>
       <Box p={5}>
-        {/* Custom Tabs */}
         <HStack mb={4}>
           {Object.keys(initialData).map(key => (
             <Button
@@ -89,26 +102,27 @@ export default function Dashboard({ lng }: { lng: string }) {
               }}
               colorScheme={selectedTab === key ? 'blue' : 'gray'}
             >
-              {t(`tabs.${key}`)}
+              {t(`tabs.${key}` as any)}
             </Button>
           ))}
         </HStack>
         <VStack align='stretch' border='1px solid #ddd' p={4} borderRadius='md'>
-          {/* Header Row */}
           <HStack bg='gray.200' p={2} borderRadius='md'>
-            {columns[selectedTab].map(col => (
+            {columns[selectedTab as TabKeyColumn].map(col => (
               <Text key={col} fontWeight='bold' flex={1}>
-                {t(`columns.${col}`)}
+                {t(`columns.${col}` as any)}
               </Text>
             ))}
             <Text fontWeight='bold'>{t('actions.submit')}</Text>
           </HStack>
-
-          {/* Data Rows */}
           {displayedData.map(row => (
             <HStack key={row.id} p={2} borderBottom='1px solid #ddd'>
-              {columns[selectedTab].map(col => (
-                <Box key={col} flex={1} onClick={() => handleEdit(row.id, col, row[col])}>
+              {columns[selectedTab as keyof typeof columns].map(col => (
+                <Box
+                  key={col}
+                  flex={1}
+                  onClick={() => handleEdit(row.id, col, row[col as keyof typeof row]?.toString() || '')}
+                >
                   {editedData[row.id]?.[col] ? (
                     <Input
                       value={editedData[row.id][col]}
@@ -116,7 +130,7 @@ export default function Dashboard({ lng }: { lng: string }) {
                       size='sm'
                     />
                   ) : (
-                    <Text>{row[col]}</Text>
+                    <Text>{row[col as keyof typeof row]}</Text>
                   )}
                 </Box>
               ))}
@@ -133,7 +147,7 @@ export default function Dashboard({ lng }: { lng: string }) {
         <Flex justify='space-between' align='center' mt={4}>
           <IconButton
             icon={<HeartIcon />}
-            isDisabled={currentPage === 1}
+            disabled={currentPage === 1}
             onClick={() => setCurrentPage(prev => prev - 1)}
           />
           <Text>
@@ -141,7 +155,7 @@ export default function Dashboard({ lng }: { lng: string }) {
           </Text>
           <IconButton
             icon={<HeartIcon />}
-            isDisabled={currentPage * PAGE_SIZE >= data[selectedTab].length}
+            disabled={currentPage * PAGE_SIZE >= data[selectedTab as keyof typeof data].length}
             onClick={() => setCurrentPage(prev => prev + 1)}
           />
         </Flex>

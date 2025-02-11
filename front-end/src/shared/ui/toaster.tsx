@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { Toaster as ChakraToaster, Portal, Spinner, Stack, Toast, createToaster } from '@chakra-ui/react';
 
@@ -10,7 +10,15 @@ export const toaster = createToaster({
   max: 3,
 });
 
-const ToastCustom = ({ title, description, action, type, meta }) => {
+interface ToastCustomProps {
+  title?: ReactNode;
+  description?: ReactNode;
+  action?: { label: string };
+  type?: 'success' | 'error' | 'loading' | 'info' | (string & {});
+  meta?: { closable?: boolean };
+}
+
+const ToastCustom: React.FC<ToastCustomProps> = ({ title, description, action, type, meta }) => {
   return (
     <Toast.Root width={{ md: 'sm' }}>
       {type === 'loading' ? <Spinner size='sm' color='blue.solid' /> : <Toast.Indicator />}
