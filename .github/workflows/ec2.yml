@@ -46,6 +46,7 @@ jobs:
             PRIMARY_ADMIN_USERNAME=${{ secrets.PRIMARY_ADMIN_USERNAME }}
             PRIMARY_ADMIN_PASSWORD=${{ secrets.PRIMARY_ADMIN_PASSWORD }}
             PRIMARY_ADMIN_IP=${{ secrets.PRIMARY_ADMIN_IP }}
+            SECONDARY_ADMIN_IP=${{ secrets.SECONDARY_ADMIN_IP }}
             EMAIL_USER=${{ secrets.EMAIL_USER }}
             EMAIL_RECIPIENT=${{ secrets.EMAIL_RECIPIENT }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
