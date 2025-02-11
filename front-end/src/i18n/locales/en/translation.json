@@ -41,6 +41,13 @@
   "nameRequired": "Name is required",
   "orderSuccess": "Your order was submitted successfully",
   "orderFailed": "Failed to create order",
+  "titleHeader": "Medica",
+  "links": {
+    "home": "Home",
+    "brands": "Brands",
+    "categories": "Categories",
+    "contact": "Contact Us"
+  },
   "login": {
     "title": "Admin dashboard",
     "username": "Username",

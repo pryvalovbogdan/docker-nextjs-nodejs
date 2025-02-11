@@ -11,7 +11,7 @@ interface BrandProductsProps {
 
 const ProductsBrandView = ({ products, brandName, lng }: BrandProductsProps) => {
   return (
-    <Layout>
+    <Layout lng={lng}>
       <Box as='section' id='brand-products' py={20} bg='white'>
         <Heading as='h3' fontSize='48px' textAlign='center' mb={10}>
           {brandName} Products

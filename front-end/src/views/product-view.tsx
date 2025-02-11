@@ -19,7 +19,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
   const toggleShowMore = () => setShowMore(!showMore);
 
   return (
-    <Layout>
+    <Layout lng={lng}>
       <Box py={8} px={6} maxW='6xl' mx='auto'>
         <Flex direction={{ base: 'column', md: 'row' }} gap={8}>
           {/* Product Images */}

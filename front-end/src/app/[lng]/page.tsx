@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   if (!languages.includes(lng)) lng = fallbackLng;
 
   return (
-    <Layout>
+    <Layout lng={lng}>
       <BrandsSection lng={lng} />
       <ContactSection lng={lng} />
       <ImageSendForm />

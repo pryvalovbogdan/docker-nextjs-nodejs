@@ -76,7 +76,7 @@ export default function Dashboard({ lng }: { lng: string }) {
   const displayedData = data[selectedTab].slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   return (
-    <Layout>
+    <Layout lng={lng}>
       <Box p={5}>
         {/* Custom Tabs */}
         <HStack mb={4}>

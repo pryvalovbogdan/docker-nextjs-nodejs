@@ -4,7 +4,7 @@ import { Layout } from '@widgets/layout';
 
 const LoginView = ({ lng }: { lng: string }) => {
   return (
-    <Layout>
+    <Layout lng={lng}>
       <LoginForm lng={lng} />
       <Toaster />
     </Layout>
