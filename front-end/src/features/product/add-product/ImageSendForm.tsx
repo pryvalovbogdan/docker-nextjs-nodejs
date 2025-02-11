@@ -46,7 +46,7 @@ function ImageSendForm() {
         <Stack>
           <Input type='text' placeholder='Назва' />
           <Input type='text' placeholder='Бренд' />
-          <Input type='file' placeholder='Країна' />
+          <Input type='file' onChange={imagesSelected} />
           <Textarea
             value={caption}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCaption(e.target.value)}

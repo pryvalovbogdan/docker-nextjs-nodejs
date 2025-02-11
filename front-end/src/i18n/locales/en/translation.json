@@ -39,6 +39,8 @@
   "email": "Email",
   "phoneRequired": "Phone is required",
   "nameRequired": "Name is required",
+  "orderSuccess": "Your order was submitted successfully",
+  "orderFailed": "Failed to create order",
   "login": {
     "title": "Admin dashboard",
     "username": "Username",

@@ -16,7 +16,7 @@ const ProductsBrandView = ({ products, brandName, lng }: BrandProductsProps) => 
         <Heading as='h3' fontSize='48px' textAlign='center' mb={10}>
           {brandName} Products
         </Heading>
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={10} maxW='container.xl' mx='auto'>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} maxW='container.xl' mx='auto'>
           {products.map(product => (
             <ProductCard key={product.id} product={product} lng={lng} />
           ))}

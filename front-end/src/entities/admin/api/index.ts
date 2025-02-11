@@ -5,7 +5,7 @@ export async function login(loginData: {
   passwordHash: string;
 }): Promise<{ success: boolean; message: string; token?: string }> {
   try {
-    const response = await fetchWrapper('/api/admin/login', {
+    const response: { data: { token: string }; message: string } = await fetchWrapper('/api/admin/login', {
       method: 'POST',
       body: JSON.stringify(loginData),
       headers: { 'Content-Type': 'application/json' },

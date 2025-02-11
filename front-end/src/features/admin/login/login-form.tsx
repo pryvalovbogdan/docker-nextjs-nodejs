@@ -64,7 +64,7 @@ const LoginForm = ({ lng }: { lng: string }) => {
           {t('login.title')}
         </Heading>
         <form onSubmit={handleSubmit}>
-          <VStack spacing='4'>
+          <VStack>
             <Input
               placeholder={t('login.username')}
               name='username'
@@ -83,14 +83,14 @@ const LoginForm = ({ lng }: { lng: string }) => {
               placeholder={t('login.password')}
               name='passwordHash'
               type='password'
-              value={formData.password}
+              value={formData.passwordHash}
               onChange={handleChange}
-              borderColor={errors.password ? 'red.500' : 'gray.300'}
-              mb={errors.password ? 0 : '29px'}
+              borderColor={errors.passwordHash ? 'red.500' : 'gray.300'}
+              mb={errors.passwordHash ? 0 : '29px'}
             />
-            {errors.password && (
+            {errors.passwordHash && (
               <Text color='red.500' fontSize='sm'>
-                {errors.password}
+                {errors.passwordHash}
               </Text>
             )}
 

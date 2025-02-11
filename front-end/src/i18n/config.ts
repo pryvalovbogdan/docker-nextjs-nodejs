@@ -25,7 +25,10 @@ export async function useTranslation<Ns extends FlatNamespace, KPrefix extends K
   ns?: Ns,
   options: { keyPrefix?: KPrefix } = {},
 ) {
-  const i18nextInstance = await initI18next(lng, Array.isArray(ns) ? (ns as string[]) : (ns as string));
+  const i18nextInstance = await initI18next(
+    lng,
+    Array.isArray(ns) ? (ns as TranslationKeys[]) : (ns as TranslationKeys),
+  );
   const t = (key: TranslationKeys) =>
     i18nextInstance.getFixedT(lng as any, ns as Ns, options.keyPrefix as KPrefix)(key);
 

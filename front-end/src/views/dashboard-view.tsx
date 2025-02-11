@@ -93,7 +93,7 @@ export default function Dashboard({ lng }: { lng: string }) {
             </Button>
           ))}
         </HStack>
-        <VStack align='stretch' spacing={2} border='1px solid #ddd' p={4} borderRadius='md'>
+        <VStack align='stretch' border='1px solid #ddd' p={4} borderRadius='md'>
           {/* Header Row */}
           <HStack bg='gray.200' p={2} borderRadius='md'>
             {columns[selectedTab].map(col => (
