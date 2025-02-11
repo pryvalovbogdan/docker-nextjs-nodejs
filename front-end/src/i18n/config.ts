@@ -3,6 +3,8 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import { FallbackNs } from 'react-i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
+import { TranslationKeys } from '@i18n/types/i18next';
+
 import { getOptions } from './settings';
 
 const initI18next = async (lng: string, ns: string | string[]) => {
@@ -23,9 +25,11 @@ export async function useTranslation<Ns extends FlatNamespace, KPrefix extends K
   options: { keyPrefix?: KPrefix } = {},
 ) {
   const i18nextInstance = await initI18next(lng, Array.isArray(ns) ? (ns as string[]) : (ns as string));
+  const t = (key: TranslationKeys) =>
+    i18nextInstance.getFixedT(lng as any, ns as Ns, options.keyPrefix as KPrefix)(key as any);
 
   return {
-    t: i18nextInstance.getFixedT(lng as any, ns as Ns, options.keyPrefix as KPrefix),
+    t,
     i18n: i18nextInstance,
   };
 }

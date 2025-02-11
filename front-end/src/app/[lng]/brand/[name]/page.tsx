@@ -1,31 +1,24 @@
-import axios from 'axios';
+import { fetchBrandProducts } from '@/entities/product/api';
+import { ProductsBrandView } from '@/views';
+import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
-import MainLayout from '@components/MainLayout';
-import Brands, { Product } from '@components/pages/Brands';
+export { generateStaticParams };
 
-async function fetchProduct(name: string): Promise<any> {
-  try {
-    const baseURL = process.env.BACKEND_URL || 'http://host.docker.internal:8080';
-    // special DNS name host.docker.internal which resolves to the internal IP address used by the host
+export async function generateMetadata({ params }: { params: Promise<{ lng: string; name: string }> }) {
+  const { name, lng } = await params;
 
-    const { data } = await axios.get<Product[]>(`${baseURL}/api/brand/${name}`);
+  // Request cached with force cache - https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#reusing-data-across-multiple-functions
+  const products = await fetchBrandProducts(name);
 
-    return data;
-  } catch (error) {
-    console.log('error', error);
+  const keys = products.map(product => product.title);
 
-    return { data: [] };
-  }
+  return generateMetadataGeneral(lng, { keywordsKeys: keys, titleKey: name });
 }
 
-export default async function Page({ params }: { params: Promise<{ name: string }> }) {
-  const { name } = await params;
+export default async function Page({ params }: { params: Promise<{ name: string; lng: string }> }) {
+  const { name, lng } = await params;
 
-  const products = await fetchProduct(name);
+  const products = await fetchBrandProducts(name);
 
-  return (
-    <MainLayout>
-      <Brands products={products.data} />
-    </MainLayout>
-  );
+  return <ProductsBrandView products={products} brandName={name} lng={lng} />;
 }

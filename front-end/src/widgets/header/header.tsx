@@ -3,15 +3,18 @@
 import React from 'react';
 
 import { Box, Flex, Heading, Link, Text } from '@chakra-ui/react';
+import { useTranslation } from '@i18n/client';
 
-const links = [
-  { name: 'Головна', url: '/uk' },
-  { name: 'Бренди', url: '/uk#brands' },
-  { name: 'Категорії', url: '/uk/categories' },
-  { name: "Зв'язатись з нами", url: '/uk#contact' },
-];
+const Header: React.FC<{ lng: string }> = ({ lng }) => {
+  const { t } = useTranslation(lng);
 
-const Header: React.FC = () => {
+  const links = [
+    { name: t('links.home'), url: `/${lng}` },
+    { name: t('links.brands'), url: `/${lng}#brands` },
+    { name: t('links.categories'), url: `/${lng}/categories` },
+    { name: t('links.contact'), url: `/${lng}#contact` },
+  ];
+
   return (
     <Box
       as='header'
@@ -26,7 +29,7 @@ const Header: React.FC = () => {
     >
       <Flex maxW='container.xl' mx='auto' justify='space-between' align='center'>
         <Heading as='h1' size='lg' ml={4}>
-          Медіка
+          {t('titleHeader')}
         </Heading>
         <Flex flex={1} justify='space-around'>
           {links.map(item => (

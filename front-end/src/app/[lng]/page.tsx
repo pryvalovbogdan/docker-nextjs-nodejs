@@ -1,7 +1,8 @@
-import MainLayout from '@components/MainLayout';
-import BrandsSection from '@components/sections/BrandSection';
-import ContactSection from '@components/sections/ContactSections';
+import BrandsSection from '@/views/BrandSection';
+import ContactSection from '@/views/ContactSections';
+import ImageSendForm from '@features/product/add-product/ImageSendForm';
 import { fallbackLng, languages } from '@i18n/settings';
+import Layout from '@widgets/layout/layout';
 
 export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
   let { lng } = await params;
@@ -9,12 +10,10 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   if (!languages.includes(lng)) lng = fallbackLng;
 
   return (
-    <MainLayout>
+    <Layout lng={lng}>
       <BrandsSection lng={lng} />
-      {/* <CategoriesSection /> */}
-      {/* <TopSalesSection /> */}
-      {/* <ProductsSection /> */}
       <ContactSection lng={lng} />
-    </MainLayout>
+      <ImageSendForm />
+    </Layout>
   );
 }

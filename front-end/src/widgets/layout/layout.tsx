@@ -3,14 +3,13 @@
 import React from 'react';
 
 import { Box } from '@chakra-ui/react';
+import Footer from '@widgets/footer/footer';
+import Header from '@widgets/header/header';
 
-import Footer from './Footer';
-import Header from './Header';
-
-const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout: React.FC<{ children: React.ReactNode; lng: string }> = ({ children, lng }) => {
   return (
     <Box minH='100vh' display='flex' flexDirection='column' color='black' bg='#F7FCFD'>
-      <Header />
+      <Header lng={lng} />
       <Box as='main' flex='1' py={8} px={4}>
         {children}
       </Box>
@@ -19,4 +18,4 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-export default MainLayout;
+export default Layout;

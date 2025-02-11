@@ -14,8 +14,8 @@ export class Admin {
   @Column({ type: 'varchar', length: 50, default: 'admin' })
   role: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'adminip' })
-  adminIp: string;
+  @Column({ type: 'text', array: true, name: 'adminips' })
+  adminIps: string[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'createdat' })
   createdAt: Date;

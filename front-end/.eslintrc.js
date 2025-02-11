@@ -83,6 +83,7 @@ module.exports = {
 				"argsIgnorePattern": "^_"
 			}
 		],
+		"prefer-const": 1,
 
 		'import/extensions': [
 			'error',
