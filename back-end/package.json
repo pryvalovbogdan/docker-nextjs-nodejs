@@ -14,7 +14,8 @@
     "migration:create": "yarn typeorm migration:create",
     "migration:generate": "yarn typeorm migration:generate",
     "migrate:dev": "yarn migration:run -- -d src/data-source.ts",
-    "migrate:prod": "NODE_ENV=production yarn migration:run -- -d dist/data-source.js"
+    "migrate:prod": "NODE_ENV=production yarn migration:run -- -d dist/data-source.js",
+    "migrations:generate": "npx typeorm migration:create ./migrations/AddSubCategoryColumn"
   },
   "keywords": [],
   "author": "",
