@@ -28,7 +28,7 @@ export class Product {
   @Column({ type: 'varchar', length: 255, nullable: true })
   category: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ name: 'subcategory', type: 'varchar', length: 255, nullable: true })
   subCategory: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })

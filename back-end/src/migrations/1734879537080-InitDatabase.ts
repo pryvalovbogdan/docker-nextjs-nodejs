@@ -12,7 +12,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           brand VARCHAR(255),
           country VARCHAR(255),
           category VARCHAR(255),
-          subCategory VARCHAR(255),
+          subcategory VARCHAR(255),
           price DECIMAL(10, 2) DEFAULT NULL,
           characteristics TEXT
       );
@@ -51,7 +51,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
       );
 
       -- Insert sample data into products
-      INSERT INTO products (title, description, images, brand, country, category, subCategory, price, characteristics)
+      INSERT INTO products (title, description, images, brand, country, category, subcategory, price, characteristics)
       VALUES
           ('Відеогастроскоп EVIS EXERA III GIF-H185 OLYMPUS', 
               'Маневрений відеогастроскоп GIF-H185 від надійного японського виробника OLYMPUS з високоякісної HDTV-візуалізацією дозволяє отримати чіткі і деталізовані зображення слизової під час дослідження верхніх відділів шлунково-кишкового тракту. Володіє широким інструментальним каналом 2,8 мм і технологією узкоспектральной візуалізації NBI.',
