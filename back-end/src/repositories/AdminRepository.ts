@@ -11,7 +11,10 @@ class AdminRepository {
   };
 
   findAdminByAdminIp = async (adminIp: string): Promise<Admin | null> => {
-    return this.adminRepository.findOne({ where: { adminIp } });
+    return this.adminRepository
+      .createQueryBuilder('admin')
+      .where(':adminIp = ANY(admin.adminIps)', { adminIp })
+      .getOne();
   };
 
   saveAdmin = async (admin: Admin): Promise<Admin> => {

@@ -10,3 +10,5 @@ declare module 'i18next' {
     };
   }
 }
+
+export type TranslationKeys = keyof typeof common;

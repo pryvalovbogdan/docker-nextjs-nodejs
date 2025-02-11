@@ -29,7 +29,7 @@ class AdminService {
 
       admin.username = adminData.username;
       admin.passwordHash = await encrypt.encryptPassword(adminData.passwordHash);
-      admin.adminIp = adminData.adminIp;
+      admin.adminIps = adminData.adminIps;
 
       const savedAdmin = await this.repository.saveAdmin(admin);
 
@@ -43,13 +43,7 @@ class AdminService {
 
   async initializePrimaryAdmin(): Promise<{ errors: string[] }> {
     try {
-      const { PRIMARY_ADMIN_USERNAME, PRIMARY_ADMIN_PASSWORD, PRIMARY_ADMIN_IP } = process.env;
-
-      if (!PRIMARY_ADMIN_USERNAME || !PRIMARY_ADMIN_PASSWORD || !PRIMARY_ADMIN_IP) {
-        console.error('Environment variables for admin initialization are missing');
-
-        return { errors: ['Missing required environment variables for admin initialization'] };
-      }
+      const { PRIMARY_ADMIN_USERNAME, PRIMARY_ADMIN_PASSWORD, PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP } = process.env;
 
       const existingAdmin = await this.repository.findAdminByUsername(PRIMARY_ADMIN_USERNAME);
 
@@ -58,7 +52,7 @@ class AdminService {
 
         admin.username = PRIMARY_ADMIN_USERNAME;
         admin.passwordHash = await encrypt.encryptPassword(PRIMARY_ADMIN_PASSWORD);
-        admin.adminIp = PRIMARY_ADMIN_IP;
+        admin.adminIps = [PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP];
 
         await this.repository.saveAdmin(admin);
 

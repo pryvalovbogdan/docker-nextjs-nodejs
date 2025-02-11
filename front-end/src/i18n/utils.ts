@@ -1,5 +1,6 @@
 import { useTranslation } from '@i18n/config';
 import { fallbackLng, languages } from '@i18n/settings';
+import { TranslationKeys } from '@i18n/types/i18next';
 
 export function generateStaticParams() {
   return languages.map(lng => ({ lng }));
@@ -20,12 +21,12 @@ export async function generateMetadataGeneral(
   const { t } = await useTranslation(lng);
 
   return {
-    title: t((metaConfig?.titleKey as any) || 'titleMain'),
-    description: t((metaConfig?.descriptionKey as any) || 'descriptionMain'),
+    title: t((metaConfig?.titleKey as TranslationKeys) || 'titleMain'),
+    description: t((metaConfig?.descriptionKey as TranslationKeys) || 'descriptionMain'),
     keywords: metaConfig?.keywordsKeys
-      ? metaConfig.keywordsKeys.map(key => t(key as any))
+      ? metaConfig.keywordsKeys.map(key => t(key as TranslationKeys))
       : [t('buyTech'), t('medTech')],
-    creator: t((metaConfig?.creatorKey as any) || 'creator'),
+    creator: t((metaConfig?.creatorKey as TranslationKeys) || 'creator'),
     icons: {
       icon: metaConfig?.iconPath || '/favicon.ico',
     },

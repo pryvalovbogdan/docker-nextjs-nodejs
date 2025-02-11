@@ -45,7 +45,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           username VARCHAR(255) NOT NULL UNIQUE,
           passwordHash TEXT NOT NULL, -- To store hashed password
           role VARCHAR(50) DEFAULT 'admin', -- Default to 'admin', can be 'user' as well
-          adminIp VARCHAR(255) NOT NULL,
+          adminIps TEXT[] NOT NULL,
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 

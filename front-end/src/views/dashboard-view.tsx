@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Box, Button, Flex, HStack, IconButton, Input, Text, VStack, createIcon } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, IconButton, Input, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
@@ -33,16 +33,6 @@ const initialData = {
     { id: 2, title: 'Phone', price: '700.00', brand: 'Samsung', category: 'Electronics', country: 'South Korea' },
   ],
 };
-
-const HeartIcon = createIcon({
-  displayName: 'HeartIcon',
-  path: (
-    <>
-      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
-      <path fill='currentColor' d='M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572' />
-    </>
-  ),
-});
 
 const PAGE_SIZE = 2;
 
@@ -145,16 +135,11 @@ export default function Dashboard({ lng }: { lng: string }) {
           ))}
         </VStack>
         <Flex justify='space-between' align='center' mt={4}>
-          <IconButton
-            icon={<HeartIcon />}
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(prev => prev - 1)}
-          />
+          <IconButton disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} />
           <Text>
             {t('pagination.page')} {currentPage}
           </Text>
           <IconButton
-            icon={<HeartIcon />}
             disabled={currentPage * PAGE_SIZE >= data[selectedTab as keyof typeof data].length}
             onClick={() => setCurrentPage(prev => prev + 1)}
           />
