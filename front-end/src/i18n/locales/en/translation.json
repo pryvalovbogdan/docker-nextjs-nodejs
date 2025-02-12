@@ -42,6 +42,8 @@
   "orderSuccess": "Your order was submitted successfully",
   "orderFailed": "Failed to create order",
   "titleHeader": "Medica",
+  "applicationAccepted": "Your application has been accepted",
+  "applicationFailed": "Failed to send application, try later",
   "links": {
     "home": "Home",
     "brands": "Brands",

@@ -1,13 +1,15 @@
 'use client';
 
-import axios from 'axios';
 import React, { FormEvent, useState } from 'react';
 
+import { contact } from '@/shared/api/contact';
+import { Toaster, toaster } from '@/shared/ui/toaster';
 import { Box, Button, Heading, Input, Textarea } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
-const ContactSection = ({ lng }: { lng: string }) => {
+const ContactForm = ({ lng }: { lng: string }) => {
   const { t } = useTranslation(lng);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -51,20 +53,23 @@ const ContactSection = ({ lng }: { lng: string }) => {
 
     if (!validateForm()) return;
 
-    try {
-      await axios.post('/api/contact', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-    } catch (error) {
-      console.error('Error submitting form:', error);
+    setIsLoading(true);
+    const result = await contact(formData);
+
+    console.log('result', result);
+
+    if (result.success) {
+      toaster.create({ type: 'info', title: t('applicationAccepted') });
+    } else {
+      toaster.error({ title: t('applicationFailed') });
     }
+
+    setIsLoading(false);
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' }); // Clear error when user starts typing
+    setErrors({ ...errors, [e.target.name]: '' });
   };
 
   return (
@@ -78,14 +83,14 @@ const ContactSection = ({ lng }: { lng: string }) => {
           placeholder={t('yourName')}
           value={formData.name}
           onChange={handleInputChange}
-          mb={4}
+          mb={25}
           bg='FCFCFC'
           color='rgba(6, 33, 38, 0.50)'
           borderRadius='10px'
           border='1px solid rgba(0, 0, 0, 0.05)'
         />
 
-        <div style={{ width: '100%', marginBottom: '16px' }}>
+        <div style={{ width: '100%' }}>
           <Input
             name='email'
             type='email'
@@ -96,7 +101,7 @@ const ContactSection = ({ lng }: { lng: string }) => {
             color='rgba(6, 33, 38, 0.50)'
             borderRadius='10px'
             border='1px solid rgba(0, 0, 0, 0.05)'
-            style={errors.email ? { borderColor: 'red' } : {}}
+            style={errors.email ? { borderColor: 'red', marginBottom: 0 } : { marginBottom: '25px' }}
           />
           {errors.email && <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>{errors.email}</div>}
         </div>
@@ -107,14 +112,14 @@ const ContactSection = ({ lng }: { lng: string }) => {
           placeholder={t('yourPhone')}
           value={formData.phone}
           onChange={handleInputChange}
-          mb={4}
+          mb={25}
           bg='FCFCFC'
           color='rgba(6, 33, 38, 0.50)'
           borderRadius='10px'
           border='1px solid rgba(0, 0, 0, 0.05)'
         />
 
-        <div style={{ width: '100%', marginBottom: '16px' }}>
+        <div style={{ width: '100%' }}>
           <Textarea
             name='message'
             placeholder={t('yourMessage')}
@@ -123,17 +128,25 @@ const ContactSection = ({ lng }: { lng: string }) => {
             color='rgba(6, 33, 38, 0.50)'
             borderRadius='10px'
             border='1px solid rgba(0, 0, 0, 0.05)'
-            style={errors.message ? { borderColor: 'red' } : {}}
+            style={errors.message ? { borderColor: 'red', marginBottom: 0 } : { marginBottom: '25px' }}
           />
           {errors.message && <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>{errors.message}</div>}
         </div>
-
-        <Button type='submit' bg='#24BEE0' color='white' borderRadius='47px' display='inline-flex' w='auto'>
+        <Button
+          disabled={isLoading}
+          type='submit'
+          bg='#24BEE0'
+          color='white'
+          borderRadius='47px'
+          display='inline-flex'
+          w='auto'
+        >
           {t('submit')}
         </Button>
       </Box>
+      <Toaster />
     </Box>
   );
 };
 
-export default ContactSection;
+export default ContactForm;

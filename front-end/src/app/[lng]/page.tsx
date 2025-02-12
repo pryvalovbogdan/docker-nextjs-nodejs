@@ -1,6 +1,5 @@
 import BrandsSection from '@/views/BrandSection';
-import ContactSection from '@/views/ContactSections';
-import ImageSendForm from '@features/product/add-product/ImageSendForm';
+import ContactForm from '@features/contact/send-request/contact-form';
 import { fallbackLng, languages } from '@i18n/settings';
 import Layout from '@widgets/layout/layout';
 
@@ -12,8 +11,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   return (
     <Layout lng={lng}>
       <BrandsSection lng={lng} />
-      <ContactSection lng={lng} />
-      <ImageSendForm />
+      <ContactForm lng={lng} />
     </Layout>
   );
 }

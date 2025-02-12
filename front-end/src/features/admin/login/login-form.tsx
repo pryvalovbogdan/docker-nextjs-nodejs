@@ -53,8 +53,6 @@ const LoginForm = ({ lng }: { lng: string }) => {
     } else {
       toaster.error({ title: t('login.loginFailed') });
     }
-
-    console.log('Login Data:', formData);
   };
 
   return (

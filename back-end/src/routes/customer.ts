@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { contactLimiter, orderLimiter } from '../configs/rateLimit.config';
 import { NewsController, OrderController, ProductController } from '../controllers';
 import { validateProps } from '../utils/validation';
 
@@ -16,7 +17,7 @@ router.get('/news', newsController.getNews);
 router.get('/categories', productController.getCategories);
 router.get('/categories/:category', validateProps('category'), productController.getProductsByCategory);
 router.get('/brand/:name', productController.getProductsByBrandName);
-router.post('/order', orderController.saveOrder);
-router.post('/contact', orderController.contact);
+router.post('/order', orderLimiter, orderController.saveOrder);
+router.post('/contact', contactLimiter, orderController.contact);
 
 export default router;
