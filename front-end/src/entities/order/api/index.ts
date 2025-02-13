@@ -1,3 +1,4 @@
+import { OrdersApiResponse } from '@/entities/order/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 
 export async function submitOrder(orderData: {
@@ -23,12 +24,10 @@ export async function submitOrder(orderData: {
 
 export async function fetchOrders(token: string, page: number = 1, limit: number = 5) {
   try {
-    const response = await fetchWrapper(`/api/admin/orders?page=${page}&limit=${limit}`, {
+    const response = (await fetchWrapper(`/api/admin/orders?page=${page}&limit=${limit}`, {
       headers: { Authorization: token },
       cache: 'force-cache',
-    });
-
-    console.log('response', response);
+    })) as OrdersApiResponse;
 
     return {
       success: true,

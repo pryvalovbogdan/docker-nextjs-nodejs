@@ -1,4 +1,4 @@
-import { Product } from '@/entities/product/model/types';
+import { Product, ProductsApiResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -32,11 +32,9 @@ export async function fetchProductById(id: string): Promise<Product> {
 
 export async function fetchProductsOffSet(token: string, page: number = 1, limit: number = 5) {
   try {
-    const response = await fetchWrapper(`/api/products/offset?page=${page}&limit=${limit}`, {
+    const response = (await fetchWrapper(`/api/products/offset?page=${page}&limit=${limit}`, {
       headers: { Authorization: token },
-    });
-
-    console.log('response', response);
+    })) as ProductsApiResponse;
 
     return {
       success: true,

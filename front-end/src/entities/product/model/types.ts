@@ -7,5 +7,15 @@ export interface Product {
   brand?: string;
   country?: string;
   category?: string;
+  subCategory?: string;
   price?: number | null;
+}
+
+export interface ProductsApiResponse {
+  success: boolean;
+  message: string;
+  data: {
+    products: Product[];
+    totalPages: number;
+  };
 }

@@ -12,8 +12,6 @@ import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
-type EditedDataType = Record<number, Record<string, string>>;
-
 const PAGE_SIZE = 10;
 
 type TabKey = 'orders' | 'products' | 'admins';
@@ -64,18 +62,21 @@ export default function Dashboard({ lng }: { lng: string }) {
     admins: { pages: {}, totalPages: 1 },
   });
 
-  const [editedData, setEditedData] = useState<EditedDataType>({});
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation(lng);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const fetchData = async (tab: TabKey, page = 1) => {
+  const fetchData = async (tab: TabKey, page = 1): Promise<void> => {
     const token = sessionStorage.getItem('token');
 
-    if (!token) return router.push(`/${lng}/admin/login`);
+    if (!token) {
+      router.push(`/${lng}/admin/login`);
 
-    if (data[tab][page]) {
+      return;
+    }
+
+    if (data[tab].pages[page]) {
       setCurrentPage(page);
 
       return;
@@ -85,8 +86,6 @@ export default function Dashboard({ lng }: { lng: string }) {
 
     try {
       const response = await fetchDataFunctions[tab](token, page, PAGE_SIZE);
-
-      console.log('response11', response, tab, page, response[tab]);
 
       if (response.success) {
         setData(prev => ({
