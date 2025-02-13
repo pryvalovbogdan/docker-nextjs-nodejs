@@ -55,13 +55,18 @@ class ProductService {
     }
   }
 
-  async getProductsOffset(page: number, limit: number): Promise<{ data?: Product[]; errors: string[] }> {
-    const offset = (page - 1) * limit;
-
+  async getProductsOffset(
+    limit: number,
+    page: number,
+  ): Promise<{ data?: { products: Product[]; totalPages: number }; errors: string[] }> {
     try {
-      const products = await this.repository.getProductsOffset(limit, offset);
+      const offset = (page - 1) * limit;
 
-      return { data: products, errors: [] };
+      const { products, totalCount } = await this.repository.getProductsOffset(limit, offset);
+
+      const totalPages = Math.ceil(totalCount / limit);
+
+      return { data: { products, totalPages }, errors: [] };
     } catch (err) {
       console.error('Error retrieving products with pagination:', err);
 

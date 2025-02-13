@@ -41,6 +41,25 @@ class AdminService {
     }
   }
 
+  async getAdminsOffset(
+    page: number,
+    limit: number,
+  ): Promise<{ data?: { admins: Admin[]; totalPages: number }; errors: string[] }> {
+    try {
+      const offset = (page - 1) * limit;
+
+      const { admins, totalCount } = await this.repository.getAdminsOffset(limit, offset);
+
+      const totalPages = Math.ceil(totalCount / limit);
+
+      return { data: { admins, totalPages }, errors: [] };
+    } catch (err) {
+      console.error('Error retrieving admins with pagination:', err);
+
+      return { errors: ['Error retrieving admins'] };
+    }
+  }
+
   async initializePrimaryAdmin(): Promise<{ errors: string[] }> {
     try {
       const { PRIMARY_ADMIN_USERNAME, PRIMARY_ADMIN_PASSWORD, PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP } = process.env;
@@ -58,7 +77,7 @@ class AdminService {
 
         admin.username = PRIMARY_ADMIN_USERNAME;
         admin.passwordHash = await encrypt.encryptPassword(PRIMARY_ADMIN_PASSWORD);
-        admin.adminIps = [PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP];
+        admin.adminIps = [PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP, '172.21.0.5', '172.22.0.5', '172.23.0.5'];
 
         await this.repository.saveAdmin(admin);
 

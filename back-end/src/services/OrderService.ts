@@ -5,15 +5,18 @@ import { IEmailBody } from './types';
 class OrderService {
   private repository: OrderRepository = new OrderRepository();
 
-  async getOrders(): Promise<{ data?: Order[] | null; errors: string[] }> {
+  async getOrders(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<{ data?: Order[]; totalPages: number; errors: string[] }> {
     try {
-      const orders = await this.repository.findOrders();
+      const { data, totalPages } = await this.repository.findOrders(page, limit);
 
-      return { data: orders, errors: [] };
+      return { data, totalPages, errors: [] };
     } catch (error) {
       console.error('Error in getOrders:', error);
 
-      return { errors: ['Failed to retrieve orders'] };
+      return { errors: ['Failed to retrieve orders'], totalPages: 0 };
     }
   }
 

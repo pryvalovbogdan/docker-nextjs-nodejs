@@ -104,10 +104,11 @@ class ProductController {
 
   getProductsOffset = async (req: Request, res: Response): Promise<void> => {
     const { page = 1, limit = 10 } = req.query;
-    const offset = (Number(page) - 1) * Number(limit);
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
 
     try {
-      const result = await this.service.getProductsOffset(Number(limit), offset);
+      const result = await this.service.getProductsOffset(limitNumber, pageNumber);
 
       if (result.errors.length) {
         responseHandler.sendFailResponse(res, result.errors.join(', '));
@@ -115,7 +116,10 @@ class ProductController {
         return;
       }
 
-      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', {
+        products: result.data?.products,
+        totalPages: result.data?.totalPages,
+      });
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');

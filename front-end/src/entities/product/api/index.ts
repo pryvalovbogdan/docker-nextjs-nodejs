@@ -29,3 +29,24 @@ export async function fetchProductById(id: string): Promise<Product> {
     return {} as Product;
   }
 }
+
+export async function fetchProductsOffSet(token: string, page: number = 1, limit: number = 5) {
+  try {
+    const response = await fetchWrapper(`/api/products/offset?page=${page}&limit=${limit}`, {
+      headers: { Authorization: token },
+    });
+
+    console.log('response', response);
+
+    return {
+      success: true,
+      message: response.message,
+      products: response.data.products,
+      totalPages: response.data.totalPages,
+    };
+  } catch (error) {
+    console.error('Order fetch error:', error);
+
+    return { success: false, message: 'Order fetch failed' };
+  }
+}

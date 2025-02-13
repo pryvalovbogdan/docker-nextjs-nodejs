@@ -12,6 +12,7 @@ const orderController = new OrderController();
 const productController = new ProductController();
 
 router.get('/products', productController.getProducts);
+router.get('/products/offset', productController.getProductsOffset);
 router.get('/products/:id', productController.getProductsById);
 router.get('/news', newsController.getNews);
 router.get('/categories', productController.getCategories);

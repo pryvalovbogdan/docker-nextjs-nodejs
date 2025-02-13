@@ -86,7 +86,9 @@
     "price": "Ціна",
     "brand": "Бренд",
     "category": "Категорія",
-    "country": "Країна"
+    "country": "Країна",
+    "password": "Пароль",
+    "subcategory": "Під категорія"
   },
   "pagination": {
     "page": "Сторінка"

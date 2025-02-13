@@ -86,7 +86,9 @@
     "price": "Price",
     "brand": "Brand",
     "category": "Category",
-    "country": "Country"
+    "country": "Country",
+    "password": "Password",
+    "subcategory": "Sub category"
   },
   "pagination": {
     "page": "Page"

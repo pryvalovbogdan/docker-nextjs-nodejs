@@ -20,3 +20,25 @@ export async function submitOrder(orderData: {
     return { success: false, message: 'Order submission failed' };
   }
 }
+
+export async function fetchOrders(token: string, page: number = 1, limit: number = 5) {
+  try {
+    const response = await fetchWrapper(`/api/admin/orders?page=${page}&limit=${limit}`, {
+      headers: { Authorization: token },
+      cache: 'force-cache',
+    });
+
+    console.log('response', response);
+
+    return {
+      success: true,
+      message: response.message,
+      orders: response.data.orders,
+      totalPages: response.data.totalPages,
+    };
+  } catch (error) {
+    console.error('Order fetch error:', error);
+
+    return { success: false, message: 'Order fetch failed' };
+  }
+}

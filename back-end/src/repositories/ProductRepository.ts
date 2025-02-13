@@ -30,11 +30,13 @@ class ProductRepository {
     return this.productRepository.find();
   };
 
-  getProductsOffset = async (limit: number, offset: number): Promise<Product[]> => {
-    return this.productRepository.find({
+  getProductsOffset = async (limit: number, offset: number): Promise<{ products: Product[]; totalCount: number }> => {
+    const [products, totalCount] = await this.productRepository.findAndCount({
       take: limit,
       skip: offset,
     });
+
+    return { products, totalCount };
   };
 
   getProductById = async (id: number): Promise<Product | null> => {

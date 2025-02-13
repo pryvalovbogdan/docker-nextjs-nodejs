@@ -5,7 +5,6 @@ export async function fetchWrapper<T>(url: string, options: RequestInit = {}): P
     throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
-  // Detect and parse based on Content-Type
   const contentType = response.headers.get('content-type');
 
   if (contentType?.includes('application/json')) {

@@ -103,6 +103,7 @@ module.exports = {
 		"react/require-default-props": 0,
 		"react/jsx-props-no-spreading": 0,
 		"react/jsx-no-bind": 0,
+		"no-shadow": 1,
 	},
 	settings: {
 		"import/resolver": {
