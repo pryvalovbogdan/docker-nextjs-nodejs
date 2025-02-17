@@ -77,7 +77,16 @@ class AdminService {
 
         admin.username = PRIMARY_ADMIN_USERNAME;
         admin.passwordHash = await encrypt.encryptPassword(PRIMARY_ADMIN_PASSWORD);
-        admin.adminIps = [PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP, '172.21.0.5', '172.22.0.5', '172.23.0.5'];
+
+        admin.adminIps = [
+          PRIMARY_ADMIN_IP,
+          SECONDARY_ADMIN_IP,
+          '172.21.0.5',
+          '172.22.0.5',
+          '172.23.0.5',
+          '172.20.0.5',
+          '172.19.0.5',
+        ];
 
         await this.repository.saveAdmin(admin);
 

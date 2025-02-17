@@ -1,14 +1,60 @@
-import { Product } from '../entities';
+import { Category, Product } from '../entities';
 import { ProductRepository } from '../repositories';
+import CategoryService from './CategoryService';
+import SubCategoryService from './SubCategoryService';
+
+// Add SubCategory service
 
 class ProductService {
   private repository: ProductRepository = new ProductRepository();
 
+  private categoryService: CategoryService = new CategoryService();
+
+  private subCategoryService: SubCategoryService = new SubCategoryService(); // Initialize SubCategory Service
+
   async addProduct(productData: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
     try {
+      if (!productData.category) {
+        return { errors: ['Category is required'] };
+      }
+
+      let category = (await this.categoryService.getCategory(productData.category.name)).data;
+
+      if (!category) {
+        const createCategoryResult = await this.categoryService.createCategory(productData.category.name);
+
+        if (createCategoryResult.errors.length) {
+          return { errors: createCategoryResult.errors };
+        }
+
+        category = createCategoryResult.data!;
+      }
+
+      let subCategory = null;
+
+      if (productData.subCategory) {
+        subCategory = (await this.subCategoryService.getSubCategory(productData.subCategory.name)).data;
+
+        if (!subCategory) {
+          const createSubCategoryResult = await this.subCategoryService.createSubCategory(
+            productData.subCategory.name,
+            (category as Category).id,
+          );
+
+          if (createSubCategoryResult.errors.length) {
+            return { errors: createSubCategoryResult.errors };
+          }
+
+          subCategory = createSubCategoryResult.data;
+        }
+      }
+
       const product = new Product();
 
       Object.assign(product, productData);
+      product.category = category as Category;
+      product.subCategory = subCategory || undefined;
+
       const savedProduct = await this.repository.saveProduct(product);
 
       return { data: savedProduct, errors: [] };
@@ -61,12 +107,17 @@ class ProductService {
   ): Promise<{ data?: { products: Product[]; totalPages: number }; errors: string[] }> {
     try {
       const offset = (page - 1) * limit;
-
       const { products, totalCount } = await this.repository.getProductsOffset(limit, offset);
 
       const totalPages = Math.ceil(totalCount / limit);
 
-      return { data: { products, totalPages }, errors: [] };
+      return {
+        data: {
+          products: products as Product[], // Ensure correct type
+          totalPages,
+        },
+        errors: [],
+      };
     } catch (err) {
       console.error('Error retrieving products with pagination:', err);
 

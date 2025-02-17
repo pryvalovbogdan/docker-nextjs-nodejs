@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { contactLimiter, orderLimiter } from '../configs/rateLimit.config';
 import { NewsController, OrderController, ProductController } from '../controllers';
+import CategoryController from '../controllers/CategoryController';
 import { validateProps } from '../utils/validation';
 
 const router = Router();
@@ -10,6 +11,7 @@ const router = Router();
 const newsController = new NewsController();
 const orderController = new OrderController();
 const productController = new ProductController();
+const categoryController = new CategoryController();
 
 router.get('/products', productController.getProducts);
 router.get('/products/offset', productController.getProductsOffset);
@@ -20,5 +22,5 @@ router.get('/categories/:category', validateProps('category'), productController
 router.get('/brand/:name', productController.getProductsByBrandName);
 router.post('/order', orderLimiter, orderController.saveOrder);
 router.post('/contact', contactLimiter, orderController.contact);
-
+router.get('/subcategories', categoryController.getCategoriesWithSubcategories);
 export default router;

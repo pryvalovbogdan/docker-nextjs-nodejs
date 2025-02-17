@@ -1,6 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
+import { Category } from './Category.entity';
 import { Order } from './Order.entity';
+import { SubCategory } from './SubCategory.entity';
 
 @Entity('products')
 export class Product {
@@ -25,14 +27,16 @@ export class Product {
   @Column({ type: 'varchar', length: 255, nullable: true })
   country: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  category: string;
-
-  @Column({ name: 'subcategory', type: 'varchar', length: 255, nullable: true })
-  subCategory: string;
-
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   price: number;
+
+  @ManyToOne(() => Category, category => category.products, { nullable: false })
+  @JoinColumn({ name: 'categoryid' })
+  category: Category;
+
+  @ManyToOne(() => SubCategory, subCategory => subCategory.products, { nullable: true })
+  @JoinColumn({ name: 'subcategoryid' })
+  subCategory?: SubCategory;
 
   @OneToMany(() => Order, order => order.product)
   orders: Order[];

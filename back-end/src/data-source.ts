@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
-import { Admin, News, Order, Product } from './entities';
+import { Admin, Category, News, Order, Product, SubCategory } from './entities';
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ export const AppDataSource = new DataSource({
   username: POSTGRES_USER || 'postgres',
   password: POSTGRES_PASSWORD || 'password',
   database: POSTGRES_DB || 'nextjsnodejsdb',
-  entities: [Product, Order, News, Admin],
+  entities: [Product, Order, News, Admin, Category, SubCategory],
   migrations: [__dirname + '/migrations/*.ts', __dirname + '/migrations/*.js'],
   synchronize: false, // Always false in production
   logging: true,

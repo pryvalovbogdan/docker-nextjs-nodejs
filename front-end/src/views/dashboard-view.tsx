@@ -8,7 +8,7 @@ import { fetchOrders } from '@/entities/order/api';
 import { fetchProductsOffSet } from '@/entities/product/api';
 import Pagination from '@/shared/ui/pagination';
 import SkeletonTable from '@/shared/ui/skeleton-table';
-import { Box, Button, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
@@ -112,8 +112,6 @@ export default function Dashboard({ lng }: { lng: string }) {
   }, []);
 
   const handlePageChange = (nextPage: number) => {
-    console.log('nextPage', nextPage);
-
     if (!data[selectedTab].pages[nextPage]) {
       fetchData(selectedTab, nextPage);
     } else {
@@ -128,62 +126,68 @@ export default function Dashboard({ lng }: { lng: string }) {
     if (Object.keys(data[tab].pages).length === 0) fetchData(tab);
   };
 
+  const renderCellValue = (row: any, columnName: string) => {
+    const value = row[columnName];
+
+    if (typeof value === 'object' && value !== null && 'name' in value) {
+      return value.name;
+    }
+
+    return value ?? '-';
+  };
+
   return (
     <Layout lng={lng}>
       <Box p={5}>
         <HStack mb={4}>
-          {(Object.keys(columns) as TabKey[]).map(tab => (
-            <Button
-              key={tab}
-              onClick={() => handleTabChange(tab)}
-              fontWeight='bold'
-              bg={selectedTab === tab ? 'orange.400' : 'gray.200'}
-              color={selectedTab === tab ? 'white' : 'gray.700'}
-              _hover={{ bg: selectedTab === tab ? 'orange.500' : 'gray.300' }}
-            >
-              {t(`tabs.${tab}` as any)}
-            </Button>
-          ))}
+          {(Object.keys(columns) as TabKey[]).map((tab, index) =>
+            isLoading ? (
+              <Skeleton key={index} height='40px' width='120px' borderRadius='md' />
+            ) : (
+              <Button
+                key={tab}
+                onClick={() => handleTabChange(tab)}
+                fontWeight='bold'
+                bg={selectedTab === tab ? 'orange.400' : 'gray.200'}
+                color={selectedTab === tab ? 'white' : 'gray.700'}
+                _hover={{ bg: selectedTab === tab ? 'orange.500' : 'gray.300' }}
+              >
+                {t(`tabs.${tab}` as any)}
+              </Button>
+            ),
+          )}
         </HStack>
 
         {isLoading ? (
           <SkeletonTable />
         ) : (
-          ((
-            <VStack align='stretch' border='1px solid #ddd' p={4} borderRadius='md'>
-              <HStack bg='gray.200' p={2} borderRadius='md'>
+          <VStack align='stretch' border='1px solid #ddd' p={4} borderRadius='md'>
+            <HStack bg='gray.200' p={2} borderRadius='md'>
+              {columns[selectedTab].map(column => (
+                <Text
+                  key={column.translateKey}
+                  flex={1}
+                  fontWeight='bold'
+                  textAlign='left'
+                  whiteSpace='nowrap'
+                  overflow='hidden'
+                  textOverflow='ellipsis'
+                >
+                  {t(column.translateKey as any)}
+                </Text>
+              ))}
+            </HStack>
+
+            {(data[selectedTab].pages[currentPage] || []).map(row => (
+              <HStack key={row.id} p={2} borderBottom='1px solid #ddd'>
                 {columns[selectedTab].map(column => (
-                  <Text
-                    key={column.translateKey}
-                    flex={1}
-                    fontWeight='bold'
-                    textAlign='left'
-                    whiteSpace='nowrap'
-                    overflow='hidden'
-                    textOverflow='ellipsis'
-                  >
-                    {t(column.translateKey as any)}
+                  <Text key={column.columnName} flex={1} textAlign='left' whiteSpace='normal' wordBreak='break-word'>
+                    {renderCellValue(row, column.columnName)}
                   </Text>
                 ))}
               </HStack>
-
-              {(data[selectedTab].pages[currentPage] || []).map(row => (
-                <HStack key={row.id} p={2} borderBottom='1px solid #ddd'>
-                  {columns[selectedTab].map(column => (
-                    <Text
-                      key={row[column.columnName]}
-                      flex={1}
-                      textAlign='left'
-                      whiteSpace='normal'
-                      wordBreak='break-word'
-                    >
-                      {row[column.columnName]}
-                    </Text>
-                  ))}
-                </HStack>
-              ))}
-            </VStack>
-          ) as React.ReactElement)
+            ))}
+          </VStack>
         )}
 
         <Pagination
