@@ -19,3 +19,16 @@ export interface ProductsApiResponse {
     totalPages: number;
   };
 }
+
+export interface IProductResponse {
+  id: number;
+  title: string;
+  description?: string | null;
+  characteristics?: string | null;
+  images?: string[] | null;
+  brand?: string | null;
+  country?: string | null;
+  price?: number | null;
+  category: { id: number; name: string };
+  subCategory?: { id: number; name: string };
+}

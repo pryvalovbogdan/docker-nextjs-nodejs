@@ -29,7 +29,7 @@ class CategoryService {
   }
 
   async getCategoriesWithSubcategories(): Promise<{
-    data?: { category: string; subcategories: string[] }[];
+    data?: { name: string; subCategories: { id: number; name: string }[] }[];
     errors: string[];
   }> {
     try {

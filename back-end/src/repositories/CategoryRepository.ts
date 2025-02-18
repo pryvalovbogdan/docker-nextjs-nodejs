@@ -1,25 +1,31 @@
 import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
-import { Category } from '../entities/Category.entity';
-import { SubCategory } from '../entities/SubCategory.entity';
+import { Category, SubCategory } from '../entities';
 
 class CategoryRepository {
   private categoryRepository: Repository<Category> = AppDataSource.manager.getRepository(Category);
 
   private subCategoryRepository: Repository<SubCategory> = AppDataSource.manager.getRepository(SubCategory);
 
-  getCategoriesWithSubcategories = async (): Promise<{ category: string; subcategories: string[] }[]> => {
+  getCategoriesWithSubcategories = async (): Promise<
+    { id: number; name: string; subCategories: { id: number; name: string }[] }[]
+  > => {
     const categories = await this.categoryRepository
       .createQueryBuilder('category')
-      .select('category.name', 'category')
-      .addSelect('array_agg(DISTINCT category.subCategory)', 'subcategories')
-      .groupBy('category.name')
+      .leftJoin('category.subCategories', 'subCategory')
+      .select(['category.id', 'category.name'])
+      .addSelect(
+        "COALESCE(json_agg(DISTINCT jsonb_build_object('id', subCategory.id, 'name', subCategory.name)) FILTER (WHERE subCategory.id IS NOT NULL), '[]')",
+        'subcategories',
+      )
+      .groupBy('category.id, category.name')
       .getRawMany();
 
     return categories.map(c => ({
-      category: c.category,
-      subcategories: c.subcategories.filter((sub: string | null): sub is string => sub !== null),
+      id: c.category_id,
+      name: c.category_name,
+      subCategories: c.subcategories ? c.subcategories : [],
     }));
   };
 

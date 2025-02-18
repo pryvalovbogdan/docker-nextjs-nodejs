@@ -173,6 +173,22 @@ class ProductService {
     }
   }
 
+  async getSubCategories(): Promise<{ data?: string[]; errors: string[] }> {
+    try {
+      const categories = await this.repository.getSubCategories();
+
+      if (categories.length > 0) {
+        return { data: categories, errors: [] };
+      } else {
+        return { errors: ['No categories found'] };
+      }
+    } catch (err) {
+      console.error('Error retrieving categories:', err);
+
+      return { errors: ['Error retrieving categories'] };
+    }
+  }
+
   async getProductByBrandName(name: string): Promise<{ data?: Product[]; errors: string[] }> {
     try {
       const products = await this.repository.getProductsByBrand(name);

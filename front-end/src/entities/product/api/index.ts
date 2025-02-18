@@ -1,4 +1,4 @@
-import { Product, ProductsApiResponse } from '@/entities/product/model/types';
+import {IProductResponse, Product, ProductsApiResponse} from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -46,5 +46,19 @@ export async function fetchProductsOffSet(token: string, page: number = 1, limit
     console.error('Order fetch error:', error);
 
     return { success: false, message: 'Order fetch failed' };
+  }
+}
+
+export async function fetchProductByCategory(name: string): Promise<IProductResponse[]> {
+  try {
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, {
+      cache: 'force-cache',
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+
+    return {} as IProductResponse[];
   }
 }

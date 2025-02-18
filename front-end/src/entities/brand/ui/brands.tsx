@@ -2,18 +2,8 @@
 
 import React from 'react';
 
+import { Product } from '@/entities/product/model/types';
 import { Badge, Box, Button, Flex, Grid, GridItem, Image, Link, Text, VStack } from '@chakra-ui/react';
-
-// Define the Product type
-export interface Product {
-  id: number;
-  title: string;
-  description: string;
-  images: string[];
-  price: number;
-  country?: string;
-  category?: string;
-}
 
 interface ProductListProps {
   products: Product[];
