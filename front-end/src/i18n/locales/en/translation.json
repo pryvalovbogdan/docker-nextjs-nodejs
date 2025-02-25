@@ -95,5 +95,6 @@
   },
   "categories": "Categories",
   "noProducts": "No products in this category",
-  "noSubcategories": "No subcategories"
+  "noSubcategories": "No subcategories",
+  "newProducts": "Latest added products"
 }

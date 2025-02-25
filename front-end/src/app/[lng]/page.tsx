@@ -1,6 +1,7 @@
 import { fetchCategories } from '@/entities/category/api';
-import { fetchProductByCategory } from '@/entities/product/api';
-import BrandsSection from '@/views/BrandSection';
+import { fetchLastAddedProducts, fetchProductByCategory } from '@/entities/product/api';
+import LastAddedProducts from '@/entities/product/ui/last-added-products';
+import BrandsSection from '@/views/brand-section';
 import ContactForm from '@features/contact/send-request/contact-form';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
@@ -23,11 +24,13 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
 
   const categories = await fetchCategories();
   const products = await fetchProductByCategory(categories[0].name);
+  const lastAddedProducts = await fetchLastAddedProducts();
 
   return (
     <Layout lng={lng}>
       <Gallery lng={lng} products={products} categories={categories} />
       <BrandsSection lng={lng} />
+      <LastAddedProducts products={lastAddedProducts} lng={lng} />
       <ContactForm lng={lng} />
     </Layout>
   );

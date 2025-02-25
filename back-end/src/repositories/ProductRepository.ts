@@ -130,6 +130,14 @@ class ProductRepository {
 
     return brands.map(b => b.brand);
   };
+
+  getLastAddedProducts = async (): Promise<Product[]> => {
+    return this.productRepository.find({
+      order: { id: 'DESC' },
+      take: 10,
+      relations: ['category', 'subCategory'],
+    });
+  };
 }
 
 export default ProductRepository;

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { LuChevronDown, LuMenu, LuX } from 'react-icons/lu';
 
@@ -77,6 +78,8 @@ export default function Gallery({
     setLoading(false);
   };
 
+  const router = useRouter();
+
   const renderProducts = () => {
     if (loading) {
       return <Spinner size='xl' />;
@@ -94,10 +97,12 @@ export default function Gallery({
           maxWidth={isMobile ? '100%' : '300px'}
           alignItems='center'
           flexDirection='column'
+          cursor='pointer'
+          onClick={() => router.push(`/${lng}/product/${product.id}`)}
         >
           {product.images && product.images.length > 0 && (
             <Image
-              src={product.images[0]}
+              src={product.images[0] || '/placeholder.webp'}
               alt={product.title}
               mb={2}
               borderRadius='md'

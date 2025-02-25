@@ -204,6 +204,22 @@ class ProductService {
       return { errors: ['Error retrieving products by brand name'] };
     }
   }
+
+  async getLastAddedProducts(): Promise<{ data?: Product[]; errors: string[] }> {
+    try {
+      const products = await this.repository.getLastAddedProducts();
+
+      if (products.length > 0) {
+        return { data: products, errors: [] };
+      } else {
+        return { errors: ['No recently added products found'] };
+      }
+    } catch (err) {
+      console.error('Error retrieving last 10 products:', err);
+
+      return { errors: ['Error retrieving last 10 products'] };
+    }
+  }
 }
 
 export default ProductService;

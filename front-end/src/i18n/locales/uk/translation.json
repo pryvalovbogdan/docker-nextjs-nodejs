@@ -95,5 +95,6 @@
   },
   "categories": "Категорії",
   "noProducts": "Немає товарів у цій категорії",
-  "noSubcategories": "Немає підкатегорій"
+  "noSubcategories": "Немає підкатегорій",
+  "newProducts": "Останні додані продукти"
 }

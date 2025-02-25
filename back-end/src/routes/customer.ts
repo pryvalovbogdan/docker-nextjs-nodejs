@@ -15,6 +15,7 @@ const categoryController = new CategoryController();
 
 router.get('/products', productController.getProducts);
 router.get('/products/offset', productController.getProductsOffset);
+router.get('/products/last-added', productController.getLastAddedProducts);
 router.get('/products/:id', productController.getProductsById);
 router.get('/news', newsController.getNews);
 router.get('/categories', productController.getCategories);
@@ -24,4 +25,5 @@ router.post('/order', orderLimiter, orderController.saveOrder);
 router.post('/contact', contactLimiter, orderController.contact);
 router.get('/subcategories', categoryController.getCategoriesWithSubcategories);
 router.get('/subcategories/:name', productController.getProductsBySubCategory);
+
 export default router;

@@ -229,6 +229,23 @@ class ProductController {
       responseHandler.sendCatchResponse(res, 'Error retrieving products by brand name');
     }
   };
+
+  getLastAddedProducts = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await this.service.getLastAddedProducts();
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Last 10 products retrieved successfully', result.data);
+    } catch (err) {
+      console.error('Error retrieving last 10 products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Database error');
+    }
+  };
 }
 
 export default ProductController;

@@ -90,3 +90,17 @@ export async function fetchProductBySubCategory(name: string): Promise<IProductR
     return {} as IProductResponse[];
   }
 }
+
+export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
+  try {
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/products/last-added`, {
+      cache: 'force-cache',
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching last added products:', error);
+
+    return {} as IProductResponse[];
+  }
+}
