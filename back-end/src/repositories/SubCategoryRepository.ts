@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
-import { SubCategory } from '../entities/SubCategory.entity';
+import { SubCategory } from '../entities/';
 
 class SubCategoryRepository {
   private subCategoryRepository: Repository<SubCategory> = AppDataSource.manager.getRepository(SubCategory);
@@ -19,7 +19,7 @@ class SubCategoryRepository {
       const subCategory = new SubCategory();
 
       subCategory.name = name;
-      subCategory.category = { id: categoryId } as any; // Assign category by reference
+      subCategory.category = { id: categoryId } as any;
 
       const savedSubCategory = await this.subCategoryRepository.save(subCategory);
 

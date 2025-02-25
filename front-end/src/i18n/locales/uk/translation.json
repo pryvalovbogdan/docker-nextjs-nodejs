@@ -92,5 +92,8 @@
   },
   "pagination": {
     "page": "Сторінка"
-  }
+  },
+  "categories": "Категорії",
+  "noProducts": "Немає товарів у цій категорії",
+  "noSubcategories": "Немає підкатегорій"
 }

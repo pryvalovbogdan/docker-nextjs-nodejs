@@ -92,5 +92,8 @@
   },
   "pagination": {
     "page": "Page"
-  }
+  },
+  "categories": "Categories",
+  "noProducts": "No products in this category",
+  "noSubcategories": "No subcategories"
 }

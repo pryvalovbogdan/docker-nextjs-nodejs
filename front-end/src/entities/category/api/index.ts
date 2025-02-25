@@ -15,3 +15,5 @@ export async function fetchCategories(): Promise<ICategoryResponse[]> {
     return {} as ICategoryResponse[];
   }
 }
+
+

@@ -1,4 +1,4 @@
-import {IProductResponse, Product, ProductsApiResponse} from '@/entities/product/model/types';
+import { IProductResponse, Product, ProductsApiResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -49,6 +49,20 @@ export async function fetchProductsOffSet(token: string, page: number = 1, limit
   }
 }
 
+export async function fetchProductByCategoryUi(name: string): Promise<IProductResponse[]> {
+  try {
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${name}`, {
+      cache: 'force-cache',
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+
+    return {} as IProductResponse[];
+  }
+}
+
 export async function fetchProductByCategory(name: string): Promise<IProductResponse[]> {
   try {
     const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, {
@@ -58,6 +72,20 @@ export async function fetchProductByCategory(name: string): Promise<IProductResp
     return data;
   } catch (error) {
     console.error('Error fetching products by category:', error);
+
+    return {} as IProductResponse[];
+  }
+}
+
+export async function fetchProductBySubCategory(name: string): Promise<IProductResponse[]> {
+  try {
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/subcategories/${name}`, {
+      cache: 'force-cache',
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by subcategory:', error);
 
     return {} as IProductResponse[];
   }

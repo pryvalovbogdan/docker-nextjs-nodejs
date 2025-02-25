@@ -169,6 +169,27 @@ class ProductController {
     }
   };
 
+  getProductsBySubCategory = async (req: Request, res: Response): Promise<void> => {
+    const { category } = req.params;
+
+    try {
+      const result = await this.service.getProductsBySubCategory(category);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      if (result.data) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+      }
+    } catch (err) {
+      console.error('Error querying products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Error retrieving products by category');
+    }
+  };
+
   getCategories = async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await this.service.getCategories();
