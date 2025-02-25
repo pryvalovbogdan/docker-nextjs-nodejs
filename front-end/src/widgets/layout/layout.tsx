@@ -8,7 +8,7 @@ import Header from '@widgets/header/header';
 
 const Layout: React.FC<{ children: React.ReactNode; lng: string }> = ({ children, lng }) => {
   return (
-    <Box minH='100vh' display='flex' flexDirection='column' color='black' bg='#F7FCFD'>
+    <Box minH='100vh' display='flex' flexDirection='column' color='black' bg='#F7FCFD' id='layout'>
       <Header lng={lng} />
       <Box as='main' flex='1' py={8} px={4}>
         {children}

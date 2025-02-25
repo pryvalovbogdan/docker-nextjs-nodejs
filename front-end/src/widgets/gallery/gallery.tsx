@@ -119,7 +119,7 @@ export default function Gallery({
   };
 
   return (
-    <Flex p={4} gap={6} position='relative'>
+    <Flex p={4} gap={6} position='relative' id='categories'>
       {isMobile && (
         <IconButton
           aria-label='Open categories'

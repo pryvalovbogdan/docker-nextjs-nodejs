@@ -4,7 +4,7 @@ import BrandsSection from '@/views/BrandSection';
 import ContactForm from '@features/contact/send-request/contact-form';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
-import Gallery from '@widgets/gallary/gallary';
+import { Gallery } from '@widgets/gallery';
 import Layout from '@widgets/layout/layout';
 
 export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
