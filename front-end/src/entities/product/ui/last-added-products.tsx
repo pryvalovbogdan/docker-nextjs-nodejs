@@ -42,6 +42,7 @@ const Card = ({
       overflow='hidden'
       align='center'
       cursor='pointer'
+      mb='10px'
       {...style}
       onClick={handleRedirect}
     >

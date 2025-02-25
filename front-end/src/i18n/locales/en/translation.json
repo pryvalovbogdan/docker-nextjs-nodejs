@@ -48,7 +48,8 @@
     "home": "Home",
     "brands": "Brands",
     "categories": "Categories",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "aboutUs": "About us"
   },
   "login": {
     "title": "Admin dashboard",
@@ -96,5 +97,20 @@
   "categories": "Categories",
   "noProducts": "No products in this category",
   "noSubcategories": "No subcategories",
-  "newProducts": "Latest added products"
+  "newProducts": "Latest added products",
+  "aboutUsDescription": "We have many years of experience in supplies and sales in the medical industry - it is important for us to study the capabilities of manufacturers and constantly select the optimal equipment for your needs.",
+  "aboutUsWork": "We work with both the public sector and private structures. We are ready at any time to help you with the selection of equipment, including for opening your medical center or hospital department from scratch - we have positive experience in implementing such turnkey projects.",
+  "aboutUsConsult": "Our department of engineers and managers is ready to advise you and demonstrate the equipment we present at a convenient time for you in the city of Kyiv or in structures where our equipment is already installed. We try to make every effort to ensure that you are satisfied with working with us and that we have long-term partnerships.",
+  "aboutUs": "About us",
+  "interestFreeInstallments": "Interest-free installments",
+  "interestFreeInstallmentsDescription": "Installments without overpayments for partners of private clinics for almost all types of equipment.",
+  "serviceSupport": "Certified service support",
+  "serviceSupportDescription": "A team of engineers who have not only been trained at the manufacturers' factories, but are also ready to advise you by phone at any second.",
+  "officialGuarantee": "Official guarantee",
+  "officialGuaranteeDescription": "Fulfillment of all warranty obligations directly from official equipment representatives in Ukraine.",
+  "freeDelivery": "Free delivery, equipment installation and doctor training",
+  "freeDeliveryDescription": "We do all this on a turnkey basis for your comfort.",
+  "available24": "Available 24/7",
+  "available24Description": "No days off, at any time convenient for you.",
+  "whyUs": "Why us"
 }

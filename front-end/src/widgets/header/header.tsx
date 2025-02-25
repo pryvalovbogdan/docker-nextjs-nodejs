@@ -16,13 +16,14 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
     { name: t('links.brands'), url: `/${lng}#brands`, id: 'brands' },
     { name: t('links.categories'), url: `/${lng}#categories`, id: 'categories' },
     { name: t('links.contact'), url: `/${lng}#contact`, id: 'contact' },
+    { name: t('links.aboutUs'), url: `/${lng}/about`, id: '' },
   ];
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
 
     if (section) {
-      const offsetTop = section.getBoundingClientRect().top + window.scrollY - 70; // Adjust header offset
+      const offsetTop = section.getBoundingClientRect().top + window.scrollY - 70;
 
       window.scrollTo({ top: offsetTop, behavior: 'smooth' });
     }
@@ -46,7 +47,7 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
         </Heading>
         <Flex flex={1} justify='space-around'>
           {links.map(item =>
-            pathname === `/${lng}` ? (
+            pathname === `/${lng}` && item.id ? (
               <Text
                 key={item.id}
                 _hover={{ textDecoration: 'underline' }}

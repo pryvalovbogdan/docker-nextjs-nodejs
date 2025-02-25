@@ -6,7 +6,8 @@ import ContactForm from '@features/contact/send-request/contact-form';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
 import { Gallery } from '@widgets/gallery';
-import Layout from '@widgets/layout/layout';
+import { Layout } from '@widgets/layout';
+import { WhyUs } from '@widgets/why-us';
 
 export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
@@ -31,6 +32,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
       <Gallery lng={lng} products={products} categories={categories} />
       <BrandsSection lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
+      <WhyUs lng={lng} withHeading />
       <ContactForm lng={lng} />
     </Layout>
   );
