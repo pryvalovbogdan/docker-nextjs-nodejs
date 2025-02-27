@@ -220,6 +220,22 @@ class ProductService {
       return { errors: ['Error retrieving last 10 products'] };
     }
   }
+
+  async searchProducts(searchText: string): Promise<{ data?: Product[]; errors: string[] }> {
+    try {
+      const products = await this.repository.searchProducts(searchText);
+
+      if (products.length > 0) {
+        return { data: products, errors: [] };
+      } else {
+        return { errors: ['No products found matching the search criteria'] };
+      }
+    } catch (error) {
+      console.error('Error searching for products:', error);
+
+      return { errors: ['Error searching for products'] };
+    }
+  }
 }
 
 export default ProductService;

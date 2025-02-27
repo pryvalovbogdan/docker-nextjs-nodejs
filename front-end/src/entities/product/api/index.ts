@@ -16,9 +16,9 @@ export async function fetchBrandProducts(name: string): Promise<Product[]> {
   }
 }
 
-export async function fetchProductById(id: string): Promise<Product> {
+export async function fetchProductById(id: string): Promise<IProductResponse> {
   try {
-    const { data }: { data: Product } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
       cache: 'force-cache',
     });
 
@@ -26,7 +26,7 @@ export async function fetchProductById(id: string): Promise<Product> {
   } catch (error) {
     console.error('Error fetching products by id:', error);
 
-    return {} as Product;
+    return {} as IProductResponse;
   }
 }
 
@@ -101,6 +101,22 @@ export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
   } catch (error) {
     console.error('Error fetching last added products:', error);
 
-    return {} as IProductResponse[];
+    return [] as IProductResponse[];
+  }
+}
+
+export async function fetchSearchProducts(query: string, isServerCall?: boolean): Promise<IProductResponse[]> {
+  try {
+    const prefixUrl = isServerCall ? baseURL : '';
+
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`, {
+      cache: 'force-cache',
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+
+    return [] as IProductResponse[];
   }
 }

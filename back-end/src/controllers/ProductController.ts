@@ -246,6 +246,25 @@ class ProductController {
       responseHandler.sendCatchResponse(res, 'Database error');
     }
   };
+
+  searchProducts = async (req: Request, res: Response): Promise<void> => {
+    const { query } = req.params;
+
+    try {
+      const result = await this.service.searchProducts(query);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
+    } catch (err) {
+      console.error('Error searching for products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Database error');
+    }
+  };
 }
 
 export default ProductController;

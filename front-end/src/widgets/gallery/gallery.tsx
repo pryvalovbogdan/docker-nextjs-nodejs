@@ -131,8 +131,11 @@ export default function Gallery({
           color='black'
           onClick={() => setShowMenu(!showMenu)}
           position='absolute'
+          variant='ghost'
           top={2}
           left={2}
+          bg='white'
+          boxShadow='lg'
           zIndex={100}
         >
           {showMenu ? <LuX /> : <LuMenu />}

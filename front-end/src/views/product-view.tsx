@@ -2,14 +2,14 @@
 
 import React, { useState } from 'react';
 
-import { Product } from '@/entities/product/model/types';
-import { Badge, Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { IProductResponse } from '@/entities/product/model/types';
+import { Badge, Box, Breadcrumb, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { OrderDialog } from '@features/order';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
 interface ProductProps {
-  product: Product;
+  product: IProductResponse;
   lng: string;
 }
 
@@ -20,12 +20,40 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
 
   return (
     <Layout lng={lng}>
+      <Flex ml={10}>
+        <Breadcrumb.Root>
+          <Breadcrumb.List>
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href='#' color='blue.600' _hover={{ color: 'blue.700' }}>
+                {product.category.name}
+              </Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+
+            {product.subCategory?.name && (
+              <>
+                <Breadcrumb.Item>
+                  <Breadcrumb.Link href='#' color='blue.600' _hover={{ color: 'blue.700' }}>
+                    {product.subCategory.name}
+                  </Breadcrumb.Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Separator />
+              </>
+            )}
+            <Breadcrumb.Item>
+              <Breadcrumb.CurrentLink color='blue.800' fontWeight='bold'>
+                {product.title}
+              </Breadcrumb.CurrentLink>
+            </Breadcrumb.Item>
+          </Breadcrumb.List>
+        </Breadcrumb.Root>
+      </Flex>
+
       <Box py={8} px={6} maxW='6xl' mx='auto'>
         <Flex direction={{ base: 'column', md: 'row' }} gap={8}>
-          {/* Product Images */}
           <Box flex='1' maxW='500px'>
             <Image
-              src={product.images[0] || '/placeholder.png'}
+              src={product.images?.[0] || '/placeholder.png'}
               alt={product.title}
               objectFit='contain'
               w='100%'
@@ -33,9 +61,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               borderRadius='md'
               mb={4}
             />
-            {product.images.length > 1 && (
+            {product.images?.length > 1 && (
               <Flex gap={2} overflowX='auto'>
-                {product.images.map(img => (
+                {product.images?.map(img => (
                   <Image
                     key={img}
                     src={img}
@@ -52,7 +80,6 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
             )}
           </Box>
 
-          {/* Product Info */}
           <Box flex='1'>
             <Heading size='lg'>{product.title}</Heading>
             <Text fontSize='md' color='gray.600' mt={2}>
@@ -73,12 +100,10 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               </Text>
             )}
 
-            {/* Order Dialog */}
             <OrderDialog product={product} lng={lng} />
           </Box>
         </Flex>
 
-        {/* Show More Toggle */}
         <Box mt={6} borderTop='1px solid' borderColor='gray.300' pt={4}>
           <Button size='sm' onClick={toggleShowMore} variant='outline' colorScheme='blue'>
             {showMore ? t('hideDetails') : t('showMore')}

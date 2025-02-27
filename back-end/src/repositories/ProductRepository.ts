@@ -138,6 +138,18 @@ class ProductRepository {
       relations: ['category', 'subCategory'],
     });
   };
+
+  searchProducts = async (searchText: string): Promise<Product[]> => {
+    return this.productRepository.find({
+      relations: ['category', 'subCategory'],
+      where: [
+        { title: ILike(`%${searchText}%`) },
+        { brand: ILike(`%${searchText}%`) },
+        { category: { name: ILike(`%${searchText}%`) } },
+        { subCategory: { name: ILike(`%${searchText}%`) } },
+      ],
+    });
+  };
 }
 
 export default ProductRepository;

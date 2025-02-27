@@ -11,7 +11,7 @@ import { ClientOnly, IconButton, Skeleton } from '@chakra-ui/react';
 export interface ColorModeProviderProps extends ThemeProviderProps {}
 
 export function ColorModeProvider(props: ColorModeProviderProps) {
-  return <ThemeProvider attribute='class' disableTransitionOnChange {...props} />;
+  return <ThemeProvider attribute='class' defaultTheme='light' disableTransitionOnChange {...props} />;
 }
 
 export type ColorMode = 'light' | 'dark';

@@ -23,12 +23,12 @@ export interface ProductsApiResponse {
 export interface IProductResponse {
   id: number;
   title: string;
-  description?: string | null;
-  characteristics?: string | null;
-  images?: string[] | null;
-  brand?: string | null;
-  country?: string | null;
-  price?: number | null;
+  description?: string;
+  characteristics?: string;
+  images?: string[];
+  brand?: string;
+  country?: string;
+  price?: number;
   category: { id: number; name: string };
   subCategory?: { id: number; name: string };
 }

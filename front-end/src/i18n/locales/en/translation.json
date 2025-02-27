@@ -112,5 +112,24 @@
   "freeDeliveryDescription": "We do all this on a turnkey basis for your comfort.",
   "available24": "Available 24/7",
   "available24Description": "No days off, at any time convenient for you.",
-  "whyUs": "Why us"
+  "whyUs": "Why us",
+  "contact": {
+    "title": "Contacts",
+    "description": "Get in touch with us! We will be happy to help you find the best equipment and solve any issue.",
+    "address": "Kyiv, Topoleva St, 3"
+  },
+  "address": {
+    "street": "Topoleva St, 3",
+    "full": "Topoleva St, 3, Kyiv, 02000"
+  },
+  "buttons": {
+    "route": "Directions",
+    "enlargeMap": "Enlarge Map"
+  },
+  "search": {
+    "resultsFor": "Search results for:",
+    "placeholder": "Search for products...",
+    "noResults": "No products found for \"{{query}}\".",
+    "brand": "Brand: {{brand}}"
+  }
 }

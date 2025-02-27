@@ -16,6 +16,7 @@ const categoryController = new CategoryController();
 router.get('/products', productController.getProducts);
 router.get('/products/offset', productController.getProductsOffset);
 router.get('/products/last-added', productController.getLastAddedProducts);
+router.get('/products/search/:query', productController.searchProducts);
 router.get('/products/:id', productController.getProductsById);
 router.get('/news', newsController.getNews);
 router.get('/categories', productController.getCategories);
