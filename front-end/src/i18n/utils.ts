@@ -28,7 +28,7 @@ export async function generateMetadataGeneral(
       : [t('buyTech'), t('medTech')],
     creator: t((metaConfig?.creatorKey as TranslationKeys) || 'creator'),
     icons: {
-      icon: metaConfig?.iconPath || '/favicon.ico',
+      icon: metaConfig?.iconPath || '/29.png',
     },
   };
 }

@@ -104,10 +104,11 @@ class ProductController {
 
   getProductsOffset = async (req: Request, res: Response): Promise<void> => {
     const { page = 1, limit = 10 } = req.query;
-    const offset = (Number(page) - 1) * Number(limit);
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
 
     try {
-      const result = await this.service.getProductsOffset(Number(limit), offset);
+      const result = await this.service.getProductsOffset(limitNumber, pageNumber);
 
       if (result.errors.length) {
         responseHandler.sendFailResponse(res, result.errors.join(', '));
@@ -115,7 +116,10 @@ class ProductController {
         return;
       }
 
-      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', {
+        products: result.data?.products,
+        totalPages: result.data?.totalPages,
+      });
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
@@ -149,6 +153,27 @@ class ProductController {
 
     try {
       const result = await this.service.getProductsByCategory(category);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      if (result.data) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+      }
+    } catch (err) {
+      console.error('Error querying products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Error retrieving products by category');
+    }
+  };
+
+  getProductsBySubCategory = async (req: Request, res: Response): Promise<void> => {
+    const { category } = req.params;
+
+    try {
+      const result = await this.service.getProductsBySubCategory(category);
 
       if (result.errors.length) {
         responseHandler.sendFailResponse(res, result.errors.join(', '));
@@ -202,6 +227,42 @@ class ProductController {
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Error retrieving products by brand name');
+    }
+  };
+
+  getLastAddedProducts = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await this.service.getLastAddedProducts();
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Last 10 products retrieved successfully', result.data);
+    } catch (err) {
+      console.error('Error retrieving last 10 products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Database error');
+    }
+  };
+
+  searchProducts = async (req: Request, res: Response): Promise<void> => {
+    const { query } = req.params;
+
+    try {
+      const result = await this.service.searchProducts(query);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', result.data);
+    } catch (err) {
+      console.error('Error searching for products:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Database error');
     }
   };
 }

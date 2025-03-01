@@ -12,6 +12,8 @@ if (!SECRET_KEY) {
 export const validateAdminJWT = (req: IRequestWithUser, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
 
+  console.log('authHeader', authHeader);
+
   if (!authHeader) {
     res.status(401).json({ message: 'Authorization token missing' });
 

@@ -8,8 +8,16 @@ class OrderRepository {
 
   private productRepository: Repository<Product> = AppDataSource.manager.getRepository(Product);
 
-  findOrders = async (): Promise<Order[]> => {
-    return this.orderRepository.find({ relations: ['product'] });
+  findOrders = async (page: number = 1, limit: number = 10): Promise<{ data: Order[]; totalPages: number }> => {
+    const [orders, total] = await this.orderRepository.findAndCount({
+      relations: ['product'],
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const totalPages = Math.ceil(total / limit);
+
+    return { data: orders, totalPages };
   };
 
   updateOrder = async (orderId: number, data: Partial<Order>): Promise<Order | null> => {
@@ -48,14 +56,12 @@ class OrderRepository {
       name,
       phone,
       date: date.toISOString().split('T')[0], // Convert Date to string (YYYY-MM-DD)
-      product, // Pass the full product entity
+      product,
       email,
       status,
     });
 
-    const order = await this.orderRepository.save(newOrder);
-
-    return order;
+    return this.orderRepository.save(newOrder);
   };
 }
 

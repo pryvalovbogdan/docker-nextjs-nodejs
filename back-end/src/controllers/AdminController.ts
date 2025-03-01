@@ -67,6 +67,30 @@ class AdminController {
 
     responseHandler.sendSuccessResponse(res, 'Admin registered successfully', result.data);
   };
+
+  getAdminsOffset = async (req: Request, res: Response): Promise<void> => {
+    const { page = 1, limit = 10 } = req.query;
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+
+    try {
+      const result = await this.service.getAdminsOffset(pageNumber, limitNumber);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Admins retrieved successfully', {
+        admins: result.data?.admins,
+        totalPages: result.data?.totalPages,
+      });
+    } catch (err) {
+      console.error('Error querying admins:', (err as Error).message);
+      responseHandler.sendCatchResponse(res, 'Database error');
+    }
+  };
 }
 
 export default AdminController;

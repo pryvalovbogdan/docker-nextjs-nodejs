@@ -42,11 +42,14 @@
   "orderSuccess": "Your order was submitted successfully",
   "orderFailed": "Failed to create order",
   "titleHeader": "Medica",
+  "applicationAccepted": "Your application has been accepted",
+  "applicationFailed": "Failed to send application, try later",
   "links": {
     "home": "Home",
     "brands": "Brands",
     "categories": "Categories",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "aboutUs": "About us"
   },
   "login": {
     "title": "Admin dashboard",
@@ -84,9 +87,82 @@
     "price": "Price",
     "brand": "Brand",
     "category": "Category",
-    "country": "Country"
+    "country": "Country",
+    "password": "Password",
+    "subcategory": "Sub category"
   },
   "pagination": {
     "page": "Page"
-  }
+  },
+  "categories": "Categories",
+  "noProducts": "No products in this category",
+  "noSubcategories": "No subcategories",
+  "newProducts": "Latest added products",
+  "aboutUsDescription": "We have many years of experience in supplies and sales in the medical industry - it is important for us to study the capabilities of manufacturers and constantly select the optimal equipment for your needs.",
+  "aboutUsWork": "We work with both the public sector and private structures. We are ready at any time to help you with the selection of equipment, including for opening your medical center or hospital department from scratch - we have positive experience in implementing such turnkey projects.",
+  "aboutUsConsult": "Our department of engineers and managers is ready to advise you and demonstrate the equipment we present at a convenient time for you in the city of Kyiv or in structures where our equipment is already installed. We try to make every effort to ensure that you are satisfied with working with us and that we have long-term partnerships.",
+  "aboutUs": "About us",
+  "interestFreeInstallments": "Interest-free installments",
+  "interestFreeInstallmentsDescription": "Installments without overpayments for partners of private clinics for almost all types of equipment.",
+  "serviceSupport": "Certified service support",
+  "serviceSupportDescription": "A team of engineers who have not only been trained at the manufacturers' factories, but are also ready to advise you by phone at any second.",
+  "officialGuarantee": "Official guarantee",
+  "officialGuaranteeDescription": "Fulfillment of all warranty obligations directly from official equipment representatives in Ukraine.",
+  "freeDelivery": "Free delivery, equipment installation and doctor training",
+  "freeDeliveryDescription": "We do all this on a turnkey basis for your comfort.",
+  "available24": "Available 24/7",
+  "available24Description": "No days off, at any time convenient for you.",
+  "whyUs": "Why us",
+  "contact": {
+    "title": "Contacts",
+    "description": "Get in touch with us! We will be happy to help you find the best equipment and solve any issue.",
+    "address": "Kyiv, Topoleva St, 3"
+  },
+  "address": {
+    "street": "Topoleva St, 3",
+    "full": "Topoleva St, 3, Kyiv, 02000"
+  },
+  "buttons": {
+    "route": "Directions",
+    "enlargeMap": "Enlarge Map"
+  },
+  "search": {
+    "resultsFor": "Search results for:",
+    "placeholder": "Search for products...",
+    "noResults": "No products found for \"{{query}}\".",
+    "brand": "Brand: {{brand}}"
+  },
+
+  "service": "Service",
+  "serviceMaintenance": "Service Maintenance",
+  "warrantyService": "Warranty Service",
+  "postWarrantyService": "Post-Warranty Service",
+
+  "aboutCompany": "About Company",
+
+  "customers": "Customers",
+  "contacts": "Contacts",
+  "deliveryAndPayment": "Delivery and Payment",
+  "reviews": "Reviews",
+  "returnsAndExchanges": "Returns and Exchanges",
+
+
+  "xrayTwo": "X-rays for 2 workplaces",
+  "xrayThree": "X-rays for 3 workplaces",
+  "fluorographs": "Fluorographs",
+  "wardXray": "Ward X-rays",
+  "mammographs": "Mammographs",
+  "ultrasoundMachines": "Ultrasound Machines",
+  "ventilators": "Ventilators",
+  "anesthesiaMachines": "Anesthesia Machines",
+  "patientMonitors": "Patient Monitors",
+  "ekg": "ECG (Electrocardiographs)",
+  "dentalUnits": "Dental Units",
+  "biochemicalAnalyzers": "Biochemical Analyzers",
+
+  "workHours": "Working Hours",
+  "alwaysOpen": "Always Open",
+
+  "copyright": "© 2025 MediX. All rights reserved"
+
 }

@@ -1,14 +1,60 @@
-import { Product } from '../entities';
+import { Category, Product } from '../entities';
 import { ProductRepository } from '../repositories';
+import CategoryService from './CategoryService';
+import SubCategoryService from './SubCategoryService';
+
+// Add SubCategory service
 
 class ProductService {
   private repository: ProductRepository = new ProductRepository();
 
+  private categoryService: CategoryService = new CategoryService();
+
+  private subCategoryService: SubCategoryService = new SubCategoryService(); // Initialize SubCategory Service
+
   async addProduct(productData: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
     try {
+      if (!productData.category) {
+        return { errors: ['Category is required'] };
+      }
+
+      let category = (await this.categoryService.getCategory(productData.category.name)).data;
+
+      if (!category) {
+        const createCategoryResult = await this.categoryService.createCategory(productData.category.name);
+
+        if (createCategoryResult.errors.length) {
+          return { errors: createCategoryResult.errors };
+        }
+
+        category = createCategoryResult.data!;
+      }
+
+      let subCategory = null;
+
+      if (productData.subCategory) {
+        subCategory = (await this.subCategoryService.getSubCategory(productData.subCategory.name)).data;
+
+        if (!subCategory) {
+          const createSubCategoryResult = await this.subCategoryService.createSubCategory(
+            productData.subCategory.name,
+            (category as Category).id,
+          );
+
+          if (createSubCategoryResult.errors.length) {
+            return { errors: createSubCategoryResult.errors };
+          }
+
+          subCategory = createSubCategoryResult.data;
+        }
+      }
+
       const product = new Product();
 
       Object.assign(product, productData);
+      product.category = category as Category;
+      product.subCategory = subCategory || undefined;
+
       const savedProduct = await this.repository.saveProduct(product);
 
       return { data: savedProduct, errors: [] };
@@ -55,13 +101,23 @@ class ProductService {
     }
   }
 
-  async getProductsOffset(page: number, limit: number): Promise<{ data?: Product[]; errors: string[] }> {
-    const offset = (page - 1) * limit;
-
+  async getProductsOffset(
+    limit: number,
+    page: number,
+  ): Promise<{ data?: { products: Product[]; totalPages: number }; errors: string[] }> {
     try {
-      const products = await this.repository.getProductsOffset(limit, offset);
+      const offset = (page - 1) * limit;
+      const { products, totalCount } = await this.repository.getProductsOffset(limit, offset);
 
-      return { data: products, errors: [] };
+      const totalPages = Math.ceil(totalCount / limit);
+
+      return {
+        data: {
+          products: products as Product[], // Ensure correct type
+          totalPages,
+        },
+        errors: [],
+      };
     } catch (err) {
       console.error('Error retrieving products with pagination:', err);
 
@@ -117,6 +173,22 @@ class ProductService {
     }
   }
 
+  async getProductsBySubCategory(category: string): Promise<{ data?: Product[]; errors: string[] }> {
+    try {
+      const products = await this.repository.getProductsBySubCategory(category);
+
+      if (products.length > 0) {
+        return { data: products, errors: [] };
+      } else {
+        return { errors: ['No products found in this category'] };
+      }
+    } catch (err) {
+      console.error('Error retrieving products by category:', err);
+
+      return { errors: ['Error retrieving products by category'] };
+    }
+  }
+
   async getProductByBrandName(name: string): Promise<{ data?: Product[]; errors: string[] }> {
     try {
       const products = await this.repository.getProductsByBrand(name);
@@ -130,6 +202,38 @@ class ProductService {
       console.error('Error retrieving products by brand name:', err);
 
       return { errors: ['Error retrieving products by brand name'] };
+    }
+  }
+
+  async getLastAddedProducts(): Promise<{ data?: Product[]; errors: string[] }> {
+    try {
+      const products = await this.repository.getLastAddedProducts();
+
+      if (products.length > 0) {
+        return { data: products, errors: [] };
+      } else {
+        return { errors: ['No recently added products found'] };
+      }
+    } catch (err) {
+      console.error('Error retrieving last 10 products:', err);
+
+      return { errors: ['Error retrieving last 10 products'] };
+    }
+  }
+
+  async searchProducts(searchText: string): Promise<{ data?: Product[]; errors: string[] }> {
+    try {
+      const products = await this.repository.searchProducts(searchText);
+
+      if (products.length > 0) {
+        return { data: products, errors: [] };
+      } else {
+        return { errors: ['No products found matching the search criteria'] };
+      }
+    } catch (error) {
+      console.error('Error searching for products:', error);
+
+      return { errors: ['Error searching for products'] };
     }
   }
 }

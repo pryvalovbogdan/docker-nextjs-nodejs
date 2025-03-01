@@ -59,6 +59,10 @@ jobs:
             CLOUDFRONT_URL=${{ secrets.CLOUDFRONT_URL }}
             CLOUDFRONT_DISTRIBUTION_ID=${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
             BACKEND_URL=${{ secrets.BACKEND_URL }}
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+            NEXT_PUBLIC_OFFICE_EMAIL=${{ secrets.NEXT_PUBLIC_OFFICE_EMAIL }}
+            NEXT_PUBLIC_OFFICE_PHONE=${{ secrets.NEXT_PUBLIC_OFFICE_PHONE }}
+            NEXT_PUBLIC_OFFICE_PHONE_SECOND=${{ secrets.NEXT_PUBLIC_OFFICE_PHONE_SECOND }}
             EOT
             
             # Log in to ECR before pulling the Docker images

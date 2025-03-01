@@ -1,149 +1,200 @@
 'use client';
 
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-import { Box, Button, Flex, HStack, IconButton, Input, Text, VStack } from '@chakra-ui/react';
+import { fetchAdmins } from '@/entities/admin/api';
+import { fetchOrders } from '@/entities/order/api';
+import { fetchProductsOffSet } from '@/entities/product/api';
+import Pagination from '@/shared/ui/pagination';
+import SkeletonTable from '@/shared/ui/skeleton-table';
+import { Box, Button, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
-type EditedDataType = Record<number, Record<string, string>>;
+const PAGE_SIZE = 10;
 
-const initialData = {
-  admins: [
-    { id: 1, username: 'admin1', role: 'Super Admin', adminIp: '192.168.1.1', createdAt: '2025-02-10' },
-    { id: 2, username: 'admin2', role: 'Moderator', adminIp: '192.168.1.2', createdAt: '2025-02-11' },
-  ],
-  news: [
-    { id: 1, title: 'New Feature Release', description: 'Next.js 15 is out!', date: '2025-02-10' },
-    { id: 2, title: 'Product Update', description: 'We added new features.', date: '2025-02-11' },
-  ],
+type TabKey = 'orders' | 'products' | 'admins';
+
+type FetchFunction = (token: string, page: number, pageSize: number) => Promise<any>;
+
+const fetchDataFunctions: Record<TabKey, FetchFunction> = {
+  orders: fetchOrders,
+  products: fetchProductsOffSet,
+  admins: fetchAdmins,
+};
+
+type PaginatedData = {
+  pages: Record<number, any[]>;
+  totalPages: number;
+};
+
+const columns = {
   orders: [
-    { id: 1, name: 'John Doe', phone: '123456789', date: '2025-02-10', email: 'john@example.com', status: 'active' },
-    {
-      id: 2,
-      name: 'Alice Smith',
-      phone: '987654321',
-      date: '2025-02-11',
-      email: 'alice@example.com',
-      status: 'pending',
-    },
+    { columnName: 'name', translateKey: 'columns.name' },
+    { columnName: 'phone', translateKey: 'columns.phone' },
+    { columnName: 'email', translateKey: 'columns.email' },
+    { columnName: 'date', translateKey: 'columns.date' },
+    { columnName: 'status', translateKey: 'columns.status' },
   ],
   products: [
-    { id: 1, title: 'Laptop', price: '1000.00', brand: 'Apple', category: 'Electronics', country: 'USA' },
-    { id: 2, title: 'Phone', price: '700.00', brand: 'Samsung', category: 'Electronics', country: 'South Korea' },
+    { columnName: 'title', translateKey: 'columns.title' },
+    { columnName: 'description', translateKey: 'columns.description' },
+    { columnName: 'brand', translateKey: 'columns.brand' },
+    { columnName: 'category', translateKey: 'columns.category' },
+    { columnName: 'country', translateKey: 'columns.country' },
+    { columnName: 'subCategory', translateKey: 'columns.subcategory' },
+  ],
+  admins: [
+    { columnName: 'username', translateKey: 'columns.username' },
+    { columnName: 'passwordHash', translateKey: 'columns.password' },
+    { columnName: 'role', translateKey: 'columns.role' },
+    { columnName: 'adminIps', translateKey: 'columns.adminIp' },
+    { columnName: 'createdAt', translateKey: 'columns.createdAt' },
   ],
 };
 
-const PAGE_SIZE = 2;
-
 export default function Dashboard({ lng }: { lng: string }) {
-  const [selectedTab, setSelectedTab] = useState('orders');
-  const [data, setData] = useState(initialData);
-  const [editedData, setEditedData] = useState<EditedDataType>({});
+  const [selectedTab, setSelectedTab] = useState<TabKey>('orders');
+  const [data, setData] = useState<Record<TabKey, PaginatedData>>({
+    orders: { pages: {}, totalPages: 1 },
+    products: { pages: {}, totalPages: 1 },
+    admins: { pages: {}, totalPages: 1 },
+  });
+
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation(lng);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
-  const handleEdit = (rowId: number, field: string, value: string) => {
-    setEditedData(prev => ({
-      ...prev,
-      [rowId]: { ...(prev[rowId] || {}), [field]: value },
-    }));
+  const fetchData = async (tab: TabKey, page = 1): Promise<void> => {
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+      router.push(`/${lng}/admin/login`);
+
+      return;
+    }
+
+    if (data[tab].pages[page]) {
+      setCurrentPage(page);
+
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetchDataFunctions[tab](token, page, PAGE_SIZE);
+
+      if (response.success) {
+        setData(prev => ({
+          ...prev,
+          [tab]: {
+            ...prev[tab],
+            pages: {
+              ...prev[tab].pages,
+              [page]: response[tab],
+            },
+            totalPages: response.totalPages,
+          },
+        }));
+
+        setCurrentPage(page);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSubmit = (rowId: number) => {
-    setData(prev => ({
-      ...prev,
-      [selectedTab]: (prev[selectedTab as keyof typeof prev] as (typeof prev)[keyof typeof prev]).map(row =>
-        row.id === rowId ? { ...row, ...editedData[rowId] } : row,
-      ),
-    }));
+  useEffect(() => {
+    fetchData('orders');
+  }, []);
 
-    setEditedData(prev => {
-      const updated = { ...prev };
-
-      delete updated[rowId];
-
-      return updated;
-    });
+  const handlePageChange = (nextPage: number) => {
+    if (!data[selectedTab].pages[nextPage]) {
+      fetchData(selectedTab, nextPage);
+    } else {
+      setCurrentPage(nextPage);
+    }
   };
 
-  const columns = {
-    admins: ['id', 'username', 'role', 'adminIp', 'createdAt'],
-    news: ['id', 'title', 'description', 'date'],
-    orders: ['id', 'name', 'phone', 'date', 'email', 'status'],
-    products: ['id', 'title', 'price', 'brand', 'category', 'country'],
+  const handleTabChange = (tab: TabKey) => {
+    setSelectedTab(tab);
+    setCurrentPage(1);
+
+    if (Object.keys(data[tab].pages).length === 0) fetchData(tab);
   };
 
-  type TabKey = keyof typeof data;
-  type TabKeyColumn = keyof typeof columns;
+  const renderCellValue = (row: any, columnName: string) => {
+    const value = row[columnName];
 
-  const displayedData = data[selectedTab as TabKey].slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+    if (typeof value === 'object' && value !== null && 'name' in value) {
+      return value.name;
+    }
+
+    return value ?? '-';
+  };
 
   return (
     <Layout lng={lng}>
       <Box p={5}>
         <HStack mb={4}>
-          {Object.keys(initialData).map(key => (
-            <Button
-              key={key}
-              onClick={() => {
-                setSelectedTab(key);
-                setCurrentPage(1);
-              }}
-              colorScheme={selectedTab === key ? 'blue' : 'gray'}
-            >
-              {t(`tabs.${key}` as any)}
-            </Button>
-          ))}
+          {(Object.keys(columns) as TabKey[]).map((tab, index) =>
+            isLoading ? (
+              <Skeleton key={index} height='40px' width='120px' borderRadius='md' />
+            ) : (
+              <Button
+                key={tab}
+                onClick={() => handleTabChange(tab)}
+                fontWeight='bold'
+                bg={selectedTab === tab ? 'orange.400' : 'gray.200'}
+                color={selectedTab === tab ? 'white' : 'gray.700'}
+                _hover={{ bg: selectedTab === tab ? 'orange.500' : 'gray.300' }}
+              >
+                {t(`tabs.${tab}` as any)}
+              </Button>
+            ),
+          )}
         </HStack>
-        <VStack align='stretch' border='1px solid #ddd' p={4} borderRadius='md'>
-          <HStack bg='gray.200' p={2} borderRadius='md'>
-            {columns[selectedTab as TabKeyColumn].map(col => (
-              <Text key={col} fontWeight='bold' flex={1}>
-                {t(`columns.${col}` as any)}
-              </Text>
-            ))}
-            <Text fontWeight='bold'>{t('actions.submit')}</Text>
-          </HStack>
-          {displayedData.map(row => (
-            <HStack key={row.id} p={2} borderBottom='1px solid #ddd'>
-              {columns[selectedTab as keyof typeof columns].map(col => (
-                <Box
-                  key={col}
+
+        {isLoading ? (
+          <SkeletonTable />
+        ) : (
+          <VStack align='stretch' border='1px solid #ddd' p={4} borderRadius='md'>
+            <HStack bg='gray.200' p={2} borderRadius='md'>
+              {columns[selectedTab].map(column => (
+                <Text
+                  key={column.translateKey}
                   flex={1}
-                  onClick={() => handleEdit(row.id, col, row[col as keyof typeof row]?.toString() || '')}
+                  fontWeight='bold'
+                  textAlign='left'
+                  whiteSpace='nowrap'
+                  overflow='hidden'
+                  textOverflow='ellipsis'
                 >
-                  {editedData[row.id]?.[col] ? (
-                    <Input
-                      value={editedData[row.id][col]}
-                      onChange={e => handleEdit(row.id, col, e.target.value)}
-                      size='sm'
-                    />
-                  ) : (
-                    <Text>{row[col as keyof typeof row]}</Text>
-                  )}
-                </Box>
+                  {t(column.translateKey as any)}
+                </Text>
               ))}
-              <Box>
-                {editedData[row.id] && (
-                  <Button size='xs' colorScheme='blue' onClick={() => handleSubmit(row.id)}>
-                    {t('login.submit')}
-                  </Button>
-                )}
-              </Box>
             </HStack>
-          ))}
-        </VStack>
-        <Flex justify='space-between' align='center' mt={4}>
-          <IconButton disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} />
-          <Text>
-            {t('pagination.page')} {currentPage}
-          </Text>
-          <IconButton
-            disabled={currentPage * PAGE_SIZE >= data[selectedTab as keyof typeof data].length}
-            onClick={() => setCurrentPage(prev => prev + 1)}
-          />
-        </Flex>
+
+            {(data[selectedTab].pages[currentPage] || []).map(row => (
+              <HStack key={row.id} p={2} borderBottom='1px solid #ddd'>
+                {columns[selectedTab].map(column => (
+                  <Text key={column.columnName} flex={1} textAlign='left' whiteSpace='normal' wordBreak='break-word'>
+                    {renderCellValue(row, column.columnName)}
+                  </Text>
+                ))}
+              </HStack>
+            ))}
+          </VStack>
+        )}
+
+        <Pagination
+          handlePageChange={handlePageChange}
+          currentPage={currentPage}
+          totalPages={data[selectedTab].totalPages}
+        />
       </Box>
     </Layout>
   );

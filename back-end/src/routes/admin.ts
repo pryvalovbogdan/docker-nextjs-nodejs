@@ -31,5 +31,6 @@ router.post('/orders/:id', validateProps('orders'), orderController.updateOrder)
 router.delete('/orders/:id', validateProps('orders'), orderController.deleteOrder);
 router.post('/news', validateProps('news'), newsController.addNews);
 router.post('/news/:id', validateProps('news'), newsController.updateNews);
+router.get('/admins', adminController.getAdminsOffset);
 
 export default router;

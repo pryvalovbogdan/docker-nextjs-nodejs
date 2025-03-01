@@ -20,6 +20,15 @@ class AdminRepository {
   saveAdmin = async (admin: Admin): Promise<Admin> => {
     return this.adminRepository.save(admin);
   };
+
+  getAdminsOffset = async (limit: number, offset: number): Promise<{ admins: Admin[]; totalCount: number }> => {
+    const [admins, totalCount] = await this.adminRepository.findAndCount({
+      take: limit,
+      skip: offset,
+    });
+
+    return { admins, totalCount };
+  };
 }
 
 export default AdminRepository;

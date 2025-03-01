@@ -9,7 +9,13 @@ class OrderController {
   private service: OrderService = new OrderService();
 
   getOrders = async (req: Request, res: Response): Promise<void> => {
-    const result = await this.service.getOrders();
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+
+    console.log('req', req.query);
+    const result = await this.service.getOrders(page, limit);
+
+    console.log('result', result);
 
     if (result.errors.length) {
       responseHandler.sendFailResponse(res, result.errors.join(', '));
@@ -17,7 +23,10 @@ class OrderController {
       return;
     }
 
-    responseHandler.sendSuccessResponse(res, 'Orders retrieved successfully', result.data);
+    responseHandler.sendSuccessResponse(res, 'Orders retrieved successfully', {
+      orders: result.data,
+      totalPages: result.totalPages,
+    });
   };
 
   updateOrder = async (req: Request, res: Response): Promise<void> => {

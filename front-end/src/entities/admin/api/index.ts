@@ -1,3 +1,4 @@
+import { AdminApiResponse } from '@/entities/admin/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 
 export async function login(loginData: {
@@ -16,5 +17,24 @@ export async function login(loginData: {
     console.error('Login error:', error);
 
     return { success: false, message: 'Login failed' };
+  }
+}
+
+export async function fetchAdmins(token: string, page: number = 1, limit: number = 5) {
+  try {
+    const response = (await fetchWrapper(`/api/admin/admins?page=${page}&limit=${limit}`, {
+      headers: { Authorization: token },
+    })) as AdminApiResponse;
+
+    return {
+      success: true,
+      message: response.message,
+      admins: response.data.admins,
+      totalPages: response.data.totalPages,
+    };
+  } catch (error) {
+    console.error('Admin fetch error:', error);
+
+    return { success: false, message: 'Admin fetch failed' };
   }
 }
