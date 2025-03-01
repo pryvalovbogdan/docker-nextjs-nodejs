@@ -3,6 +3,10 @@ import { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   env: {
     BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_OFFICE_EMAIL: process.env.NEXT_PUBLIC_OFFICE_EMAIL,
+    NEXT_PUBLIC_OFFICE_PHONE: process.env.NEXT_PUBLIC_OFFICE_PHONE,
+    NEXT_PUBLIC_OFFICE_PHONE_SECOND: process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND,
   },
   output: 'standalone',
   experimental: {
