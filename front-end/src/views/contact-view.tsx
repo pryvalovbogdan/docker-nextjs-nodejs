@@ -22,9 +22,17 @@ const center = { lat: 50.44027, lng: 30.47491 };
 
 const ContactView = ({ lng }: ContactViewProps) => {
   const { t } = useTranslation(lng);
+
+  console.log(
+    'GOOGLE_MAPS_API_KEY',
+    process.env,
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    process.env.GOOGLE_MAPS_API_KEY,
+  );
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '',
   });
 
   const buildRoute = () => {
