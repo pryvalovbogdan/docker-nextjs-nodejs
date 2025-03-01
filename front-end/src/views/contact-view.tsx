@@ -3,7 +3,7 @@
 import React, { ElementType } from 'react';
 import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaRoad } from 'react-icons/fa';
 
-import { Box, Container, Flex, Icon, Link, Spinner, Text } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, Icon, Link, Spinner, Text } from '@chakra-ui/react';
 import ContactForm from '@features/contact/send-request/contact-form';
 import { useTranslation } from '@i18n/client';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
@@ -24,7 +24,7 @@ const ContactView = ({ lng }: ContactViewProps) => {
   const { t } = useTranslation(lng);
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
   });
 
   const buildRoute = () => {
@@ -44,32 +44,51 @@ const ContactView = ({ lng }: ContactViewProps) => {
       <Container maxW='container.xl' py={10}>
         <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' align='flex-start' gap={10} mb={10}>
           <Box flex='1'>
-            <Text fontSize='3xl' fontWeight='bold'>
+            <Text fontSize='3xl' fontWeight='bold' color='gray.800'>
               {t('contact.title')}
             </Text>
-            <Text color='gray.600' mt={2}>
+            <Text color='gray.600' mt={2} fontSize='lg'>
               {t('contact.description')}
             </Text>
 
-            <Flex mt={4} direction='column'>
-              <Flex align='center' mb={2}>
-                <Icon as={FaMapMarkerAlt as ElementType} color='yellow.500' mr={2} />
-                <Text>{t('contact.address')}</Text>
+            <Flex mt={6} direction='column' gap={3}>
+              <Flex align='center'>
+                <Icon as={FaMapMarkerAlt as ElementType} color='#036753' boxSize={5} mr={3} />
+                <Text color='gray.700' fontSize='lg'>
+                  {t('contact.address')}
+                </Text>
               </Flex>
-              <Flex align='center' mb={2}>
-                <Icon as={FaPhone as ElementType} color='yellow.500' mr={2} />
+
+              <Flex align='center'>
+                <Icon as={FaPhone as ElementType} color='#036753' boxSize={5} mr={3} />
                 <Flex flexDirection='column'>
-                  <Link href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE}`} color='blue.500'>
+                  <Link
+                    href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE}`}
+                    color='#036753'
+                    fontSize='lg'
+                    _hover={{ textDecoration: 'underline' }}
+                  >
                     {process.env.NEXT_PUBLIC_OFFICE_PHONE}
                   </Link>
-                  <Link href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}`} color='blue.500'>
+                  <Link
+                    href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}`}
+                    color='#036753'
+                    fontSize='lg'
+                    _hover={{ textDecoration: 'underline' }}
+                  >
                     {process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}
                   </Link>
                 </Flex>
               </Flex>
+
               <Flex align='center'>
-                <Icon as={FaEnvelope as ElementType} color='yellow.500' mr={2} />
-                <Link href={`mailto:${process.env.NEXT_PUBLIC_OFFICE_EMAIL}`} color='blue.500'>
+                <Icon as={FaEnvelope as ElementType} color='#036753' boxSize={5} mr={3} />
+                <Link
+                  href={`mailto:${process.env.NEXT_PUBLIC_OFFICE_EMAIL}`}
+                  color='#036753'
+                  fontSize='lg'
+                  _hover={{ textDecoration: 'underline' }}
+                >
                   {process.env.NEXT_PUBLIC_OFFICE_EMAIL}
                 </Link>
               </Flex>
@@ -97,50 +116,55 @@ const ContactView = ({ lng }: ContactViewProps) => {
                   position='absolute'
                   top='10px'
                   left='10px'
-                  bg='white'
-                  p={3}
+                  bg='rgba(3, 103, 83, 0.7)'
+                  backdropFilter='blur(10px)'
+                  p={4}
+                  borderRadius='lg'
                   boxShadow='lg'
-                  borderRadius='md'
                   maxW='300px'
                 >
-                  <Text fontSize='lg' fontWeight='bold'>
+                  <Text fontSize='lg' fontWeight='bold' color='white'>
                     {t('address.street')}
                   </Text>
-                  <Text fontSize='sm' color='gray.600'>
+                  <Text fontSize='sm' color='white'>
                     {t('address.full')}
                   </Text>
 
-                  <Flex mt={2} alignItems='center'>
-                    <Link
-                      href='#'
+                  <Flex mt={3} alignItems='center'>
+                    <Button
                       onClick={buildRoute}
                       fontSize='sm'
-                      color='blue.500'
+                      bg='white'
+                      color='#036753'
+                      borderRadius='md'
+                      _hover={{ bg: '#024D3E', color: 'white' }}
                       display='flex'
                       alignItems='center'
                     >
-                      <Icon as={FaRoad} mr={1} />
+                      <FaRoad style={{ marginRight: '5px' }} />
                       {t('buttons.route')}
-                    </Link>
+                    </Button>
                   </Flex>
 
-                  <Flex mt={1} alignItems='center'>
-                    <Link
-                      href='#'
+                  <Flex mt={2} alignItems='center'>
+                    <Button
                       onClick={enlargeMap}
                       fontSize='sm'
-                      color='blue.500'
+                      bg='white'
+                      color='#036753'
+                      borderRadius='md'
+                      _hover={{ bg: '#024D3E', color: 'white' }}
                       display='flex'
                       alignItems='center'
                     >
                       {t('buttons.enlargeMap')}
-                    </Link>
+                    </Button>
                   </Flex>
                 </Box>
               </Box>
             ) : (
               <Flex w='100%' h='300px' alignItems='center' justifyContent='center'>
-                <Spinner size='xl' />
+                <Spinner size='xl' color='#036753' />
               </Flex>
             )}
           </Box>

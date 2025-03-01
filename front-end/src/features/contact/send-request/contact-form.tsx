@@ -4,7 +4,7 @@ import React, { FormEvent, useState } from 'react';
 
 import { contact } from '@/shared/api/contact';
 import { Toaster, toaster } from '@/shared/ui/toaster';
-import { Box, Button, Heading, Input, Textarea } from '@chakra-ui/react';
+import { Box, Button, Flex, Grid, Heading, Input, Text, Textarea } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
 const ContactForm = ({ lng }: { lng: string }) => {
@@ -56,8 +56,6 @@ const ContactForm = ({ lng }: { lng: string }) => {
     setIsLoading(true);
     const result = await contact(formData);
 
-    console.log('result', result);
-
     if (result.success) {
       toaster.create({ type: 'info', title: t('applicationAccepted') });
     } else {
@@ -74,76 +72,130 @@ const ContactForm = ({ lng }: { lng: string }) => {
 
   return (
     <Box as='section' id='contact' py={20} bg='white'>
-      <Heading as='h3' fontSize='48px' textAlign='center' mb='52px' color='#062126'>
+      {/* Section Heading */}
+      <Heading as='h3' fontSize='48px' textAlign='center' mb='52px' color='gray.800'>
         {t('contactUs')}
       </Heading>
-      <Box as='form' maxW='lg' mx='auto' display='flex' alignItems='center' flexDirection='column' onSubmit={onSubmit}>
-        <Input
-          name='name'
-          placeholder={t('yourName')}
-          value={formData.name}
-          onChange={handleInputChange}
-          mb={25}
-          bg='FCFCFC'
-          color='rgba(6, 33, 38, 0.50)'
-          borderRadius='10px'
-          border='1px solid rgba(0, 0, 0, 0.05)'
-        />
 
-        <div style={{ width: '100%' }}>
-          <Input
-            name='email'
-            type='email'
-            placeholder={t('yourEmail')}
-            value={formData.email}
-            onChange={handleInputChange}
-            bg='FCFCFC'
-            color='rgba(6, 33, 38, 0.50)'
-            borderRadius='10px'
-            border='1px solid rgba(0, 0, 0, 0.05)'
-            style={errors.email ? { borderColor: 'red', marginBottom: 0 } : { marginBottom: '25px' }}
-          />
-          {errors.email && <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>{errors.email}</div>}
-        </div>
+      {/* Form */}
+      <Box
+        as='form'
+        maxW='900px'
+        mx='auto'
+        p={10}
+        bg='rgba(3, 103, 83, 0.7)' // Emerald Glass Effect
+        backdropFilter='blur(12px)'
+        borderRadius='lg'
+        boxShadow='lg'
+        onSubmit={onSubmit}
+      >
+        <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6} mb={6}>
+          <Box>
+            <Input
+              name='name'
+              placeholder={t('yourName')}
+              value={formData.name}
+              onChange={handleInputChange}
+              w='100%'
+              h='50px'
+              fontSize='md'
+              bg='white'
+              color='gray.800'
+              borderRadius='md'
+              border='1px solid gray.300'
+              px={4}
+              _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
+            />
+          </Box>
 
-        <Input
-          name='phone'
-          type='tel'
-          placeholder={t('yourPhone')}
-          value={formData.phone}
-          onChange={handleInputChange}
-          mb={25}
-          bg='FCFCFC'
-          color='rgba(6, 33, 38, 0.50)'
-          borderRadius='10px'
-          border='1px solid rgba(0, 0, 0, 0.05)'
-        />
+          <Box>
+            <Input
+              name='email'
+              type='email'
+              placeholder={t('yourEmail')}
+              value={formData.email}
+              onChange={handleInputChange}
+              w='100%'
+              h='50px'
+              fontSize='md'
+              bg='white'
+              color='gray.800'
+              borderRadius='md'
+              border='1px solid gray.300'
+              px={4}
+              _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
+            />
+            {errors.email && (
+              <Text color='red.500' fontSize='sm' mt={1}>
+                {errors.email}
+              </Text>
+            )}
+          </Box>
 
-        <div style={{ width: '100%' }}>
+          <Box>
+            <Input
+              name='phone'
+              type='tel'
+              placeholder={t('yourPhone')}
+              value={formData.phone}
+              onChange={handleInputChange}
+              w='100%'
+              h='50px'
+              fontSize='md'
+              bg='white'
+              color='gray.800'
+              borderRadius='md'
+              border='1px solid gray.300'
+              px={4}
+              _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
+            />
+          </Box>
+        </Grid>
+
+        <Box mb={6}>
           <Textarea
             name='message'
             placeholder={t('yourMessage')}
             value={formData.message}
             onChange={handleInputChange}
-            color='rgba(6, 33, 38, 0.50)'
-            borderRadius='10px'
-            border='1px solid rgba(0, 0, 0, 0.05)'
-            style={errors.message ? { borderColor: 'red', marginBottom: 0 } : { marginBottom: '25px' }}
+            w='100%'
+            h='150px'
+            fontSize='md'
+            bg='white'
+            color='gray.800'
+            borderRadius='md'
+            border='1px solid gray.300'
+            px={4}
+            py={3}
+            _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
           />
-          {errors.message && <div style={{ color: 'red', fontSize: '14px', marginTop: '4px' }}>{errors.message}</div>}
-        </div>
-        <Button
-          disabled={isLoading}
-          type='submit'
-          bg='#24BEE0'
-          color='white'
-          borderRadius='47px'
-          display='inline-flex'
-          w='auto'
-        >
-          {t('submit')}
-        </Button>
+          {errors.message && (
+            <Text color='red.500' fontSize='sm' mt={1}>
+              {errors.message}
+            </Text>
+          )}
+        </Box>
+
+        {/* Submit Button */}
+        <Flex justify='center'>
+          <Button
+            disabled={isLoading}
+            type='submit'
+            w={{ base: '100%', md: '250px' }}
+            h='50px'
+            fontSize='md'
+            bg='#036753'
+            color='white'
+            borderRadius='full'
+            px={6}
+            _hover={{ bg: '#024D3E' }}
+            transition='all 0.2s'
+          >
+            {t('submit')}
+          </Button>
+        </Flex>
       </Box>
+
       <Toaster />
     </Box>
   );

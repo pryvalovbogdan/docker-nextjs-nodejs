@@ -41,31 +41,44 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
   return (
     <Layout lng={lng}>
       <Box maxW='container.md' mx='auto' mt={8} px={4}>
-        <Text fontSize='2xl' fontWeight='bold'>
+        <Text fontSize='2xl' fontWeight='bold' textAlign='center' color='gray.800'>
           {t('search.resultsFor')}{' '}
-          <Text as='span' color='blue.600'>
+          <Text as='span' color='#036753'>
             &#34;{searchQuery}&#34;
           </Text>
         </Text>
 
-        <Flex mt={4} align='center' border='1px solid gray' borderRadius='md' px={3} py={2} bg='white'>
-          <LuSearch size={20} color='gray' />
+        <Flex
+          mt={4}
+          align='center'
+          border='1px solid rgba(3, 103, 83, 0.5)'
+          borderRadius='full'
+          px={3}
+          py={2}
+          bg='rgba(255, 255, 255, 0.9)'
+          boxShadow='lg'
+          backdropFilter='blur(10px)'
+          transition='all 0.3s'
+          _hover={{ boxShadow: 'xl', borderColor: '#024D3E' }}
+        >
+          <LuSearch size={20} color='#036753' />
           <Input
             type='text'
             placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             border='none'
-            _focus={{ outline: 'none' }}
+            _focus={{ outline: 'none', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
             ml={2}
+            color='gray.800'
           />
         </Flex>
 
         <Box mt={6}>
-          {loading && <Spinner size='lg' />}
+          {loading && <Spinner size='lg' color='#036753' />}
 
           {!loading && results.length === 0 && (
-            <Text color='gray.500' mt={4}>
+            <Text color='gray.500' mt={4} textAlign='center'>
               {t('search.noResults', { query: searchQuery })}
             </Text>
           )}
@@ -74,26 +87,32 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
             results?.map(product => (
               <Flex
                 key={product.id}
-                p={3}
+                p={4}
                 align='center'
-                gap={3}
+                gap={4}
                 cursor='pointer'
-                borderBottom='1px solid gray'
-                _hover={{ bg: 'gray.100' }}
-                onClick={() => (window.location.href = `/${lng}/product/${product.id}`)}
+                borderRadius='lg'
+                bg='white'
+                boxShadow='md'
+                transition='all 0.3s'
+                _hover={{ boxShadow: 'xl', transform: 'scale(1.02)', borderColor: '#036753' }}
+                onClick={() => {
+                  window.location.href = `/${lng}/product/${product.id}`;
+                }}
               >
                 <Image
                   src={product.images?.[0] || '/placeholder.png'}
                   alt={product.title}
-                  boxSize='60px'
+                  boxSize='70px'
                   borderRadius='md'
+                  objectFit='cover'
                 />
                 <Box>
-                  <Text fontSize='lg' fontWeight='bold'>
+                  <Text fontSize='lg' fontWeight='bold' color='gray.800'>
                     {product.title}
                   </Text>
                   {product.price && (
-                    <Text fontSize='sm' color='gray.600'>
+                    <Text fontSize='md' fontWeight='semibold' color='#036753'>
                       ${product.price.toFixed(2)}
                     </Text>
                   )}

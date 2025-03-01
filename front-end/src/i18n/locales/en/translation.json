@@ -131,5 +131,38 @@
     "placeholder": "Search for products...",
     "noResults": "No products found for \"{{query}}\".",
     "brand": "Brand: {{brand}}"
-  }
+  },
+
+  "service": "Service",
+  "serviceMaintenance": "Service Maintenance",
+  "warrantyService": "Warranty Service",
+  "postWarrantyService": "Post-Warranty Service",
+
+  "aboutCompany": "About Company",
+
+  "customers": "Customers",
+  "contacts": "Contacts",
+  "deliveryAndPayment": "Delivery and Payment",
+  "reviews": "Reviews",
+  "returnsAndExchanges": "Returns and Exchanges",
+
+
+  "xrayTwo": "X-rays for 2 workplaces",
+  "xrayThree": "X-rays for 3 workplaces",
+  "fluorographs": "Fluorographs",
+  "wardXray": "Ward X-rays",
+  "mammographs": "Mammographs",
+  "ultrasoundMachines": "Ultrasound Machines",
+  "ventilators": "Ventilators",
+  "anesthesiaMachines": "Anesthesia Machines",
+  "patientMonitors": "Patient Monitors",
+  "ekg": "ECG (Electrocardiographs)",
+  "dentalUnits": "Dental Units",
+  "biochemicalAnalyzers": "Biochemical Analyzers",
+
+  "workHours": "Working Hours",
+  "alwaysOpen": "Always Open",
+
+  "copyright": "© 2025 MediX. All rights reserved"
+
 }

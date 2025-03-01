@@ -4,7 +4,7 @@ import { LuSearch } from 'react-icons/lu';
 
 import { fetchSearchProducts } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
-import { Box, Flex, Group, Image, Input, InputElement, Kbd, Spinner, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Input, Kbd, Spinner, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
 const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
@@ -54,52 +54,72 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
   return (
     <Box position='relative' width='100%'>
       <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Box position='relative' flex='1'>
-          <Group w='100%'>
-            <InputElement>
-              <LuSearch color='black' size={20} />
-            </InputElement>
-            <Input
-              type='text'
-              placeholder={t('search.placeholder')}
-              value={searchQuery}
-              onChange={e => {
-                setSearchQuery(e.target.value);
-                setShowDropdown(true);
-              }}
-              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
-              bg='white'
-              borderRadius='md'
-              _hover={{ border: '1px solid blue.400' }}
-              _focus={{ borderColor: 'blue.400', outline: 'none' }}
-              px={10}
-              py={2}
-              width='100%'
-            />
-            <InputElement placement='end'>
-              <Kbd>⌘K</Kbd>
-            </InputElement>
-          </Group>
-        </Box>
+        <Flex
+          align='center'
+          bg='white'
+          borderRadius='full'
+          px={4}
+          py={2}
+          width='100%'
+          boxShadow='md'
+          border='1px solid'
+          borderColor='gray.300'
+          transition='border-color 0.2s, box-shadow 0.2s'
+          _hover={{ borderColor: '#036753' }}
+          _focusWithin={{
+            borderColor: '#036753',
+            boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)',
+          }}
+        >
+          <Box mr={2}>
+            <LuSearch color='#036753' size={18} onClick={handleSearch as any} cursor='pointer' />
+          </Box>
+          <Input
+            type='text'
+            h='25px'
+            placeholder={t('search.placeholder')}
+            value={searchQuery}
+            onChange={e => {
+              setSearchQuery(e.target.value);
+              setShowDropdown(true);
+            }}
+            onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+            bg='transparent'
+            border='none'
+            outline='none'
+            px={2}
+            width='100%'
+            fontSize='md'
+            color='gray.800'
+            _focus={{ outline: 'none' }}
+          />
+          <Box ml={2}>
+            <Kbd color='gray.600' fontSize='xs'>
+              ⌘K
+            </Kbd>
+          </Box>
+        </Flex>
       </form>
 
       {showDropdown && results.length > 0 && (
         <Box
           position='absolute'
-          top='40px'
+          top='50px'
           left='0'
           width='100%'
           bg='white'
-          border='1px solid gray'
-          borderRadius='md'
+          border='1px solid gray.200'
+          borderRadius='lg'
           boxShadow='lg'
           zIndex='1000'
           maxH='250px'
           overflowY='auto'
+          transition='all 0.3s'
+          p={2}
         >
           {loading && (
             <Flex align='center' justify='center' py={2}>
-              <Spinner size='sm' />
+              <Spinner size='sm' color='#036753' />
             </Flex>
           )}
           {!loading &&
@@ -111,6 +131,8 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
                 gap={3}
                 cursor='pointer'
                 _hover={{ bg: 'gray.100' }}
+                borderRadius='md'
+                transition='all 0.2s'
                 onMouseDown={() => router.push(`/${lng}/product/${product.id}`)}
               >
                 <Image
@@ -119,8 +141,9 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
                   boxSize='40px'
                   borderRadius='md'
                 />
+
                 <Box>
-                  <Text fontSize='sm' fontWeight='bold'>
+                  <Text fontSize='sm' fontWeight='bold' color='gray.800'>
                     {product.title}
                   </Text>
                   {product.price && (

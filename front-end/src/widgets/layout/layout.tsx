@@ -13,7 +13,7 @@ const Layout: React.FC<{ children: React.ReactNode; lng: string }> = ({ children
       <Box as='main' flex='1' py={8} px={4}>
         {children}
       </Box>
-      <Footer />
+      <Footer lng={lng} />
     </Box>
   );
 };

@@ -2,9 +2,10 @@ import { ICategoryResponse } from '@/entities/category/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
-export async function fetchCategories(): Promise<ICategoryResponse[]> {
+export async function fetchCategories(isClient?: boolean): Promise<ICategoryResponse[]> {
   try {
-    const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${baseURL}/api/subcategories/`, {
+    const prefix = !isClient ? baseURL : '';
+    const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${prefix}/api/subcategories/`, {
       cache: 'force-cache',
     });
 
@@ -12,8 +13,6 @@ export async function fetchCategories(): Promise<ICategoryResponse[]> {
   } catch (error) {
     console.warn('Error fetching subcategories', error);
 
-    return {} as ICategoryResponse[];
+    return [] as ICategoryResponse[];
   }
 }
-
-

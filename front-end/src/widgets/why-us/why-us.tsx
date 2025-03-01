@@ -1,6 +1,6 @@
 'use client';
 
-import { ElementType, ReactElement } from 'react';
+import React, { ElementType, ReactElement } from 'react';
 import { FaCheckCircle, FaCreditCard, FaHeadset, FaTruck } from 'react-icons/fa';
 
 import { Box, Flex, Heading, Icon, Image, Stack, Text } from '@chakra-ui/react';
@@ -33,35 +33,69 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
   const { t } = useTranslation(lng);
 
   return (
-    <Box>
+    <Box py={10} px={6} maxW='6xl' mx='auto'>
       {withHeading &&
         ((
-          <Heading as='h2' size='xl' mb={4}>
+          <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6}>
             {t('whyUs')}
           </Heading>
         ) as ReactElement)}
-      <Stack spacing={6} mt={10}>
+
+      <Stack mt={6}>
         {services.map((service, index) => (
-          <Flex key={index} align='center' bg='gray.50' p={5} borderRadius='md' boxShadow='md'>
-            <Icon as={service.icon as ElementType} boxSize={8} color='green.500' mr={4} />
+          <Flex
+            key={index}
+            align='center'
+            bg='white'
+            p={5}
+            borderRadius='lg'
+            boxShadow='md'
+            border='1px solid'
+            borderColor='gray.200'
+            transition='all 0.3s'
+            _hover={{ boxShadow: 'lg', borderColor: '#036753' }}
+          >
+            <Icon as={service.icon as ElementType} boxSize={10} color='#036753' mr={4} />
             <Box>
-              <Heading size='md'>{t(service.title)}</Heading>
-              <Text>{t(service.description)}</Text>
+              <Heading size='md' color='gray.800'>
+                {t(service.title as any)}
+              </Heading>
+              <Text color='gray.700'>{t(service.description as any)}</Text>
             </Box>
           </Flex>
         ))}
       </Stack>
 
-      <Flex direction={{ base: 'column', md: 'row' }} align='center' mt={10} p={5} bg='gray.100' borderRadius='md'>
+      <Flex
+        direction={{ base: 'column', md: 'row' }}
+        align='center'
+        mt={10}
+        p={6}
+        bg='rgba(3, 103, 83, 0.7)'
+        backdropFilter='blur(12px)'
+        borderRadius='lg'
+        boxShadow='lg'
+        justifyContent='space-between'
+      >
         <Box flex='1'>
-          <Heading size='lg' color='green.600'>
+          <Heading size='lg' color='white'>
             {t('available24')}
           </Heading>
-          <Text fontSize='lg'>{t('available24Description')}</Text>
+          <Text fontSize='lg' color='white' mt={2}>
+            {t('available24Description')}
+          </Text>
         </Box>
-        <Box flex='1' textAlign='center'>
-          <Image src='/24-7-support.webp' alt='24/7 Support' maxW='200px' mx='auto' />
-        </Box>
+
+        <Image
+          src='/25.png'
+          alt='24/7 Support'
+          maxW='250px'
+          w='150px'
+          mx='auto'
+          maxH='100px'
+          borderRadius='lg'
+          boxShadow='md'
+        />
       </Flex>
     </Box>
   );

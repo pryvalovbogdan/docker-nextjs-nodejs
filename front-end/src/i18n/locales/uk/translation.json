@@ -131,5 +131,37 @@
     "placeholder": "Шукати товари...",
     "noResults": "Не знайдено товарів за запитом \"{{query}}\".",
     "brand": "Бренд: {{brand}}"
-  }
+  },
+
+  "service": "Сервіс",
+  "serviceMaintenance": "Сервісне обслуговування",
+  "warrantyService": "Гарантійне обслуговування",
+  "postWarrantyService": "Післягарантійне обслуговування",
+
+  "aboutCompany": "Про компанію",
+  "customers": "Клієнтам",
+  "contacts": "Контакти",
+  "deliveryAndPayment": "Доставка і оплата",
+  "reviews": "Відгуки",
+  "returnsAndExchanges": "Повернення та обмін",
+
+  "xrayTwo": "Рентгени на 2 робочих місця",
+  "xrayThree": "Рентгени на 3 робочих місця",
+  "fluorographs": "Флюорографи",
+  "wardXray": "Палатні рентгени",
+  "mammographs": "Мамографи",
+  "ultrasoundMachines": "Апарати УЗД",
+  "ventilators": "Апарати ШВЛ",
+  "anesthesiaMachines": "Наркозні апарати",
+  "patientMonitors": "Монітори пацієнта",
+  "ekg": "ЕКГ (електрокардіографи)",
+  "dentalUnits": "Стоматологічні установки",
+  "biochemicalAnalyzers": "Біохімічні аналізатори",
+
+  "workHours": "Режим роботи",
+  "alwaysOpen": "Цілодобово",
+
+  "copyright": "© 2025 MediX. Всі права захищені"
+
+
 }

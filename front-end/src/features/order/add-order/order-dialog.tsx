@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import { submitOrder } from '@/entities/order/api';
-import { Product } from '@/entities/product/model/types';
+import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import {
   DialogBody,
@@ -19,7 +19,7 @@ import { Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react
 import { useTranslation } from '@i18n/client';
 
 interface OrderDialogProps {
-  product: Product;
+  product: IProductResponse;
   lng: string;
 }
 
@@ -59,14 +59,14 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
     const result = await submitOrder({ ...orderData, productId: product.id });
 
     if (result.success) {
-      toaster.create({ type: 'info', title: t('orderSuccess') });
+      toaster.create({ type: 'success', title: t('orderSuccess') });
+      setOrderData({ name: '', phone: '', email: '' });
+      setIsOpen(false);
     } else {
       toaster.error({ title: t('orderFailed'), description: result.message });
     }
 
-    setOrderData({ name: '', phone: '', email: '' });
     setIsSubmitting(false);
-    setIsOpen(false);
   };
 
   const isMobile = useIsMobile();
@@ -76,11 +76,14 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
       <DialogRoot size={isMobile ? 'full' : 'md'} lazyMount open={isOpen} onOpenChange={e => setIsOpen(e.open)}>
         <DialogTrigger asChild>
           <Button
-            size='sm'
+            size='md'
             mt='30px'
-            bg='#24BEE0'
+            bg='#036753'
             color='white'
-            borderRadius='27px'
+            borderRadius='full'
+            px={6}
+            _hover={{ bg: '#024D3E' }}
+            transition='all 0.2s'
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
@@ -91,14 +94,17 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
           </Button>
         </DialogTrigger>
 
-        <DialogContent>
+        <DialogContent bg='white' borderRadius='lg' boxShadow='xl' p={6}>
           <DialogHeader>
-            <Heading size='md'>{t('confirmOrder')}</Heading>
+            <Heading size='md' color='gray.800'>
+              {t('confirmOrder')}
+            </Heading>
           </DialogHeader>
+
           <DialogBody>
-            <Flex gap={4} mb={4}>
+            <Flex gap={4} mb={4} align='center'>
               <Image
-                src={product.images[0] || '/placeholder.png'}
+                src={product.images?.[0] || '/placeholder.png'}
                 alt={product.title}
                 w='80px'
                 h='80px'
@@ -106,69 +112,53 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
                 borderRadius='md'
               />
               <Box>
-                <Heading size='sm'>{product.title}</Heading>
-                <Text fontSize='sm'>{product.description.substring(0, 50)}...</Text>
+                <Heading size='sm' color='gray.800'>
+                  {product.title}
+                </Heading>
+                <Text fontSize='sm' color='gray.600'>
+                  {product.description?.substring(0, 50)}...
+                </Text>
               </Box>
             </Flex>
 
-            <Box>
-              <label htmlFor='name'>{t('name')}</label>
-              <Input
-                id='name'
-                name='name'
-                placeholder={t('enterName')}
-                onChange={handleChange}
-                value={orderData.name}
-                mt={2}
-                borderColor={errors.name ? 'red.500' : 'gray.200'}
-              />
-              {errors.name && (
-                <Text color='red.500' fontSize='sm'>
-                  {errors.name}
-                </Text>
-              )}
-            </Box>
-
-            <Box mt={4}>
-              <label htmlFor='phone'>{t('phone')}</label>
-              <Input
-                id='phone'
-                type='tel'
-                name='phone'
-                placeholder={t('enterPhone')}
-                onChange={handleChange}
-                value={orderData.phone}
-                mt={2}
-                borderColor={errors.phone ? 'red.500' : 'gray.200'}
-              />
-              {errors.phone && (
-                <Text color='red.500' fontSize='sm'>
-                  {errors.phone}
-                </Text>
-              )}
-            </Box>
-
-            <Box mt={4}>
-              <label htmlFor='email'>{t('email')}</label>
-              <Input
-                id='email'
-                type='email'
-                name='email'
-                placeholder={t('enterEmail')}
-                onChange={handleChange}
-                value={orderData.email}
-                mt={2}
-                borderColor={errors.email ? 'red.500' : 'gray.200'}
-              />
-              {errors.email && (
-                <Text color='red.500' fontSize='sm'>
-                  {errors.email}
-                </Text>
-              )}
-            </Box>
+            {['name', 'phone', 'email'].map(field => (
+              <Box key={field} mt={4}>
+                <label htmlFor={field}>
+                  <Text fontSize='sm' fontWeight='bold' color='gray.800'>
+                    {t(field as any)}
+                  </Text>
+                </label>
+                <Input
+                  id={field}
+                  name={field}
+                  type={field === 'email' ? 'email' : 'text'}
+                  placeholder={t(`enter${field.charAt(0).toUpperCase() + field.slice(1)}` as any)}
+                  onChange={handleChange}
+                  value={orderData[field as keyof typeof orderData]}
+                  mt={2}
+                  borderColor={errors[field] ? 'red.500' : 'gray.300'}
+                  _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
+                  bg='gray.50'
+                />
+                {errors[field] && (
+                  <Text color='red.500' fontSize='sm' mt={1}>
+                    {errors[field]}
+                  </Text>
+                )}
+              </Box>
+            ))}
           </DialogBody>
+
           <DialogFooter>
-            <Button colorScheme='blue' onClick={handleSubmitOrder} disabled={isSubmitting}>
+            <Button
+              color='white'
+              bg='#036753'
+              _hover={{ bg: '#024D3E' }}
+              borderRadius='full'
+              px={6}
+              onClick={handleSubmitOrder}
+              loading={isSubmitting}
+            >
               {t('submitOrder')}
             </Button>
             <DialogCloseTrigger asChild>

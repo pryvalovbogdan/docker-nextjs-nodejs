@@ -1,10 +1,10 @@
-import { IProductResponse, Product, ProductsApiResponse } from '@/entities/product/model/types';
+import { IProductResponse, ProductsApiResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
-export async function fetchBrandProducts(name: string): Promise<Product[]> {
+export async function fetchBrandProducts(name: string): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: Product[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`, {
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`, {
       cache: 'force-cache',
     });
 
