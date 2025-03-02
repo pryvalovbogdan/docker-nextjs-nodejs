@@ -5,6 +5,7 @@ import { AppDataSource } from '../data-source';
 import { Category } from '../entities';
 import { Product } from '../entities';
 import { SubCategory } from '../entities';
+import '../prefetched-data/data.json';
 
 const jsonFilePath = path.resolve(__dirname, '../prefetched-data/data.json');
 
