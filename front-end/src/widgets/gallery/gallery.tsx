@@ -9,8 +9,11 @@ import { fetchProductByCategoryUi } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from '@/shared/ui/accordion';
+import Pagination from '@/shared/ui/pagination';
 import { Button, Flex, Grid, Heading, IconButton, Image, Spinner, Stack, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
+
+const ITEMS_PER_PAGE = 8;
 
 export default function Gallery({
   products,
@@ -28,6 +31,7 @@ export default function Gallery({
     [categories[0].name]: products,
   });
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null as any);
@@ -50,16 +54,10 @@ export default function Gallery({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showMenu]);
 
-  const filteredProducts =
-    productState[selectedCategory]?.filter(product => {
-      return product.subCategory?.name && selectedSubCategory
-        ? product.subCategory?.name === selectedSubCategory
-        : true;
-    }) || [];
-
   const selectCategory = async (name: string, subCategories?: { id: number; name: string }[]) => {
     setSelectedCategory(name);
     setSelectedSubCategory('');
+    setCurrentPage(1); // Reset to first page when switching category
 
     if (subCategories?.length) {
       setSelectedSubCategory(subCategories[0].name);
@@ -68,7 +66,6 @@ export default function Gallery({
     if (productState[name]) return;
 
     setLoading(true);
-
     const fetchedProducts: IProductResponse[] = await fetchProductByCategoryUi(name);
 
     setProducts(prev => ({
@@ -79,13 +76,31 @@ export default function Gallery({
     setLoading(false);
   };
 
+  const filteredProducts =
+    productState[selectedCategory]?.filter(product =>
+      selectedSubCategory ? product.subCategory?.name === selectedSubCategory : true,
+    ) || [];
+
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+
+    if (section) {
+      const offsetTop = section.getBoundingClientRect().top + window.scrollY - 70;
+
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    }
+  };
+
   const renderProducts = () => {
     if (loading) {
       return <Spinner size='xl' color='#036753' />;
     }
 
-    if (filteredProducts.length > 0) {
-      return filteredProducts.map(product => (
+    if (paginatedProducts.length > 0) {
+      return paginatedProducts.map(product => (
         <Flex
           key={product.id}
           borderWidth={1}
@@ -104,8 +119,7 @@ export default function Gallery({
             borderColor: '#036753',
           }}
           onClick={() => router.push(`/${lng}/product/${product.id}`)}
-          height='100%'
-          maxHeight='300px'
+          height='280px'
           display='flex'
           justifyContent='space-between'
         >
@@ -189,7 +203,10 @@ export default function Gallery({
                   py={3}
                   borderRadius='md'
                   fontWeight='bold'
-                  onClick={() => selectCategory(category.name, category.subCategories)}
+                  onClick={() => {
+                    selectCategory(category.name, category.subCategories);
+                    scrollToSection('categories');
+                  }}
                 >
                   {category.name}
                   {category.subCategories?.length ? <LuChevronDown /> : null}
@@ -205,7 +222,10 @@ export default function Gallery({
                         justifyContent='flex-start'
                         w='250px'
                         _hover={{ bg: 'gray.200' }}
-                        onClick={() => setSelectedSubCategory(sub.name)}
+                        onClick={() => {
+                          setSelectedSubCategory(sub.name);
+                          scrollToSection('categories');
+                        }}
                         whiteSpace='nowrap'
                         overflow='hidden'
                         textOverflow='ellipsis'
@@ -220,17 +240,29 @@ export default function Gallery({
           </AccordionRoot>
         </Stack>
       </VStack>
+      <Flex gap={6} flexDirection='column' w='100%'>
+        <Grid
+          templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
+          gap={6}
+          w='100%'
+          alignItems='stretch'
+          justifyContent='center'
+          gridAutoRows='min-content'
+        >
+          {renderProducts()}
+        </Grid>
 
-      <Grid
-        templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
-        gap={6}
-        w='100%'
-        alignItems='stretch'
-        justifyContent='center'
-        gridAutoRows='min-content'
-      >
-        {renderProducts()}
-      </Grid>
+        {filteredProducts.length > ITEMS_PER_PAGE && (
+          <Pagination
+            handlePageChange={page => {
+              setCurrentPage(page);
+              scrollToSection('categories');
+            }}
+            currentPage={currentPage}
+            totalPages={totalPages}
+          />
+        )}
+      </Flex>
     </Flex>
   );
 }
