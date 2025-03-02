@@ -48,7 +48,7 @@ const BrandsSection = ({ lng }: { lng: string }) => {
 
   return (
     <Box as='section' id='brands' py={20} bg='white'>
-      <Heading as='h3' fontSize='48px' textAlign='center' mb={10}>
+      <Heading as='h3' fontSize='36px' textAlign='center' mb={10}>
         {t('brands')}
       </Heading>
       <SimpleGrid columns={{ base: 2, sm: 3, md: 4 }} maxW='container.xl' mx='auto' gap={10}>

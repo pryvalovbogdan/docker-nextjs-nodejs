@@ -36,7 +36,7 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
     <Box py={10} px={6} maxW='6xl' mx='auto'>
       {withHeading &&
         ((
-          <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6}>
+          <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6} fontSize='36px'>
             {t('whyUs')}
           </Heading>
         ) as ReactElement)}

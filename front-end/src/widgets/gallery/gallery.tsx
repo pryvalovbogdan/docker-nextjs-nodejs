@@ -33,6 +33,7 @@ export default function Gallery({
   const menuRef = useRef<HTMLDivElement>(null as any);
 
   const isMobile = useIsMobile(768);
+  const router = useRouter();
   const { t } = useTranslation(lng);
 
   useEffect(() => {
@@ -77,8 +78,6 @@ export default function Gallery({
 
     setLoading(false);
   };
-
-  const router = useRouter();
 
   const renderProducts = () => {
     if (loading) {

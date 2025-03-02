@@ -73,7 +73,7 @@ export async function fetchProductByCategory(name: string): Promise<IProductResp
   } catch (error) {
     console.error('Error fetching products by category:', error);
 
-    return {} as IProductResponse[];
+    return [] as IProductResponse[];
   }
 }
 
