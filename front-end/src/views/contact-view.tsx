@@ -26,6 +26,7 @@ const ContactView = ({ lng, googleKey }: ContactViewProps) => {
 
   console.log(
     'GOOGLE_MAPS_API_KEY',
+    googleKey,
     process.env,
     process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     process.env.GOOGLE_MAPS_API_KEY,
