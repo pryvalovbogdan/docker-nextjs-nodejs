@@ -1,7 +1,7 @@
 'use client';
 
 import NextLink from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { LuMenu, LuX } from 'react-icons/lu';
 
@@ -12,6 +12,7 @@ import { useTranslation } from '@i18n/client';
 const Header: React.FC<{ lng: string }> = ({ lng }) => {
   const { t } = useTranslation(lng);
   const pathname = usePathname();
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -67,7 +68,7 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
       <Flex maxW='container.xl' mx='auto' justify='space-between' align='center' px={4}>
         <Image
           src='/29.png'
-          alt='24/7 Support'
+          alt='Madix'
           maxW='250px'
           w='150px'
           mx='auto'
@@ -75,6 +76,8 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
           borderRadius='lg'
           boxShadow='md'
           bg='transparent'
+          cursor='pointer'
+          onClick={() => (pathname === `/${lng}` ? scrollToSection('layout') : router.push(`/${lng}`))}
         />
 
         <Box flex='1' mx={6} maxW={{ base: '80%', md: '300px' }}>

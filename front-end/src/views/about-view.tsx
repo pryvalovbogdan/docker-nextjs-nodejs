@@ -7,13 +7,16 @@ import { WhyUs } from '@widgets/why-us';
 
 interface AboutViewProps {
   lng: string;
+  officePhoneSecond?: string;
+  officePhone?: string;
+  officeEmail?: string;
 }
 
-const AboutView = ({ lng }: AboutViewProps) => {
+const AboutView = ({ lng, officePhoneSecond, officePhone, officeEmail }: AboutViewProps) => {
   const { t } = useTranslation(lng);
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officePhoneSecond={officePhoneSecond} officePhone={officePhone} officeEmail={officeEmail}>
       <Container maxW='container.xl' py={16}>
         <Flex
           direction={{ base: 'column', md: 'row' }}

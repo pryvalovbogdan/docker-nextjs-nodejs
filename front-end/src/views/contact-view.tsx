@@ -27,8 +27,6 @@ const center = { lat: 50.44027, lng: 30.47491 };
 const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEmail }: ContactViewProps) => {
   const { t } = useTranslation(lng);
 
-  console.log('GOOGLE_MAPS_API_KEY', googleKey, officePhone, officePhoneSecond, officeEmail);
-
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: googleKey,
@@ -47,7 +45,7 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
   };
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officeEmail={officeEmail} officePhone={officePhone} officePhoneSecond={officePhoneSecond}>
       <Container maxW='container.xl' py={10}>
         <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' align='flex-start' gap={10} mb={10}>
           <Box flex='1'>

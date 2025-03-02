@@ -1,3 +1,5 @@
+import { connection } from 'next/server';
+
 import { fetchCategories } from '@/entities/category/api';
 import { fetchLastAddedProducts, fetchProductByCategory } from '@/entities/product/api';
 import LastAddedProducts from '@/entities/product/ui/last-added-products';
@@ -23,12 +25,18 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
 
   if (!languages.includes(lng)) lng = fallbackLng;
 
+  await connection();
   const categories = await fetchCategories();
   const products = await fetchProductByCategory(categories[0]?.name || '');
   const lastAddedProducts = await fetchLastAddedProducts();
 
   return (
-    <Layout lng={lng}>
+    <Layout
+      lng={lng}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+    >
       <Gallery lng={lng} products={products} categories={categories} />
       <BrandsSection lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
