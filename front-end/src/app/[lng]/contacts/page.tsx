@@ -16,17 +16,13 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
 
   await connection();
 
-  console.log(
-    'GOOGLE_MAPS_API_KEY server',
-    process.env,
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    process.env.GOOGLE_MAPS_API_KEY,
-  );
-
   return (
     <ContactView
       lng={lng}
-      googleKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || ''}
+      googleKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
     />
   );
 }
