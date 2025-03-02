@@ -36,7 +36,7 @@ export default function Loading() {
             >
               <Skeleton height='180px' borderRadius='md' mb={3} />
 
-              <VStack align='start' spacing={2} width='100%'>
+              <VStack align='start' width='100%'>
                 <Skeleton height='20px' width='80%' />
                 <Skeleton height='14px' width='100%' />
                 <Skeleton height='14px' width='90%' />

@@ -11,6 +11,7 @@ import { Layout } from '@widgets/layout';
 
 interface ContactViewProps {
   lng: string;
+  googleKey: string;
 }
 
 const containerStyle = {
@@ -20,7 +21,7 @@ const containerStyle = {
 
 const center = { lat: 50.44027, lng: 30.47491 };
 
-const ContactView = ({ lng }: ContactViewProps) => {
+const ContactView = ({ lng, googleKey }: ContactViewProps) => {
   const { t } = useTranslation(lng);
 
   console.log(
@@ -32,7 +33,7 @@ const ContactView = ({ lng }: ContactViewProps) => {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: googleKey,
   });
 
   const buildRoute = () => {

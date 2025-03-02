@@ -99,7 +99,7 @@ const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query:
                     />
                   )}
 
-                  <VStack align='start' spacing={2} w='100%'>
+                  <VStack align='start' w='100%'>
                     <Heading
                       size='sm'
                       color='black'
@@ -118,7 +118,6 @@ const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query:
                       overflow='hidden'
                       textOverflow='ellipsis'
                       display='-webkit-box'
-                      WebkitBoxOrient='vertical'
                       WebkitLineClamp={3}
                       lineHeight='1.4'
                       maxHeight='4.2em'

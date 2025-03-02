@@ -123,15 +123,7 @@ export default function Gallery({
             {product.title}
           </Heading>
           {product.description && (
-            <Text
-              fontSize='sm'
-              mt={2}
-              color='gray.500'
-              noOfLines={5}
-              overflow='hidden'
-              textOverflow='ellipsis'
-              display='-webkit-box'
-            >
+            <Text fontSize='sm' mt={2} color='gray.500' overflow='hidden' textOverflow='ellipsis' display='-webkit-box'>
               {product.description}
             </Text>
           )}
