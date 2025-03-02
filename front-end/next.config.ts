@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_OFFICE_EMAIL: process.env.NEXT_PUBLIC_OFFICE_EMAIL,
     NEXT_PUBLIC_OFFICE_PHONE: process.env.NEXT_PUBLIC_OFFICE_PHONE,
     NEXT_PUBLIC_OFFICE_PHONE_SECOND: process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND,
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
   output: 'standalone',
   experimental: {
