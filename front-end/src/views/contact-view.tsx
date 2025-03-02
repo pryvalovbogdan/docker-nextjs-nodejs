@@ -12,6 +12,9 @@ import { Layout } from '@widgets/layout';
 interface ContactViewProps {
   lng: string;
   googleKey: string;
+  officePhone: string;
+  officePhoneSecond: string;
+  officeEmail: string;
 }
 
 const containerStyle = {
@@ -21,16 +24,10 @@ const containerStyle = {
 
 const center = { lat: 50.44027, lng: 30.47491 };
 
-const ContactView = ({ lng, googleKey }: ContactViewProps) => {
+const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEmail }: ContactViewProps) => {
   const { t } = useTranslation(lng);
 
-  console.log(
-    'GOOGLE_MAPS_API_KEY',
-    googleKey,
-    process.env,
-    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    process.env.GOOGLE_MAPS_API_KEY,
-  );
+  console.log('GOOGLE_MAPS_API_KEY', googleKey, officePhone, officePhoneSecond, officeEmail);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -73,20 +70,20 @@ const ContactView = ({ lng, googleKey }: ContactViewProps) => {
                 <Icon as={FaPhone as ElementType} color='#036753' boxSize={5} mr={3} />
                 <Flex flexDirection='column'>
                   <Link
-                    href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE}`}
+                    href={`tel:${officePhone}`}
                     color='#036753'
                     fontSize='lg'
                     _hover={{ textDecoration: 'underline' }}
                   >
-                    {process.env.NEXT_PUBLIC_OFFICE_PHONE}
+                    {officePhone}
                   </Link>
                   <Link
-                    href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}`}
+                    href={`tel:${officePhoneSecond}`}
                     color='#036753'
                     fontSize='lg'
                     _hover={{ textDecoration: 'underline' }}
                   >
-                    {process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}
+                    {officePhoneSecond}
                   </Link>
                 </Flex>
               </Flex>
@@ -94,12 +91,12 @@ const ContactView = ({ lng, googleKey }: ContactViewProps) => {
               <Flex align='center'>
                 <Icon as={FaEnvelope as ElementType} color='#036753' boxSize={5} mr={3} />
                 <Link
-                  href={`mailto:${process.env.NEXT_PUBLIC_OFFICE_EMAIL}`}
+                  href={`mailto:${officeEmail}`}
                   color='#036753'
                   fontSize='lg'
                   _hover={{ textDecoration: 'underline' }}
                 >
-                  {process.env.NEXT_PUBLIC_OFFICE_EMAIL}
+                  {officeEmail}
                 </Link>
               </Flex>
             </Flex>
