@@ -1,6 +1,7 @@
 import { Admin } from '../entities';
 import { AdminRepository } from '../repositories';
 import { encrypt } from '../utils/encrypt';
+import { importProducts } from '../utils/importProducts';
 
 class AdminService {
   private repository: AdminRepository = new AdminRepository();
@@ -89,7 +90,7 @@ class AdminService {
         ];
 
         await this.repository.saveAdmin(admin);
-
+        await importProducts();
         console.log('Default admin created');
       } else {
         console.log('Primary admin already initialized');

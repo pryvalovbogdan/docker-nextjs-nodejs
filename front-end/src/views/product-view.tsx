@@ -100,8 +100,19 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 </Badge>
               )}
             </Text>
-            <Text mt={4} fontSize='lg' color='gray.700'>
-              {product.description}
+            <Text
+              mt={4}
+              fontSize='lg'
+              color='gray.700'
+              style={{
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 8,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {product.description || product.characteristics}
             </Text>
 
             {product.price && (

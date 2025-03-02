@@ -113,7 +113,7 @@ class ProductService {
 
       return {
         data: {
-          products: products as Product[], // Ensure correct type
+          products: products as Product[],
           totalPages,
         },
         errors: [],
