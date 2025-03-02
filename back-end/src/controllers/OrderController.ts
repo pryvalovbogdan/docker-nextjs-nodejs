@@ -85,11 +85,11 @@ class OrderController {
 
       const orderDetails = `
       <div>
-        <p><strong>Номер замовлення:</strong> ${product.id || 'Невідомо'}</p>
+        <p><strong>Номер замовлення:</strong> ${result.data?.id || 'Невідомо'}</p>
         <p><strong>Продукт:</strong> ${product.title}</p>
         <p><strong>Бренд:</strong> ${product.brand || 'Невідомо'}</p>
-        <p><strong>Країна:</strong> ${product.description || 'Невідомо'}</p>
-        <p><strong>Опис:</strong> ${product.description.substring(0, 50) || 'Невідомо'}</p>
+        <p><strong>Країна:</strong> ${product.country || 'Невідомо'}</p>
+        <p><strong>Опис:</strong> ${product.description?.substring(0, 100) || 'Невідомо'}</p>
         ${product.price ? `<p><strong>Ціна:</strong> ${product.price} UAH</p>` : ''}
         ${
           product.images?.length

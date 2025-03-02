@@ -1,3 +1,5 @@
+import { connection } from 'next/server';
+
 import AboutView from '@/views/about-view';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
@@ -12,5 +14,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
 export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
 
-  return <AboutView lng={lng} />;
+  await connection();
+
+  return (
+    <AboutView
+      lng={lng}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+    />
+  );
 }

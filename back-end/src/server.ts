@@ -28,7 +28,6 @@ AppDataSource.initialize()
   .then(async () => {
     app.listen(PORT, async () => {
       console.log('Server started at port http://localhost:' + PORT);
-      console.log('NEXT_PUBLIC_GOOGLE_MAPS_API_KEY', process.env, process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
 
       await adminService.initializePrimaryAdmin();
     });

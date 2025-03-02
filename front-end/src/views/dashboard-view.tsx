@@ -32,6 +32,7 @@ type PaginatedData = {
 const columns = {
   orders: [
     { columnName: 'name', translateKey: 'columns.name' },
+    { columnName: 'product.title', translateKey: 'tabs.products' },
     { columnName: 'phone', translateKey: 'columns.phone' },
     { columnName: 'email', translateKey: 'columns.email' },
     { columnName: 'date', translateKey: 'columns.date' },
@@ -127,7 +128,9 @@ export default function Dashboard({ lng }: { lng: string }) {
   };
 
   const renderCellValue = (row: any, columnName: string) => {
-    const value = row[columnName];
+    const keys = columnName.split('.');
+
+    const value: any = keys.reduce((acc, key) => acc && acc[key], row);
 
     if (typeof value === 'object' && value !== null && 'name' in value) {
       return value.name;

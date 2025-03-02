@@ -10,7 +10,17 @@ import { ICategoryResponse } from '@/entities/category/model/types';
 import { Box, Flex, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
-const Footer = ({ lng }: { lng: string }) => {
+const Footer = ({
+  lng,
+  officePhone,
+  officePhoneSecond,
+  officeEmail,
+}: {
+  lng: string;
+  officePhoneSecond?: string;
+  officePhone?: string;
+  officeEmail?: string;
+}) => {
   const { t } = useTranslation(lng);
   const [categories, setCategories] = useState<ICategoryResponse[]>([]);
   const router = useRouter();
@@ -66,19 +76,11 @@ const Footer = ({ lng }: { lng: string }) => {
             </Flex>
 
             <Flex flexDirection='column'>
-              <Link
-                href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE}`}
-                color='gray.400'
-                _hover={{ color: 'gray.200' }}
-              >
-                {process.env.NEXT_PUBLIC_OFFICE_PHONE}
+              <Link href={`tel:${officePhone}`} color='gray.400' _hover={{ color: 'gray.200' }}>
+                {officePhone}
               </Link>
-              <Link
-                href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}`}
-                color='gray.400'
-                _hover={{ color: 'gray.200' }}
-              >
-                {process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}
+              <Link href={`tel:${officePhoneSecond}`} color='gray.400' _hover={{ color: 'gray.200' }}>
+                {officePhoneSecond}
               </Link>
             </Flex>
           </Flex>
@@ -88,8 +90,8 @@ const Footer = ({ lng }: { lng: string }) => {
             <Text fontWeight='bold'>{t('email')}</Text>
           </Flex>
 
-          <Link href={`mailto:${process.env.NEXT_PUBLIC_OFFICE_EMAIL}`} color='gray.400' _hover={{ color: 'gray.200' }}>
-            {process.env.NEXT_PUBLIC_OFFICE_EMAIL}
+          <Link href={`mailto:${officeEmail}`} color='gray.400' _hover={{ color: 'gray.200' }}>
+            {officeEmail}
           </Link>
 
           <Text fontWeight='bold'>{t('workHours')}</Text>
