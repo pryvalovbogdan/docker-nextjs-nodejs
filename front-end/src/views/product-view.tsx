@@ -24,7 +24,11 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
         <Breadcrumb.Root bg='rgba(3, 103, 83, 0.7)' ml={10} py={2} px={4} backdropFilter='blur(12px)' borderRadius='md'>
           <Breadcrumb.List>
             <Breadcrumb.Item>
-              <Breadcrumb.Link href='#' color='white' _hover={{ color: '#F2F2F2' }}>
+              <Breadcrumb.Link
+                href={`/${lng}/category/${product.category.name}`}
+                color='white'
+                _hover={{ color: '#F2F2F2' }}
+              >
                 {product.category.name}
               </Breadcrumb.Link>
             </Breadcrumb.Item>
@@ -100,8 +104,19 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 </Badge>
               )}
             </Text>
-            <Text mt={4} fontSize='lg' color='gray.700'>
-              {product.description}
+            <Text
+              mt={4}
+              fontSize='lg'
+              color='gray.700'
+              style={{
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 8,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {product.description || product.characteristics}
             </Text>
 
             {product.price && (

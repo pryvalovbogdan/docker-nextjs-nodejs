@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   if (!languages.includes(lng)) lng = fallbackLng;
 
   const categories = await fetchCategories();
-  const products = await fetchProductByCategory(categories[0].name);
+  const products = await fetchProductByCategory(categories[0]?.name || '');
   const lastAddedProducts = await fetchLastAddedProducts();
 
   return (

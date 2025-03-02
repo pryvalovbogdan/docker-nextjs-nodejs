@@ -4,20 +4,21 @@ import { Button, Flex, IconButton } from '@chakra-ui/react';
 
 interface IPaginationProps {
   totalPages: number;
-  handlePageChange: (page: number) => void;
   currentPage: number;
+  handlePageChange: (page: number) => void;
 }
-const Pagination = ({ handlePageChange, currentPage, totalPages }: IPaginationProps) => {
+
+const Pagination = ({ totalPages, currentPage, handlePageChange }: IPaginationProps) => {
   return (
-    <Flex justify='center' align='center' mt={4} gap={2} fontWeight='bold'>
+    <Flex justify='center' align='center' mt={6} gap={2} fontWeight='bold'>
       <IconButton
+        aria-label='Previous Page'
         disabled={currentPage === 1}
         onClick={() => handlePageChange(currentPage - 1)}
-        aria-label='Previous Page'
-        bg='black'
+        bg='emerald.800'
         color='white'
-        _hover={{ bg: 'gray.700' }}
-        _disabled={{ bg: 'gray.500', cursor: 'not-allowed' }}
+        _hover={{ bg: 'emerald.600' }}
+        _disabled={{ bg: 'gray.400', cursor: 'not-allowed' }}
       >
         <AiOutlineLeft />
       </IconButton>
@@ -26,23 +27,23 @@ const Pagination = ({ handlePageChange, currentPage, totalPages }: IPaginationPr
         <Button
           key={page}
           onClick={() => handlePageChange(page)}
-          bg={currentPage === page ? 'orange.400' : 'black'}
-          color={currentPage === page ? 'black' : 'white'}
-          _hover={{ bg: 'gray.700', color: 'white', opacity: 0.7 }}
-          _selected={{ bg: 'orange.400', color: 'black' }}
+          bg={currentPage === page ? 'emerald.700' : 'emerald.800'}
+          color='white'
+          _hover={{ bg: 'emerald.600' }}
+          _selected={{ bg: 'emerald.700', color: 'white' }}
         >
           {page}
         </Button>
       ))}
 
       <IconButton
+        aria-label='Next Page'
         disabled={currentPage === totalPages}
         onClick={() => handlePageChange(currentPage + 1)}
-        aria-label='Next Page'
-        bg='black'
+        bg='emerald.800'
         color='white'
-        _hover={{ bg: 'gray.700' }}
-        _disabled={{ bg: 'gray.500', cursor: 'not-allowed' }}
+        _hover={{ bg: 'emerald.600' }}
+        _disabled={{ bg: 'gray.400', cursor: 'not-allowed' }}
       >
         <AiOutlineRight />
       </IconButton>

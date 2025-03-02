@@ -33,6 +33,7 @@ export default function Gallery({
   const menuRef = useRef<HTMLDivElement>(null as any);
 
   const isMobile = useIsMobile(768);
+  const router = useRouter();
   const { t } = useTranslation(lng);
 
   useEffect(() => {
@@ -78,8 +79,6 @@ export default function Gallery({
     setLoading(false);
   };
 
-  const router = useRouter();
-
   const renderProducts = () => {
     if (loading) {
       return <Spinner size='xl' color='#036753' />;
@@ -105,6 +104,10 @@ export default function Gallery({
             borderColor: '#036753',
           }}
           onClick={() => router.push(`/${lng}/product/${product.id}`)}
+          height='100%'
+          maxHeight='300px'
+          display='flex'
+          justifyContent='space-between'
         >
           {product.images && product.images.length > 0 && (
             <Image
@@ -112,15 +115,15 @@ export default function Gallery({
               alt={product.title}
               mb={2}
               borderRadius='md'
-              height='200px'
+              height='150px'
               objectFit='cover'
             />
           )}
-          <Heading size='sm' color='gray.700'>
+          <Heading size='sm' color='gray.700' textAlign='center'>
             {product.title}
           </Heading>
           {product.description && (
-            <Text fontSize='sm' mt={2} color='gray.500'>
+            <Text fontSize='sm' mt={2} color='gray.500' overflow='hidden' textOverflow='ellipsis' display='-webkit-box'>
               {product.description}
             </Text>
           )}
@@ -218,7 +221,14 @@ export default function Gallery({
         </Stack>
       </VStack>
 
-      <Grid templateColumns={{ base: '1fr', md: 'repeat(auto-fit, minmax(300px, 1fr))' }} gap={6} w='100%'>
+      <Grid
+        templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
+        gap={6}
+        w='100%'
+        alignItems='stretch'
+        justifyContent='center'
+        gridAutoRows='min-content'
+      >
         {renderProducts()}
       </Grid>
     </Flex>

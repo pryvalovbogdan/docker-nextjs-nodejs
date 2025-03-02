@@ -72,18 +72,15 @@ const ContactForm = ({ lng }: { lng: string }) => {
 
   return (
     <Box as='section' id='contact' py={20} bg='white'>
-      {/* Section Heading */}
-      <Heading as='h3' fontSize='48px' textAlign='center' mb='52px' color='gray.800'>
+      <Heading as='h3' fontSize='36px' textAlign='center' mb='52px' color='gray.800'>
         {t('contactUs')}
       </Heading>
-
-      {/* Form */}
       <Box
         as='form'
         maxW='900px'
         mx='auto'
         p={10}
-        bg='rgba(3, 103, 83, 0.7)' // Emerald Glass Effect
+        bg='rgba(3, 103, 83, 0.7)'
         backdropFilter='blur(12px)'
         borderRadius='lg'
         boxShadow='lg'
@@ -176,7 +173,6 @@ const ContactForm = ({ lng }: { lng: string }) => {
           )}
         </Box>
 
-        {/* Submit Button */}
         <Flex justify='center'>
           <Button
             disabled={isLoading}

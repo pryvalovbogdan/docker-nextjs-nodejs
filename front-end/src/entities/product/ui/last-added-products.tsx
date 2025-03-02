@@ -123,7 +123,7 @@ export default function LastAddedProducts({ products, lng }: { products: IProduc
 
   return (
     <Box p={10} id='last-products' bg='gray.50'>
-      <Heading size='lg' mb={6} textAlign='center' color='gray.800'>
+      <Heading size='lg' mb={6} textAlign='center' color='gray.800' fontSize='36px'>
         {t('newProducts')}
       </Heading>
 

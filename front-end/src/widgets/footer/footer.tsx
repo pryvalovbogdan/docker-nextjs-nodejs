@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { ElementType, useEffect, useState } from 'react';
 import { FaFacebookF, FaInstagram, FaTelegram, FaYoutube } from 'react-icons/fa';
 import { MdEmail, MdPhone } from 'react-icons/md';
@@ -12,6 +13,7 @@ import { useTranslation } from '@i18n/client';
 const Footer = ({ lng }: { lng: string }) => {
   const { t } = useTranslation(lng);
   const [categories, setCategories] = useState<ICategoryResponse[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetchCategories(true)
@@ -24,26 +26,32 @@ const Footer = ({ lng }: { lng: string }) => {
       <Flex justify='space-between' flexWrap='wrap' maxW='1200px' mx='auto'>
         <VStack align='start' flex='1'>
           <Text fontWeight='bold'>{t('aboutCompany')}</Text>
-          <Link href={`/${lng}/about`} color='gray.400'>
+          <Link href={`/${lng}/about`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('aboutUs')}
           </Link>
-          <Link href={`/${lng}#brands`} color='gray.400'>
+          <Link href={`/${lng}#brands`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('brands')}
           </Link>
         </VStack>
 
         <VStack align='start' flex='1'>
           <Text fontWeight='bold'>{t('customers')}</Text>
-          <Link href={`/${lng}/contacts`} color='gray.400'>
+          <Link href={`/${lng}/contacts`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('contacts')}
           </Link>
         </VStack>
 
         <VStack align='start' flex='1'>
           <Text fontWeight='bold'>{t('categories')}</Text>
-
           {categories.map(item => (
-            <Text color='gray.400' key={item.name}>
+            <Text
+              key={item.name}
+              onClick={() => router.push(`/${lng}/category/${encodeURIComponent(item.name)}`)}
+              color='gray.400'
+              cursor='pointer'
+              transition='color 0.2s'
+              _hover={{ textDecoration: 'underline', color: 'gray.200' }}
+            >
               {item.name}
             </Text>
           ))}
@@ -58,10 +66,18 @@ const Footer = ({ lng }: { lng: string }) => {
             </Flex>
 
             <Flex flexDirection='column'>
-              <Link href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE}`} color='gray.400'>
+              <Link
+                href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE}`}
+                color='gray.400'
+                _hover={{ color: 'gray.200' }}
+              >
                 {process.env.NEXT_PUBLIC_OFFICE_PHONE}
               </Link>
-              <Link href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}`} color='gray.400'>
+              <Link
+                href={`tel:${process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}`}
+                color='gray.400'
+                _hover={{ color: 'gray.200' }}
+              >
                 {process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND}
               </Link>
             </Flex>
@@ -72,7 +88,7 @@ const Footer = ({ lng }: { lng: string }) => {
             <Text fontWeight='bold'>{t('email')}</Text>
           </Flex>
 
-          <Link href={`mailto:${process.env.NEXT_PUBLIC_OFFICE_EMAIL}`} color='gray.400'>
+          <Link href={`mailto:${process.env.NEXT_PUBLIC_OFFICE_EMAIL}`} color='gray.400' _hover={{ color: 'gray.200' }}>
             {process.env.NEXT_PUBLIC_OFFICE_EMAIL}
           </Link>
 
@@ -90,10 +106,10 @@ const Footer = ({ lng }: { lng: string }) => {
           </Text>
 
           <Flex align='center' gap={4}>
-            <FaInstagram size={20} />
-            <FaFacebookF size={20} />
-            <FaYoutube size={20} />
-            <FaTelegram size={20} />
+            <Icon as={FaInstagram as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
+            <Icon as={FaFacebookF as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
+            <Icon as={FaYoutube as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
+            <Icon as={FaTelegram as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
           </Flex>
         </Flex>
       </Flex>
