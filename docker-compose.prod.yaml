@@ -29,6 +29,8 @@ services:
   client:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-frontend:latest
     env_file: .env
+    environment:
+      - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
     ports:
       - "3000:3000"
     depends_on:

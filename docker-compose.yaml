@@ -35,6 +35,8 @@ services:
       context: ./front-end
       dockerfile: ${DOCKERFILE:-Dockerfile.dev}
     env_file: .env
+    environment:
+      - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
     volumes:
       - ./front-end:/app
     ports:
