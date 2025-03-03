@@ -16,6 +16,8 @@ interface ProductProps {
 const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
   const { t } = useTranslation(lng);
   const [showMore, setShowMore] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(product.images?.[0] || '/placeholder.png');
+
   const toggleShowMore = () => setShowMore(!showMore);
 
   return (
@@ -57,7 +59,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
         <Flex direction={{ base: 'column', md: 'row' }} gap={8}>
           <Box flex='1' maxW='500px'>
             <Image
-              src={product.images?.[0] || '/placeholder.png'}
+              src={selectedImage}
               alt={product.title}
               objectFit='contain'
               w='100%'
@@ -67,9 +69,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               mb={4}
             />
 
-            {product.images && product.images?.length > 1 && (
+            {product.images && product.images.length > 1 && (
               <Flex gap={2} overflowX='auto'>
-                {product.images?.map(img => (
+                {product.images.map(img => (
                   <Image
                     key={img}
                     src={img}
@@ -79,9 +81,10 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                     objectFit='cover'
                     borderRadius='md'
                     cursor='pointer'
-                    border='2px solid transparent'
+                    border={selectedImage === img ? '2px solid #036753' : '2px solid transparent'}
                     _hover={{ border: '2px solid #036753', opacity: 0.8 }}
                     transition='all 0.3s'
+                    onClick={() => setSelectedImage(img)}
                   />
                 ))}
               </Flex>

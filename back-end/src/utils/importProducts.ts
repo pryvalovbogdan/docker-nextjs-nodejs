@@ -39,7 +39,7 @@ export const importProducts = async () => {
       product.title = productData.title;
       product.description = productData.description;
       product.characteristics = productData.characteristics;
-      product.images = [productData.imgUrl];
+      product.images = productData.imgUrls;
       product.category = category;
       product.subCategory = subCategory;
 

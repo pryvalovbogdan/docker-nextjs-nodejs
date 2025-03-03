@@ -51,7 +51,8 @@ export async function fetchProductsOffSet(token: string, page: number = 1, limit
 
 export async function fetchProductByCategoryUi(name: string): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${name}`, {
+    const encodedName = encodeURIComponent(name);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${encodedName}`, {
       cache: 'force-cache',
     });
 
@@ -59,7 +60,7 @@ export async function fetchProductByCategoryUi(name: string): Promise<IProductRe
   } catch (error) {
     console.error('Error fetching products by category:', error);
 
-    return {} as IProductResponse[];
+    return [];
   }
 }
 
