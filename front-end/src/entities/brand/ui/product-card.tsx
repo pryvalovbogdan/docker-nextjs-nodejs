@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
+import { getInnerText } from '@/shared/utils';
 import { Badge, Box, Flex, GridItem, Image, Text, VStack } from '@chakra-ui/react';
 import { OrderDialog } from '@features/order';
 
@@ -28,6 +29,7 @@ const ProductCard = ({ product, lng }: ProductProps) => {
       rounded='lg'
       overflow='hidden'
       shadow='md'
+      m={2}
       cursor='pointer'
       transition='all 0.3s'
       _hover={{
@@ -35,9 +37,8 @@ const ProductCard = ({ product, lng }: ProductProps) => {
         transform: 'scale(1.05)',
         borderColor: '#036753',
       }}
-      onClick={handleRedirect}
     >
-      <Box bg='gray.50' display='flex' justifyContent='center' alignItems='center'>
+      <Box bg='gray.50' display='flex' justifyContent='center' alignItems='center' onClick={handleRedirect}>
         <Image
           src={product.images?.[0] || '/placeholder.png'}
           alt={product.title}
@@ -50,17 +51,21 @@ const ProductCard = ({ product, lng }: ProductProps) => {
       </Box>
 
       <VStack align='start' p={4}>
-        <Text fontSize='lg' fontWeight='bold' color='gray.800'>
-          {product.title}
-        </Text>
-        <Text fontSize='sm' color='gray.600'>
-          {product.description}
-        </Text>
+        <Box onClick={handleRedirect}>
+          <Text fontSize='lg' fontWeight='bold' color='gray.800'>
+            {product.title}
+          </Text>
+          <Text fontSize='sm' color='gray.600'>
+            {getInnerText(product.description || '').slice(0, 150)}
+          </Text>
+        </Box>
 
         <Flex w='100%' alignItems='center' justify='space-between'>
-          <Badge colorScheme='green' px={3} py={1} rounded='md'>
-            {product.country || 'Unknown'}
-          </Badge>
+          {product.country && (
+            <Badge colorScheme='green' px={3} py={1} rounded='md' onClick={handleRedirect}>
+              {product.country}
+            </Badge>
+          )}
           <OrderDialog product={product} lng={lng} />
         </Flex>
 

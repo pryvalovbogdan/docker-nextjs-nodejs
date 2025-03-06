@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from '@/shared/ui/dialog';
 import { Toaster, toaster } from '@/shared/ui/toaster';
+import { getInnerText } from '@/shared/utils';
 import { Box, Button, Flex, Heading, Image, Input, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
@@ -116,7 +117,7 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
                   {product.title}
                 </Heading>
                 <Text fontSize='sm' color='gray.600'>
-                  {product.description?.substring(0, 50)}...
+                  {getInnerText(product.description || '')?.substring(0, 100)}...
                 </Text>
               </Box>
             </Flex>

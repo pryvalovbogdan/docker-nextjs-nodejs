@@ -149,9 +149,11 @@ class ProductController {
   };
 
   getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
-    const { category } = req.params;
+    let { category } = req.params;
 
     try {
+      category = decodeURIComponent(category);
+
       const result = await this.service.getProductsByCategory(category);
 
       if (result.errors.length) {
@@ -162,6 +164,8 @@ class ProductController {
 
       if (result.data) {
         responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+      } else {
+        responseHandler.sendFailResponse(res, 'No products found for this category');
       }
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
@@ -170,9 +174,10 @@ class ProductController {
   };
 
   getProductsBySubCategory = async (req: Request, res: Response): Promise<void> => {
-    const { category } = req.params;
+    let { category } = req.params;
 
     try {
+      category = decodeURIComponent(category);
       const result = await this.service.getProductsBySubCategory(category);
 
       if (result.errors.length) {

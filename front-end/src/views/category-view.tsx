@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
 import Pagination from '@/shared/ui/pagination';
+import { getInnerText } from '@/shared/utils';
 import { Box, Flex, Grid, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
@@ -120,9 +121,9 @@ const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query:
                       display='-webkit-box'
                       WebkitLineClamp={3}
                       lineHeight='1.4'
-                      maxHeight='4.2em'
+                      maxHeight='2.5em'
                     >
-                      {product.description || product.characteristics}
+                      {getInnerText(product.description || '') || product.characteristics}
                     </Text>
 
                     {product.price && (

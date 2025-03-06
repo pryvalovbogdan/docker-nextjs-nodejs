@@ -15,7 +15,7 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
   products,
 }) => {
   const { t } = useTranslation(lng);
-  const [searchQuery, setSearchQuery] = useState(query);
+  const [searchQuery, setSearchQuery] = useState(decodeURIComponent(query));
   const [results, setResults] = useState<IProductResponse[]>(products);
   const [loading, setLoading] = useState(false);
 

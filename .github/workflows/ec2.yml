@@ -67,6 +67,7 @@ jobs:
             OFFICE_EMAIL=${{ secrets.NEXT_PUBLIC_OFFICE_EMAIL }}
             OFFICE_PHONE=${{ secrets.NEXT_PUBLIC_OFFICE_PHONE }}
             OFFICE_PHONE_SECOND=${{ secrets.NEXT_PUBLIC_OFFICE_PHONE_SECOND }}
+            OFFICE_EMAIL_PASSWORD=${{ secrets.OFFICE_EMAIL_PASSWORD }}
             EOT
             
             # Log in to ECR before pulling the Docker images

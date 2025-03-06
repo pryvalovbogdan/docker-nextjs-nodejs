@@ -43,14 +43,16 @@ export const importProducts = async () => {
       product.category = category;
       product.subCategory = subCategory;
 
+      if (productData.brandname) {
+        product.brand = productData.brandname;
+      }
+
       await AppDataSource.manager.save(product);
       console.log(`Inserted: ${product.title}`);
     }
 
     console.log('All products inserted successfully.');
-    process.exit(0);
   } catch (error) {
     console.error('Error importing products:', error);
-    process.exit(1);
   }
 };
