@@ -18,7 +18,7 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
 
   const links = [
     { name: t('links.home'), url: `/${lng}`, id: 'layout' },
-    { name: t('links.brands'), url: `/${lng}#brands`, id: 'brands' },
+    { name: t('links.brands'), url: `/${lng}/brand`, id: '' },
     { name: t('links.categories'), url: `/${lng}#categories`, id: 'categories' },
     { name: t('links.contact'), url: `/${lng}/contacts`, id: '' },
     { name: t('links.aboutUs'), url: `/${lng}/about`, id: '' },

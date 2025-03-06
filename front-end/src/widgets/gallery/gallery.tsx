@@ -64,7 +64,7 @@ export default function Gallery({
       setSelectedSubCategory(subCategories[0].name);
     }
 
-    if (productState[name]) return;
+    if (productState[name]?.length) return;
 
     setLoading(true);
     const fetchedProducts: IProductResponse[] = await fetchProductByCategoryUi(name);
@@ -142,7 +142,7 @@ export default function Gallery({
               fontSize='sm'
               mt={2}
               color='gray.500'
-              whiteSpace='nowrap'
+              whiteSpace={isMobile ? 'normal' : 'nowrap'}
               overflow='hidden'
               textOverflow='ellipsis'
               maxWidth='100%'
