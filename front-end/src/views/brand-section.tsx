@@ -17,9 +17,9 @@ const BrandCard = ({
   lng,
 }: {
   style?: any;
-  name: string;
-  src: string;
-  alt: string;
+  name?: string;
+  src?: string;
+  alt?: string;
   lng: string;
 }) => {
   const router = useRouter();
@@ -71,7 +71,7 @@ const BrandCard = ({
           display='-webkit-box'
           style={{ WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
         >
-          {t(name.toLowerCase() as any)}
+          {t(name?.toLowerCase() as any)}
         </Text>
       </Box>
     </Flex>

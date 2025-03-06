@@ -37,9 +37,8 @@ const ProductCard = ({ product, lng }: ProductProps) => {
         transform: 'scale(1.05)',
         borderColor: '#036753',
       }}
-      onClick={handleRedirect}
     >
-      <Box bg='gray.50' display='flex' justifyContent='center' alignItems='center'>
+      <Box bg='gray.50' display='flex' justifyContent='center' alignItems='center' onClick={handleRedirect}>
         <Image
           src={product.images?.[0] || '/placeholder.png'}
           alt={product.title}
@@ -52,16 +51,18 @@ const ProductCard = ({ product, lng }: ProductProps) => {
       </Box>
 
       <VStack align='start' p={4}>
-        <Text fontSize='lg' fontWeight='bold' color='gray.800'>
-          {product.title}
-        </Text>
-        <Text fontSize='sm' color='gray.600'>
-          {getInnerText(product.description || '').slice(0, 150)}
-        </Text>
+        <Box onClick={handleRedirect}>
+          <Text fontSize='lg' fontWeight='bold' color='gray.800'>
+            {product.title}
+          </Text>
+          <Text fontSize='sm' color='gray.600'>
+            {getInnerText(product.description || '').slice(0, 150)}
+          </Text>
+        </Box>
 
         <Flex w='100%' alignItems='center' justify='space-between'>
           {product.country && (
-            <Badge colorScheme='green' px={3} py={1} rounded='md'>
+            <Badge colorScheme='green' px={3} py={1} rounded='md' onClick={handleRedirect}>
               {product.country}
             </Badge>
           )}

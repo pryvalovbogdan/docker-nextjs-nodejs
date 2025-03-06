@@ -1,15 +1,25 @@
-import { createTransport } from 'nodemailer';
+import { Transporter, createTransport } from 'nodemailer';
 
 import { IEmailBody } from './types';
 
 class EmailService {
-  private static transporter = createTransport({
+  private static officeTransporter = createTransport({
     port: 465,
     host: 'smtp.gmail.com',
     auth: {
-      user: process.env.EMAIL_USER,
+      user: process.env.EMAIL_USER!,
       // Pass for apps could expire if you change password. To regenerate use https://security.google.com/settings/security/apppasswords
-      pass: process.env.EMAIL_PASSWORD,
+      pass: process.env.EMAIL_PASSWORD!,
+    },
+  });
+
+  private static customerTransporter = createTransport({
+    port: 465,
+    host: 'smtp.gmail.com',
+    auth: {
+      user: process.env.OFFICE_EMAIL!,
+      // Pass for apps could expire if you change password. To regenerate use https://security.google.com/settings/security/apppasswords
+      pass: process.env.OFFICE_EMAIL_PASSWORD!,
     },
   });
 
@@ -18,18 +28,36 @@ class EmailService {
    * @param to - Recipient email
    * @param subject - Email subject
    * @param html - Email HTML content
+   * @param transporter - Transporter
+   * @param from - Email sender
    */
-  private static async sendEmail(to: string, subject: string, html: string): Promise<void> {
+  private static async sendEmail(
+    transporter: Transporter,
+    from: string,
+    to: string,
+    subject: string,
+    html: string,
+  ): Promise<void> {
     try {
-      await this.transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to,
-        subject,
-        html,
-      });
+      await transporter.sendMail({ from, to, subject, html });
+      console.log(`Email sent to ${to}`);
     } catch (err) {
       console.error(`Error sending email to ${to}:`, (err as Error).message);
     }
+  }
+
+  /**
+   * Email the admin (office)
+   */
+  private static async sendEmailToOffice(to: string, subject: string, html: string): Promise<void> {
+    await this.sendEmail(this.officeTransporter, process.env.OFFICE_EMAIL!, to, subject, html);
+  }
+
+  /**
+   * Email the customer
+   */
+  private static async sendEmailToCustomer(to: string, subject: string, html: string): Promise<void> {
+    await this.sendEmail(this.customerTransporter, process.env.EMAIL_USER!, to, subject, html);
   }
 
   /**
@@ -49,17 +77,17 @@ class EmailService {
           <strong>Повідомлення:</strong> ${message}
         </div>`;
 
-      await this.sendEmail(process.env.EMAIL_RECIPIENT!, `Повідомлення від ${name}`, adminEmailContent);
+      await this.sendEmailToOffice(process.env.EMAIL_RECIPIENT!, `Повідомлення від ${name}`, adminEmailContent);
 
       // Notify User
       const userEmailContent = `
         <div>
           <strong>Дякуємо за звернення!</strong><br />
           Наш консультант зв'яжеться з вами найближчим часом.<br />
-          Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>+380660000000</strong>
+          Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>${process.env.OFFICE_PHONE!}</strong>
         </div>`;
 
-      await this.sendEmail(email, 'Дякуємо за звернення до Medica', userEmailContent);
+      await this.sendEmailToCustomer(email, 'Дякуємо за звернення до Medica', userEmailContent);
 
       return { status: 'Success' };
     } catch (err) {
@@ -86,19 +114,20 @@ class EmailService {
           <strong>Деталі замовлення:</strong> ${orderDetails || 'Немає даних'}
         </div>`;
 
-      await this.sendEmail(process.env.EMAIL_RECIPIENT!, `Нове замовлення від ${name}`, adminOrderContent);
+      await this.sendEmailToOffice(process.env.EMAIL_RECIPIENT!, `Нове замовлення від ${name}`, adminOrderContent);
 
       // Notify User
       const userOrderContent = `
         <div>
           <strong>Дякуємо за замовлення!</strong><br />
           Ваше замовлення прийнято, і наш менеджер зв'яжеться з вами найближчим часом.<br />
-          Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>+380660000000</strong><br /><br />
+          Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>${process.env
+            .OFFICE_PHONE!}</strong><br /><br />
           <strong>Деталі замовлення:</strong><br />
           ${orderDetails || 'Немає даних'}
         </div>`;
 
-      await this.sendEmail(email, 'Ваше замовлення прийнято Medica', userOrderContent);
+      await this.sendEmailToCustomer(email, 'Ваше замовлення прийнято Medica', userOrderContent);
 
       return { status: 'Success' };
     } catch (err) {

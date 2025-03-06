@@ -32,7 +32,6 @@ const BrandsPage = ({ lng }: { lng: string }) => {
             {brandData.map(brand => (
               <VStack
                 key={brand.name}
-                spacing={4}
                 bg='white'
                 boxShadow='md'
                 borderRadius='lg'

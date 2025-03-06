@@ -12,10 +12,7 @@ class OrderController {
     const page = parseInt(req.query.page as string, 10) || 1;
     const limit = parseInt(req.query.limit as string, 10) || 10;
 
-    console.log('req', req.query);
     const result = await this.service.getOrders(page, limit);
-
-    console.log('result', result);
 
     if (result.errors.length) {
       responseHandler.sendFailResponse(res, result.errors.join(', '));
@@ -87,9 +84,14 @@ class OrderController {
       <div>
         <p><strong>Номер замовлення:</strong> ${result.data?.id || 'Невідомо'}</p>
         <p><strong>Продукт:</strong> ${product.title}</p>
-        <p><strong>Бренд:</strong> ${product.brand || 'Невідомо'}</p>
-        <p><strong>Країна:</strong> ${product.country || 'Невідомо'}</p>
-        <p><strong>Опис:</strong> ${product.description?.substring(0, 100) || 'Невідомо'}</p>
+        ${product.brand ? `<p><strong>Бренд: ${product.brand}</strong></p>` : ''}
+        ${product.country ? '<p><strong>Країна:</strong></p>' : ''}
+        <p><strong>Опис:</strong> ${
+          product.description
+            ?.substring(0, 200)
+            .replace(/<[^>]+>/g, ' ')
+            .trim() || 'Невідомо'
+        }</p>
         ${product.price ? `<p><strong>Ціна:</strong> ${product.price} UAH</p>` : ''}
         ${
           product.images?.length

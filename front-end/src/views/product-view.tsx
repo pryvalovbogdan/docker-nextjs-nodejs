@@ -118,7 +118,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
-              dangerouslySetInnerHTML={{ __html: product.description || product.characteristics }}
+              dangerouslySetInnerHTML={{ __html: product.description || product.characteristics || '' }}
             />
 
             {product.price && (
@@ -150,7 +150,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               <Heading size='md' mb={2} color='gray.800'>
                 {t('detailedDescription')}
               </Heading>
-              <Box color='gray.700' dangerouslySetInnerHTML={{ __html: product.description }} />
+              <Box color='gray.700' dangerouslySetInnerHTML={{ __html: product.description || '' }} />
 
               {product.characteristics && (
                 <>

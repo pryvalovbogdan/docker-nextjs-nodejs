@@ -1,4 +1,10 @@
-export const brandData = [
+interface IBrandData {
+  src: string;
+  alt: string;
+  name: string;
+  description?: string;
+}
+export const brandData: IBrandData[] = [
   {
     src: '/quanta-system.png',
     alt: 'Quanta System',
