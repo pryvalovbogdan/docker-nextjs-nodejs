@@ -1,3 +1,5 @@
+'use client';
+
 export const getInnerText = (html: string) => {
   if (!html) return '';
 
