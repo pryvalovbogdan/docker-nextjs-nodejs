@@ -10,6 +10,7 @@ import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot } from '@/shared/ui/accordion';
 import Pagination from '@/shared/ui/pagination';
+import { getInnerText } from '@/shared/utils';
 import { Button, Flex, Grid, Heading, IconButton, Image, Spinner, Stack, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
@@ -137,8 +138,17 @@ export default function Gallery({
             {product.title}
           </Heading>
           {product.description && (
-            <Text fontSize='sm' mt={2} color='gray.500' overflow='hidden' textOverflow='ellipsis' display='-webkit-box'>
-              {product.description}
+            <Text
+              fontSize='sm'
+              mt={2}
+              color='gray.500'
+              whiteSpace='nowrap'
+              overflow='hidden'
+              textOverflow='ellipsis'
+              maxWidth='100%'
+              display='block'
+            >
+              {product.description ? getInnerText(product.description).slice(0, 150) : product.characteristics}
             </Text>
           )}
         </Flex>

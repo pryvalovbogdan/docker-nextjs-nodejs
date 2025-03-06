@@ -48,9 +48,7 @@ export const importProducts = async () => {
     }
 
     console.log('All products inserted successfully.');
-    process.exit(0);
   } catch (error) {
     console.error('Error importing products:', error);
-    process.exit(1);
   }
 };

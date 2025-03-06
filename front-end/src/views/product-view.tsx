@@ -107,7 +107,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 </Badge>
               )}
             </Text>
-            <Text
+            <Box
               mt={4}
               fontSize='lg'
               color='gray.700'
@@ -118,9 +118,8 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
-            >
-              {product.description || product.characteristics}
-            </Text>
+              dangerouslySetInnerHTML={{ __html: product.description || product.characteristics }}
+            />
 
             {product.price && (
               <Text fontSize='2xl' fontWeight='bold' color='#036753' mt={3}>
@@ -151,14 +150,14 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               <Heading size='md' mb={2} color='gray.800'>
                 {t('detailedDescription')}
               </Heading>
-              <Text color='gray.700'>{product.description}</Text>
+              <Box color='gray.700' dangerouslySetInnerHTML={{ __html: product.description }} />
 
               {product.characteristics && (
                 <>
                   <Heading size='md' mt={4} mb={2} color='gray.800'>
                     {t('characteristics')}
                   </Heading>
-                  <Text color='gray.700'>{product.characteristics}</Text>
+                  <Box color='gray.700' dangerouslySetInnerHTML={{ __html: product.characteristics }} />
                 </>
               )}
             </Box>
