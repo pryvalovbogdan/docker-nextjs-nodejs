@@ -8,6 +8,7 @@ import { IProductResponse } from '@/entities/product/model/types';
 import { Box, Flex, Image, Input, Spinner, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
+import {ContactButton} from "@widgets/contact";
 
 const SearchView: React.FC<{ lng: string; query: string; products: IProductResponse[] }> = ({
   lng,
@@ -126,6 +127,7 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
             ))}
         </Box>
       </Box>
+      <ContactButton lng={lng} />
     </Layout>
   );
 };

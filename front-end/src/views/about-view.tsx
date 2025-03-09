@@ -4,6 +4,8 @@ import { Box, Container, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 import { WhyUs } from '@widgets/why-us';
+import {ContactButton} from "@widgets/contact";
+import React from "react";
 
 interface AboutViewProps {
   lng: string;
@@ -62,6 +64,7 @@ const AboutView = ({ lng, officePhoneSecond, officePhone, officeEmail }: AboutVi
           <WhyUs lng={lng} />
         </Box>
       </Container>
+      <ContactButton lng={lng} />
     </Layout>
   );
 };

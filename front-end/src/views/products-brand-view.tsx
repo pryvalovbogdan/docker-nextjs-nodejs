@@ -9,6 +9,7 @@ import Pagination from '@/shared/ui/pagination';
 import { brandData } from '@/shared/utils/data';
 import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
+import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 interface BrandProductsProps {
@@ -90,6 +91,7 @@ const ProductsBrandView = ({ products, brandName, lng }: BrandProductsProps) => 
             </Box>
           ) as JSX.Element)}
       </Box>
+      <ContactButton lng={lng} />
     </Layout>
   );
 };

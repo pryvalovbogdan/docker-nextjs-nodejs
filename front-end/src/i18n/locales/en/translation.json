@@ -164,5 +164,7 @@
   "alwaysOpen": "Always Open",
 
   "copyright": "© 2025 MediX. All rights reserved",
-  "categoryTitle": "Category"
+  "categoryTitle": "Category",
+  "call": "call",
+  "message": "Message"
 }
