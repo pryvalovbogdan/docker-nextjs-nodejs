@@ -104,7 +104,8 @@ module.exports = {
 		"react/jsx-props-no-spreading": 0,
 		"react/jsx-no-bind": 0,
 		"no-shadow": 1,
-		"react/no-array-index-key": 1
+		"react/no-array-index-key": 1,
+		"consistent-return": 1
 	},
 	settings: {
 		"import/resolver": {

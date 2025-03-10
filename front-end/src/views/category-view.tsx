@@ -8,8 +8,8 @@ import Pagination from '@/shared/ui/pagination';
 import { getInnerText } from '@/shared/utils';
 import { Box, Flex, Grid, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
+import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
-import {ContactButton} from "@widgets/contact";
 
 const ITEMS_PER_PAGE = 9;
 

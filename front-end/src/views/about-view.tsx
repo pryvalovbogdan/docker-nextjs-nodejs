@@ -1,11 +1,12 @@
 'use client';
 
+import React from 'react';
+
 import { Box, Container, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
+import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 import { WhyUs } from '@widgets/why-us';
-import {ContactButton} from "@widgets/contact";
-import React from "react";
 
 interface AboutViewProps {
   lng: string;

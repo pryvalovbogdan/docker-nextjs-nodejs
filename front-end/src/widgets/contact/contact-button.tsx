@@ -39,7 +39,9 @@ const ContactButton = ({ lng }: { lng: string }) => {
       setShowText(prev => !prev);
     }, 3000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [isHovered]);
 
   const handleSubmit = async () => {
@@ -231,7 +233,7 @@ const ContactButton = ({ lng }: { lng: string }) => {
           </DialogBody>
 
           <DialogFooter>
-            <Button onClick={handleSubmit} isLoading={isLoading} bg='#036753' color='white'>
+            <Button onClick={handleSubmit} loading={isLoading} bg='#036753' color='white'>
               {t('submit')}
             </Button>
             <DialogCloseTrigger asChild>

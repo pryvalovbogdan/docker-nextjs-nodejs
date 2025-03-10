@@ -16,7 +16,7 @@ export async function contact(contactData: {
 
     return { success: true, message: response.message };
   } catch (error) {
-    console.error('Contact error:', error, error.message);
+    console.error('Contact error:', error);
 
     return { success: false, message: 'Contact failed' };
   }
