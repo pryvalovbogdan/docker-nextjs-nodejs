@@ -131,7 +131,13 @@ class OrderController {
       return;
     }
 
-    if (!req.body.email || !req.body.message) {
+    if (req.body.contact && !req.body.phone) {
+      responseHandler.sendFailResponse(res, 'Phone is required');
+
+      return;
+    }
+
+    if (!req.body.contact && (!req.body.email || !req.body.message)) {
       responseHandler.sendFailResponse(res, 'Email and message are required');
 
       return;

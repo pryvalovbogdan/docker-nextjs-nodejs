@@ -37,7 +37,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
       CREATE TABLE IF NOT EXISTS orders (
           id SERIAL PRIMARY KEY,
           name VARCHAR(255) NOT NULL,
-          phone BIGINT NOT NULL,
+          phone VARCHAR(255) NOT NULL,
           email VARCHAR(255) NOT NULL,
           date DATE NOT NULL,
           status VARCHAR(50) NOT NULL DEFAULT 'active',

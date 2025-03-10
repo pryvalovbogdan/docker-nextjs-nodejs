@@ -54,7 +54,7 @@ const ContactButton = ({ lng }: { lng: string }) => {
     }
 
     setIsLoading(true);
-    const result = await contact(formData);
+    const result = await contact({ ...formData, contact: true });
 
     if (result.success) {
       toaster.create({ type: 'info', title: t('applicationAccepted') });

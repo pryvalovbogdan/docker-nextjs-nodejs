@@ -1,3 +1,4 @@
+import validator from 'email-validator';
 import { Transporter, createTransport } from 'nodemailer';
 
 import { IEmailBody } from './types';
@@ -40,6 +41,7 @@ class EmailService {
   ): Promise<void> {
     try {
       await transporter.sendMail({ from, to, subject, html });
+
       console.log(`Email sent to ${to}`);
     } catch (err) {
       console.error(`Error sending email to ${to}:`, (err as Error).message);
@@ -72,7 +74,7 @@ class EmailService {
       const adminEmailContent = `
         <div>
           <strong>Ім'я замовника:</strong> ${name || 'Немає даних'}<br />
-          <strong>Пошта замовника:</strong> ${email}<br />
+          <strong>Пошта замовника:</strong> ${email || 'Немає даних'}<br />
           <strong>Номер телефону:</strong> ${phone || 'Немає даних'}<br />
           <strong>Повідомлення:</strong> ${message}
         </div>`;
@@ -87,7 +89,15 @@ class EmailService {
           Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>${process.env.OFFICE_PHONE!}</strong>
         </div>`;
 
-      await this.sendEmailToCustomer(email, 'Дякуємо за звернення до Medica', userEmailContent);
+      if (email) {
+        if (!validator.validate(email)) {
+          console.error(`Invalid email format: ${email}`);
+
+          return { status: 'Error' };
+        }
+
+        await this.sendEmailToCustomer(email, 'Дякуємо за звернення до Medica', userEmailContent);
+      }
 
       return { status: 'Success' };
     } catch (err) {
