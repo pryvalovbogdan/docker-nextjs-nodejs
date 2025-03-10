@@ -151,7 +151,24 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               <Heading size='md' mb={2} color='gray.800'>
                 {t('detailedDescription')}
               </Heading>
-              <Box color='gray.700' dangerouslySetInnerHTML={{ __html: product.description || '' }} />
+              <Box
+                color='gray.700'
+                dangerouslySetInnerHTML={{
+                  __html: `
+                          <style>
+                               iframe {
+                                        padding: 20px 0;
+                               }
+                               hr {
+                                       margin: 5px 0;
+                               }
+                          </style>
+                          <div class="description-container">
+                            ${product.description}
+                          </div>
+                        `,
+                }}
+              />
 
               {product.characteristics && (
                 <>
