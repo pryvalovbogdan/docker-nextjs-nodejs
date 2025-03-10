@@ -38,7 +38,7 @@ class OrderRepository {
 
   saveOrder = async (orderData: {
     name: string;
-    phone: number;
+    phone: string;
     productId: number;
     status: string;
     email: string;

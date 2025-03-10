@@ -3,7 +3,7 @@ export interface IEmailBody {
   email: string;
   lastName: string;
   product?: string;
-  phone: number;
+  phone: string;
   productId: string;
   status?: string;
   message?: string;
