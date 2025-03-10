@@ -10,8 +10,8 @@ export class Order {
   @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column({ type: 'int' })
-  phone: number;
+  @Column({ type: 'varchar', length: 20 })
+  phone: string;
 
   @Column({ type: 'date' })
   date: string;

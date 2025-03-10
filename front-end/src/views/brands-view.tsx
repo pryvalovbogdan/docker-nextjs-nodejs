@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { brandData } from '@/shared/utils/data';
 import { Box, Container, Heading, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
+import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 const BrandsPage = ({ lng }: { lng: string }) => {
@@ -52,6 +53,7 @@ const BrandsPage = ({ lng }: { lng: string }) => {
           </SimpleGrid>
         </Box>
       </Container>
+      <ContactButton lng={lng} />
     </Layout>
   );
 };

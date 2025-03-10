@@ -50,7 +50,7 @@ class OrderService {
     try {
       const data = await this.repository.saveOrder({
         name,
-        phone: Number(phone),
+        phone: phone,
         productId: Number(productId),
         date: new Date(),
         email,

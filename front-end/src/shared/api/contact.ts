@@ -2,9 +2,10 @@ import { fetchWrapper } from './client';
 
 export async function contact(contactData: {
   name?: string;
-  email: string;
+  email?: string;
   phone?: string;
   message: string;
+  contact?: boolean;
 }): Promise<{ success: boolean; message: string; token?: string }> {
   try {
     const response: { message: string } = await fetchWrapper('/api/contact', {

@@ -6,6 +6,7 @@ import { IProductResponse } from '@/entities/product/model/types';
 import { Badge, Box, Breadcrumb, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { OrderDialog } from '@features/order';
 import { useTranslation } from '@i18n/client';
+import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 interface ProductProps {
@@ -164,6 +165,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
           )}
         </Box>
       </Box>
+      <ContactButton lng={lng} />
     </Layout>
   );
 };

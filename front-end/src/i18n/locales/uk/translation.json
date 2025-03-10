@@ -162,5 +162,7 @@
   "alwaysOpen": "Цілодобово",
 
   "copyright": "© 2025 MediX. Всі права захищені",
-  "categoryTitle": "Категорія"
+  "categoryTitle": "Категорія",
+  "call": "дзвінок",
+  "message": "Повідомлення"
 }
