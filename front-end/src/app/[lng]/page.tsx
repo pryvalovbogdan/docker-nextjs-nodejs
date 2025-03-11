@@ -8,6 +8,7 @@ import ContactForm from '@features/contact/send-request/contact-form';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
 import { ContactButton } from '@widgets/contact';
+import { GalleryImages } from '@widgets/gallary-images';
 import { Gallery } from '@widgets/gallery';
 import { Layout } from '@widgets/layout';
 import { WhyUs } from '@widgets/why-us';
@@ -38,11 +39,12 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
       officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
       officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
     >
+      <GalleryImages lng={lng} />
       <Gallery lng={lng} products={products} categories={categories} />
       <BrandsSection lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
       <WhyUs lng={lng} withHeading />
-      <ContactForm lng={lng} />
+      <ContactForm lng={lng} withMargin />
       <ContactButton lng={lng} />
     </Layout>
   );

@@ -166,5 +166,6 @@
   "copyright": "© 2025 MediX. All rights reserved",
   "categoryTitle": "Category",
   "call": "call",
-  "message": "Message"
+  "message": "Message",
+  "details": "Details"
 }
