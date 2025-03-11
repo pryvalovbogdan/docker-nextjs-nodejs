@@ -9,7 +9,10 @@ import { useTranslation } from '@i18n/client';
 
 const images = ['main4.jpg', 'main5.png', 'main3.jpeg'];
 
-const FullWidthImageSlider: React.FC = ({ lng }: { lng: string }) => {
+interface GalleryImagesProps {
+  lng: string;
+}
+const GalleryImages: React.FC<GalleryImagesProps> = ({ lng }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
 
@@ -86,4 +89,4 @@ const FullWidthImageSlider: React.FC = ({ lng }: { lng: string }) => {
   );
 };
 
-export default FullWidthImageSlider;
+export default GalleryImages;
