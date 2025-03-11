@@ -7,7 +7,7 @@ import { Toaster, toaster } from '@/shared/ui/toaster';
 import { Box, Button, Flex, Grid, Heading, Input, Text, Textarea } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
-const ContactForm = ({ lng }: { lng: string }) => {
+const ContactForm = ({ lng, withMargin }: { lng: string; withMargin?: boolean }) => {
   const { t } = useTranslation(lng);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -71,7 +71,7 @@ const ContactForm = ({ lng }: { lng: string }) => {
   };
 
   return (
-    <Box as='section' id='contact' py={20} bg='white'>
+    <Box as='section' id='contact' py={20} mx={withMargin ? 5 : 0} bg='white'>
       <Heading as='h3' fontSize='36px' textAlign='center' mb='52px' color='gray.800'>
         {t('contactUs')}
       </Heading>

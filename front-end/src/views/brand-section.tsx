@@ -160,7 +160,7 @@ const BrandsSection = ({ lng }: { lng: string }) => {
         {t('brands')}
       </Heading>
 
-      <Flex position='relative' overflowX='hidden'>
+      <Flex position='relative' overflowX='hidden' mx={5} px={1}>
         <CarouselContextProvider>
           <Flex flexDirection='column' flex={1} w='100%'>
             <Carousel

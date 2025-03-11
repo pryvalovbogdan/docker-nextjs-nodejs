@@ -9,6 +9,153 @@ import { useTranslation } from '@i18n/client';
 import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
+// src/descriptionStyles.ts
+export const descriptionStyles = `
+    /* General Container */
+    .description-container {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #333;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+    
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 {
+        color: #036753;
+        margin-top: 18px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    /* Paragraphs */
+    p {
+        font-size: 17px;
+        color: #444;
+        line-height: 1.8;
+        margin-bottom: 12px;
+    }
+    
+    /* Strong and Bold Text */
+    strong, b {
+        color: #024E42;
+        font-weight: bold;
+    }
+
+    /* Span Styling */
+    span {
+        font-size: 16px;
+        color: #444;
+    }
+    
+    /* Lists */
+    ul, ol {
+        margin: 15px 0;
+        padding-left: 20px;
+    }
+    ul li, ol li {
+        margin-bottom: 6px;
+        font-size: 16px;
+        color: #333;
+    }
+    ul li::before {
+        content: "• ";
+        color: #036753;
+        font-weight: bold;
+    }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 16px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 14px;
+        text-align: left;
+    }
+    th {
+        background-color: #036753;
+        color: white;
+        font-weight: bold;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    @media (max-width: 768px) {
+        table {
+            font-size: 14px;
+        }
+        th, td {
+            padding: 10px;
+        }
+    }
+
+    /* Links & Buttons */
+    a {
+        color: #036753;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    a:hover {
+        color: #024E42;
+        text-decoration: underline;
+    }
+    button {
+        background: #036753;
+        color: white;
+        font-size: 16px;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    button:hover {
+        background: #024E42;
+    }
+
+    /* Images */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 10px auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Videos (YouTube, etc.) */
+    iframe {
+        width: 100%;
+        max-width: 720px;
+        height: 400px;
+        display: block;
+        margin: 15px auto;
+        border-radius: 6px;
+    }
+
+    /* Horizontal Rule */
+    hr {
+        border: none;
+        height: 2px;
+        background: #036753;
+        margin: 15px 0;
+    }
+    }
+`;
+
 interface ProductProps {
   product: IProductResponse;
   lng: string;
@@ -23,7 +170,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
 
   return (
     <Layout lng={lng}>
-      <Flex>
+      <Flex mt={10}>
         <Breadcrumb.Root bg='rgba(3, 103, 83, 0.7)' ml={10} py={2} px={4} backdropFilter='blur(12px)' borderRadius='md'>
           <Breadcrumb.List>
             <Breadcrumb.Item>
@@ -151,22 +298,19 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
               <Heading size='md' mb={2} color='gray.800'>
                 {t('detailedDescription')}
               </Heading>
+
               <Box
                 color='gray.700'
                 dangerouslySetInnerHTML={{
                   __html: `
-                          <style>
-                               iframe {
-                                        padding: 20px 0;
-                               }
-                               hr {
-                                       margin: 5px 0;
-                               }
-                          </style>
-                          <div class="description-container">
-                            ${product.description}
-                          </div>
-                        `,
+                      <style>
+                      ${descriptionStyles}
+                      </style>    
+                  
+                      <div class="description-container">
+                          ${product.description || ''}
+                      </div>
+                  `,
                 }}
               />
 
@@ -175,7 +319,16 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
                   <Heading size='md' mt={4} mb={2} color='gray.800'>
                     {t('characteristics')}
                   </Heading>
-                  <Box color='gray.700' dangerouslySetInnerHTML={{ __html: product.characteristics }} />
+                  <Box
+                    color='gray.700'
+                    dangerouslySetInnerHTML={{
+                      __html: `
+                          <div class="description-container">
+                              ${product.characteristics || ''}
+                          </div>
+                      `,
+                    }}
+                  />
                 </>
               )}
             </Box>
