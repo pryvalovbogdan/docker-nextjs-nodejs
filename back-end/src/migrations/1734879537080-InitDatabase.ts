@@ -28,7 +28,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           country VARCHAR(255),
           price DECIMAL(10, 2) DEFAULT NULL,
           categoryId INT NOT NULL,
-          subcategoryId INT NOT NULL,
+          subcategoryId INT NULL,
           CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES categories(id) ON DELETE CASCADE,
           CONSTRAINT fk_subcategory FOREIGN KEY (subcategoryId) REFERENCES subcategories(id) ON DELETE CASCADE
       );

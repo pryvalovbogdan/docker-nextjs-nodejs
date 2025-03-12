@@ -64,6 +64,7 @@ class OrderController {
 
   saveOrder = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log('req.bodyreq.bodyreq.body', req.body);
       const result = await this.service.saveOrder(req.body);
 
       if (result.errors.length) {

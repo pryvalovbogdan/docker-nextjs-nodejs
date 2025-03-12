@@ -38,3 +38,44 @@ export async function fetchAdmins(token: string, page: number = 1, limit: number
     return { success: false, message: 'Admin fetch failed' };
   }
 }
+
+export async function deleteAdmin(token: string, id: string) {
+  try {
+    const response: AdminApiResponse = await fetchWrapper(`/api/admin/admins/${id}`, {
+      headers: { Authorization: token },
+      method: 'DELETE',
+    });
+
+    return {
+      success: true,
+      message: response.message,
+      admins: response.data.admins,
+      totalPages: response.data.totalPages,
+    };
+  } catch (error) {
+    console.error('Admin delete error:', error);
+
+    return { success: false, message: 'Admin delete failed' };
+  }
+}
+
+export async function createAdmin(token: string, formData: any) {
+  try {
+    const response: AdminApiResponse = await fetchWrapper('/api/admin/admins', {
+      headers: { Authorization: token },
+      method: 'POST',
+      body: formData,
+    });
+
+    return {
+      success: true,
+      message: response.message,
+      admins: response.data.admins,
+      totalPages: response.data.totalPages,
+    };
+  } catch (error) {
+    console.error('Admin create error:', error);
+
+    return { success: false, message: 'Admin create failed' };
+  }
+}

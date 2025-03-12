@@ -1,7 +1,7 @@
 import { OrdersApiResponse } from '@/entities/order/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 
-export async function submitOrder(orderData: {
+export async function createOrder(orderData: {
   name: string;
   email: string;
   productId: number;
@@ -24,10 +24,10 @@ export async function submitOrder(orderData: {
 
 export async function fetchOrders(token: string, page: number = 1, limit: number = 5) {
   try {
-    const response = (await fetchWrapper(`/api/admin/orders?page=${page}&limit=${limit}`, {
+    const response: OrdersApiResponse = await fetchWrapper(`/api/admin/orders?page=${page}&limit=${limit}`, {
       headers: { Authorization: token },
       cache: 'force-cache',
-    })) as OrdersApiResponse;
+    });
 
     return {
       success: true,
@@ -39,5 +39,25 @@ export async function fetchOrders(token: string, page: number = 1, limit: number
     console.error('Order fetch error:', error);
 
     return { success: false, message: 'Order fetch failed' };
+  }
+}
+
+export async function deleteOrder(token: string, id: string) {
+  try {
+    const response: OrdersApiResponse = await fetchWrapper(`/api/admin/orders/${id}`, {
+      headers: { Authorization: token },
+      method: 'DELETE',
+    });
+
+    return {
+      success: true,
+      message: response.message,
+      orders: response.data.orders,
+      totalPages: response.data.totalPages,
+    };
+  } catch (error) {
+    console.error('Order delete error:', error);
+
+    return { success: false, message: 'Order delete failed' };
   }
 }

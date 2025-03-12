@@ -1,4 +1,4 @@
-import { Category, Product } from '../entities';
+import { Product } from '../entities';
 import { ProductRepository } from '../repositories';
 import CategoryService from './CategoryService';
 import SubCategoryService from './SubCategoryService';
@@ -14,7 +14,7 @@ class ProductService {
 
   async addProduct(productData: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
     try {
-      if (!productData.category) {
+      if (!productData.category || !productData.category.name) {
         return { errors: ['Category is required'] };
       }
 
@@ -32,13 +32,13 @@ class ProductService {
 
       let subCategory = null;
 
-      if (productData.subCategory) {
+      if (productData.subCategory && productData.subCategory.name) {
         subCategory = (await this.subCategoryService.getSubCategory(productData.subCategory.name)).data;
 
         if (!subCategory) {
           const createSubCategoryResult = await this.subCategoryService.createSubCategory(
             productData.subCategory.name,
-            (category as Category).id,
+            category.id,
           );
 
           if (createSubCategoryResult.errors.length) {
@@ -52,7 +52,7 @@ class ProductService {
       const product = new Product();
 
       Object.assign(product, productData);
-      product.category = category as Category;
+      product.category = category;
       product.subCategory = subCategory || undefined;
 
       const savedProduct = await this.repository.saveProduct(product);
