@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { ElementType, useEffect, useState } from 'react';
-import { FaFacebookF, FaInstagram, FaTelegram, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaTelegram } from 'react-icons/fa';
 import { MdEmail, MdPhone } from 'react-icons/md';
 
 import { fetchCategories } from '@/entities/category/api';
@@ -108,10 +108,21 @@ const Footer = ({
           </Text>
 
           <Flex align='center' gap={4}>
-            <Icon as={FaInstagram as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-            <Icon as={FaFacebookF as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-            <Icon as={FaYoutube as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-            <Icon as={FaTelegram as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
+            <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank' isExternal>
+              <FaInstagram size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
+            </Link>
+            <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank' isExternal>
+              <FaFacebook size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
+            </Link>
+            <Link href={`https://t.me/${officePhone.replace(/[^+\d]/g, '')}`} isExternal>
+              <Icon
+                as={FaTelegram as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
+            </Link>
           </Flex>
         </Flex>
       </Flex>
