@@ -12,5 +12,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
 export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
 
-  return <BrandsPage lng={lng} />;
+  return (
+    <BrandsPage
+      lng={lng}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+    />
+  );
 }

@@ -16,9 +16,19 @@ interface BrandProductsProps {
   products: IProductResponse[];
   brandName: string;
   lng: string;
+  officePhone: string;
+  officePhoneSecond: string;
+  officeEmail: string;
 }
 
-const ProductsBrandView = ({ products, brandName, lng }: BrandProductsProps) => {
+const ProductsBrandView = ({
+  products,
+  brandName,
+  lng,
+  officePhone,
+  officePhoneSecond,
+  officeEmail,
+}: BrandProductsProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const isMobile = useIsMobile(768);
   const { t } = useTranslation(lng);
@@ -37,7 +47,7 @@ const ProductsBrandView = ({ products, brandName, lng }: BrandProductsProps) => 
   })?.description;
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
       <Box as='section' id='brand-products' py={20} bg='white'>
         <Heading as='h3' fontSize='48px' textAlign='center' mb={6} color='gray.800'>
           {decodeURIComponent(brandName)}

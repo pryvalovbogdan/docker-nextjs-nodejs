@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { LuMenu, LuX } from 'react-icons/lu';
 
 import SearchBar from '@/features/search/search-bar/search-bar';
+import LogoWrapper from '@/shared/ui/logo-wrapper';
 import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
@@ -65,28 +66,8 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
       py={4}
       color='white'
     >
-      <Flex maxW='container.xl' mx='auto' justify='space-between' align='center' px={4}>
-        <Text
-          fontSize={{ base: '3xl', md: '5xl' }}
-          fontWeight='bold'
-          color='#001489'
-          textTransform='lowercase'
-          letterSpacing='-0.5px'
-          textShadow='2px 4px 6px rgba(0, 0, 0, 0.3)'
-          fontFamily='Poppins, Gilroy, Proxima Nova, sans-serif'
-          onClick={() => (pathname === `/${lng}` ? scrollToSection('layout') : router.push(`/${lng}`))}
-        >
-          med
-          <Text as='span' position='relative'>
-            <Text as='span' color='#001489'>
-              i
-            </Text>
-            <Text as='span' color='#D94F2B' position='absolute' top='-24px' left='-2px' fontSize='1em'>
-              •
-            </Text>
-          </Text>
-          x
-        </Text>
+      <Flex maxW='container.xl' mx='auto' justify='space-between' alignItems='center' px={4}>
+        <LogoWrapper onClick={() => (pathname === `/${lng}` ? scrollToSection('layout') : router.push(`/${lng}`))} />
 
         <Box flex='1' mx={6} maxW={{ base: '80%', md: '300px' }}>
           <SearchBar lng={lng} />

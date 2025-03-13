@@ -3,7 +3,8 @@
 import React, { ElementType } from 'react';
 import { FaClock, FaHandHoldingUsd, FaHeadset, FaShieldAlt, FaTools } from 'react-icons/fa';
 
-import { Box, Flex, Heading, Icon, Image, Stack, Text } from '@chakra-ui/react';
+import LogoWrapper from '@/shared/ui/logo-wrapper';
+import { Box, Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
 const services = [
@@ -90,16 +91,7 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
           </Text>
         </Box>
 
-        <Image
-          src='/25.png'
-          alt='24/7 Support'
-          maxW='250px'
-          w='150px'
-          mx='auto'
-          maxH='100px'
-          borderRadius='lg'
-          boxShadow='md'
-        />
+        <LogoWrapper />
       </Flex>
     </Box>
   );

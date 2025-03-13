@@ -40,3 +40,10 @@ a {
     color-scheme: dark;
   }
 }
+
+@font-face {
+  font-family: 'EazyChat';
+  src: url('/fonts/EazyChat.ttf');
+  font-weight: normal;
+  font-style: normal;
+}

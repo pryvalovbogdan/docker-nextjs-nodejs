@@ -20,5 +20,14 @@ export default async function Page({ params }: { params: Promise<{ name: string;
 
   const products = await fetchBrandProducts(name);
 
-  return <ProductsBrandView products={products} brandName={name} lng={lng} />;
+  return (
+    <ProductsBrandView
+      products={products}
+      brandName={name}
+      lng={lng}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+    />
+  );
 }

@@ -8,7 +8,17 @@ import { useTranslation } from '@i18n/client';
 import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
-const BrandsPage = ({ lng }: { lng: string }) => {
+const BrandsPage = ({
+  lng,
+  officePhone,
+  officePhoneSecond,
+  officeEmail,
+}: {
+  lng: string;
+  officePhone: string;
+  officePhoneSecond: string;
+  officeEmail: string;
+}) => {
   const router = useRouter();
   const { t } = useTranslation(lng);
   const handleBrandClick = (brandName: string) => {
@@ -16,7 +26,7 @@ const BrandsPage = ({ lng }: { lng: string }) => {
   };
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
       <Container
         maxW='container.xl'
         py={10}

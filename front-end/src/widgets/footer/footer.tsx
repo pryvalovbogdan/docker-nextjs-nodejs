@@ -93,7 +93,24 @@ const Footer = ({
           <Link href={`mailto:${officeEmail}`} color='gray.400' _hover={{ color: 'gray.200' }}>
             {officeEmail}
           </Link>
-
+          <Text fontWeight='bold'>{t('weInSocials')}</Text>
+          <Flex align='center' gap={4}>
+            <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank' isExternal>
+              <FaInstagram size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
+            </Link>
+            <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank' isExternal>
+              <FaFacebook size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
+            </Link>
+            <Link href={`https://t.me/${officePhone?.replace(/[^+\d]/g, '')}`} isExternal>
+              <Icon
+                as={FaTelegram as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
+            </Link>
+          </Flex>
           <Text fontWeight='bold'>{t('workHours')}</Text>
           <Text color='gray.400'>{t('alwaysOpen')}</Text>
         </VStack>
@@ -106,24 +123,6 @@ const Footer = ({
           <Text fontSize='sm' color='gray.400'>
             {t('copyright')}
           </Text>
-
-          <Flex align='center' gap={4}>
-            <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank' isExternal>
-              <FaInstagram size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
-            </Link>
-            <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank' isExternal>
-              <FaFacebook size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
-            </Link>
-            <Link href={`https://t.me/${officePhone.replace(/[^+\d]/g, '')}`} isExternal>
-              <Icon
-                as={FaTelegram as ElementType}
-                boxSize={5}
-                color='white'
-                cursor='pointer'
-                _hover={{ color: 'gray.200' }}
-              />
-            </Link>
-          </Flex>
         </Flex>
       </Flex>
     </Box>
