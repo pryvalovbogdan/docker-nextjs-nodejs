@@ -19,7 +19,7 @@ const BrandsPage = ({ lng }: { lng: string }) => {
     <Layout lng={lng}>
       <Container
         maxW='container.xl'
-        pt={10}
+        py={10}
         display='flex'
         flexDirection='column'
         justifyContent='center'

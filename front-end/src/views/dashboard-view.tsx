@@ -276,7 +276,7 @@ export default function Dashboard({ lng }: { lng: string }) {
             </HStack>
 
             {(data[selectedTab].pages[currentPage] || []).map(row => (
-              <HStack key={row.id} p={2} borderBottom='1px solid #ddd'>
+              <HStack key={row?.id || row.phone} p={2} borderBottom='1px solid #ddd'>
                 {columns[selectedTab].map(column => (
                   <Text key={column.columnName} flex={1}>
                     {renderCellValue(row, column.columnName)}

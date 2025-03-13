@@ -38,12 +38,6 @@ const AboutView = ({ lng, officePhoneSecond, officePhone, officeEmail }: AboutVi
             <Text fontSize='lg' color='gray.700'>
               {t('aboutUsDescription')}
             </Text>
-            <Text fontSize='lg' mt='10px' color='gray.700'>
-              {t('aboutUsWork')}
-            </Text>
-            <Text fontSize='lg' mt='10px' color='gray.700'>
-              {t('aboutUsConsult')}
-            </Text>
           </Box>
 
           <Box flex='1' textAlign='center'>

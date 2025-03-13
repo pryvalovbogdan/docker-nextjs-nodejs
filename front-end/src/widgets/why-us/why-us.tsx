@@ -1,7 +1,7 @@
 'use client';
 
-import React, { ElementType, ReactElement } from 'react';
-import { FaCheckCircle, FaCreditCard, FaHeadset, FaTruck } from 'react-icons/fa';
+import React, { ElementType } from 'react';
+import { FaClock, FaHandHoldingUsd, FaHeadset, FaShieldAlt, FaTools } from 'react-icons/fa';
 
 import { Box, Flex, Heading, Icon, Image, Stack, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
@@ -10,22 +10,27 @@ const services = [
   {
     title: 'interestFreeInstallments',
     description: 'interestFreeInstallmentsDescription',
-    icon: FaCreditCard,
+    icon: FaHandHoldingUsd,
   },
   {
-    title: 'serviceSupport',
-    description: 'serviceSupportDescription',
+    title: 'serviceMaintenance',
+    description: 'serviceMaintenanceDescription',
+    icon: FaTools,
+  },
+  {
+    title: 'warrantyService',
+    description: 'warrantyServiceDescription',
+    icon: FaShieldAlt,
+  },
+  {
+    title: 'postWarrantyService',
+    description: 'postWarrantyServiceDescription',
+    icon: FaClock,
+  },
+  {
+    title: 'customerSupport',
+    description: 'customerSupportDescription',
     icon: FaHeadset,
-  },
-  {
-    title: 'officialGuarantee',
-    description: 'officialGuaranteeDescription',
-    icon: FaCheckCircle,
-  },
-  {
-    title: 'freeDelivery',
-    description: 'freeDeliveryDescription',
-    icon: FaTruck,
   },
 ];
 
@@ -34,14 +39,13 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
 
   return (
     <Box py={10} px={6} maxW='6xl' mx='auto'>
-      {withHeading &&
-        ((
-          <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6} fontSize='36px'>
-            {t('whyUs')}
-          </Heading>
-        ) as ReactElement)}
+      {withHeading && (
+        <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6} fontSize='36px'>
+          {t('whyUs')}
+        </Heading>
+      )}
 
-      <Stack mt={6}>
+      <Stack mt={6} spacing={4}>
         {services.map((service, index) => (
           <Flex
             key={index}
@@ -58,9 +62,9 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
             <Icon as={service.icon as ElementType} boxSize={10} color='#036753' mr={4} />
             <Box>
               <Heading size='md' color='gray.800'>
-                {t(service.title as any)}
+                {t(service.title)}
               </Heading>
-              <Text color='gray.700'>{t(service.description as any)}</Text>
+              <Text color='gray.700'>{t(service.description)}</Text>
             </Box>
           </Flex>
         ))}
