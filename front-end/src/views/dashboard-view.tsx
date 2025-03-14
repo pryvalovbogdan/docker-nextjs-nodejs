@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { createAdmin, deleteAdmin, fetchAdmins } from '@/entities/admin/api';
-import { createOrder, deleteOrder, fetchOrders } from '@/entities/order/api';
+import { createOrder, deleteOrder, exportOrders, fetchOrders } from '@/entities/order/api';
 import { createProduct, deleteProduct, fetchProductsOffSet } from '@/entities/product/api';
 import Pagination from '@/shared/ui/pagination';
 import SkeletonTable from '@/shared/ui/skeleton-table';
@@ -39,6 +39,10 @@ const createFunctions: Record<TabKey, CreateFunction> = {
   admins: createAdmin,
 };
 
+const exportCSvFunctions: Record<'orders', (token: string) => Promise<any>> = {
+  orders: exportOrders,
+};
+
 type PaginatedData = {
   pages: Record<number, any[]>;
   totalPages: number;
@@ -51,7 +55,6 @@ const columns = {
     { columnName: 'phone', translateKey: 'columns.phone' },
     { columnName: 'email', translateKey: 'columns.email' },
     { columnName: 'date', translateKey: 'columns.date' },
-    { columnName: 'status', translateKey: 'columns.status' },
   ],
   products: [
     { columnName: 'title', translateKey: 'columns.title' },
@@ -189,7 +192,6 @@ export default function Dashboard({ lng }: { lng: string }) {
   };
 
   const handleAddEntity = async (formData: any) => {
-    console.log('formData11', formData);
     const token = sessionStorage.getItem('token');
 
     if (!token) return;
@@ -220,6 +222,38 @@ export default function Dashboard({ lng }: { lng: string }) {
     }
   };
 
+  const handleDownloadCsv = async () => {
+    const token = sessionStorage.getItem('token');
+
+    if (!token) return;
+
+    try {
+      const response = await exportCSvFunctions[selectedTab](token);
+
+      if (response.success && response.data) {
+        // Create a download URL
+        const url = window.URL.createObjectURL(response.data);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = `${selectedTab}_export.csv`;
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        toaster.create({ type: 'success', title: `${t(`tabs.${selectedTab}`)} ${t('downloadSuccess')}` });
+      } else {
+        toaster.create({ type: 'error', title: `${t('downloadError')} ${t(`tabs.${selectedTab}`)}` });
+      }
+    } catch (error) {
+      console.error(`Error downloading ${selectedTab} CSV:`, error);
+      toaster.create({ type: 'error', title: `${t('downloadError')} ${t(`tabs.${selectedTab}`)}` });
+    }
+  };
+
   return (
     <Layout lng={lng}>
       <Toaster />
@@ -247,6 +281,11 @@ export default function Dashboard({ lng }: { lng: string }) {
 
           {!isLoading && (
             <Flex>
+              <Flex justifyContent='flex-end'>
+                <Button colorScheme='blue' onClick={handleDownloadCsv} mr={2}>
+                  {t('downloadCsv')} {t(`tabs.${selectedTab}`)}
+                </Button>
+              </Flex>
               <Button colorScheme='green' onClick={() => setIsDialogOpen(true)}>
                 {t('add')} {t(`tabs.${selectedTab}`)}
               </Button>

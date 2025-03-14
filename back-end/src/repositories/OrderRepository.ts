@@ -11,6 +11,7 @@ class OrderRepository {
   findOrders = async (page: number = 1, limit: number = 10): Promise<{ data: Order[]; totalPages: number }> => {
     const [orders, total] = await this.orderRepository.findAndCount({
       relations: ['product'],
+      order: { id: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
     });
@@ -62,6 +63,13 @@ class OrderRepository {
     });
 
     return this.orderRepository.save(newOrder);
+  };
+
+  getAllOrders = async (): Promise<Order[]> => {
+    return this.orderRepository.find({
+      relations: ['product'],
+      order: { id: 'DESC' },
+    });
   };
 }
 

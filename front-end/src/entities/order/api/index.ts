@@ -1,4 +1,4 @@
-import { OrdersApiResponse } from '@/entities/order/model/types';
+import { Order, OrdersApiResponse } from '@/entities/order/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 
 export async function createOrder(orderData: {
@@ -6,15 +6,15 @@ export async function createOrder(orderData: {
   email: string;
   productId: number;
   phone: string;
-}): Promise<{ success: boolean; message: string }> {
+}): Promise<{ success: boolean; message: string; data?: Order }> {
   try {
-    const response: { message: string } = await fetchWrapper('/api/order', {
+    const response: { message: string; data: Order } = await fetchWrapper('/api/order', {
       method: 'POST',
       body: JSON.stringify({ ...orderData, status: 'active' }),
       headers: { 'Content-Type': 'application/json' },
     });
 
-    return { success: true, message: response.message };
+    return { success: true, message: response.message, data: response.data };
   } catch (error) {
     console.error('Order submission error:', error);
 
@@ -59,5 +59,29 @@ export async function deleteOrder(token: string, id: string) {
     console.error('Order delete error:', error);
 
     return { success: false, message: 'Order delete failed' };
+  }
+}
+
+export async function exportOrders(token: string) {
+  try {
+    const response = await fetch('/api/admin/orders/export', {
+      method: 'GET',
+      headers: { Authorization: token },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to export orders. Status: ${response.status}`);
+    }
+
+    const blob = await response.blob(); // Get CSV as Blob
+
+    return {
+      success: true,
+      data: blob,
+    };
+  } catch (error) {
+    console.error('Order export error:', error);
+
+    return { success: false, message: 'Order export failed' };
   }
 }

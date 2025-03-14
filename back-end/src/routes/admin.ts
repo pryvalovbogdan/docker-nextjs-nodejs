@@ -27,6 +27,7 @@ router.post('/register', validateProps('register'), adminController.register);
 router.post('/products', validateProps('product'), upload.array('image', 3), productController.addProduct);
 router.post('/products/:id', validateProps('productId'), productController.updateProduct);
 router.delete('/products/:id', validateProps('productId'), productController.deleteProduct);
+router.get('/orders/export', orderController.exportOrdersCSV);
 router.post('/orders/:id', validateProps('orders'), orderController.updateOrder);
 router.delete('/orders/:id', validateProps('orders'), orderController.deleteOrder);
 router.post('/news', validateProps('news'), newsController.addNews);

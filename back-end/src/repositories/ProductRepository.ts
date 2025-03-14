@@ -56,6 +56,7 @@ class ProductRepository {
         'category.name',
         'subCategory.name',
       ])
+      .orderBy('product.id', 'DESC')
       .take(limit)
       .skip(offset)
       .getManyAndCount();

@@ -34,9 +34,9 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
     orders: [
       { name: 'name', required: true },
       { name: 'phone', required: true },
-      { name: 'email', type: 'email' },
+      { name: 'email', type: 'email', required: true },
       { name: 'date', type: 'date' },
-      { name: 'productId' },
+      { name: 'productId', required: true },
     ],
     products: [
       { name: 'title', required: true, translateKey: 'columns.title' },
