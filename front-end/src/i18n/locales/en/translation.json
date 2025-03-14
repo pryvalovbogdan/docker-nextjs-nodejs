@@ -191,8 +191,10 @@
   "mindray": "A Chinese company founded in 1991, which is a global leader in the production of medical devices and diagnostic systems",
   "weInSocials": "We are on social media",
   "followUsOnSocials": "Join us",
-  "downloadSuccess": "Успішно завантажено",
-  "downloadError": "Не вдалось завантажити",
-  "downloadCsv": "Завантажити список",
-  "addError": "Не вдалось додати"
+  "downloadSuccess": "Successfully downloaded",
+  "downloadError": "Failed to download",
+  "downloadCsv": "Download list",
+  "addError": "Failed to add",
+  "searchPlaceholder": "Enter product name",
+  "searchProduct": "Find product"
 }

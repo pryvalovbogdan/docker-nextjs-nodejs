@@ -4,11 +4,18 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { createOrder, deleteOrder, exportOrders, fetchOrders } from '@/entities/order/api';
-import { createProduct, deleteProduct, exportProducts, fetchProductsOffSet } from '@/entities/product/api';
+import {
+  createProduct,
+  deleteProduct,
+  exportProducts,
+  fetchProductsOffSet,
+  fetchSearchProducts,
+} from '@/entities/product/api';
+import { IProductResponse } from '@/entities/product/model/types';
 import Pagination from '@/shared/ui/pagination';
 import SkeletonTable from '@/shared/ui/skeleton-table';
 import { Toaster, toaster } from '@/shared/ui/toaster';
-import { Box, Button, Flex, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Input, Skeleton, Text, VStack } from '@chakra-ui/react';
 import AddEntityDialog from '@features/entitiy/add-entity/add-entity-dialog';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
@@ -69,6 +76,8 @@ export default function Dashboard({ lng }: { lng: string }) {
     orders: { pages: {}, totalPages: 1 },
     products: { pages: {}, totalPages: 1 },
   });
+
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation(lng);
@@ -134,6 +143,27 @@ export default function Dashboard({ lng }: { lng: string }) {
     setCurrentPage(1);
 
     if (Object.keys(data[tab].pages).length === 0) fetchData(tab);
+  };
+
+  const handleSearch = async () => {
+    try {
+      const response: IProductResponse[] = await fetchSearchProducts(searchTerm);
+
+      setCurrentPage(1000);
+
+      setData(prev => ({
+        ...prev,
+        [selectedTab]: {
+          ...prev[selectedTab],
+          pages: {
+            ...prev[selectedTab].pages,
+            1000: response || [],
+          },
+        },
+      }));
+    } catch (error) {
+      console.error(`Error search ${searchTerm}:`, error);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -273,6 +303,16 @@ export default function Dashboard({ lng }: { lng: string }) {
 
           {!isLoading && (
             <Flex>
+              {selectedTab === 'products' && (
+                <HStack mr={2}>
+                  <Input
+                    placeholder={t('searchPlaceholder')}
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                  />
+                  <Button onClick={handleSearch}>{t('searchProduct')}</Button>
+                </HStack>
+              )}
               <Flex justifyContent='flex-end'>
                 <Button colorScheme='blue' onClick={handleDownloadCsv} mr={2}>
                   {t('downloadCsv')} {t(`tabs.${selectedTab}`)}

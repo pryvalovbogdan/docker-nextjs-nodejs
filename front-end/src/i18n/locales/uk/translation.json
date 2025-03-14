@@ -190,5 +190,7 @@
   "downloadSuccess": "Успішно завантажено",
   "downloadError": "Не вдалось завантажити",
   "downloadCsv": "Завантажити список",
-  "addError": "Не вдалось додати"
+  "addError": "Не вдалось додати",
+  "searchPlaceholder": "Введіть назву продукту",
+  "searchProduct": "Знайти товар"
 }
