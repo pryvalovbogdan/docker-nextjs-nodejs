@@ -10,6 +10,8 @@ import { useTranslation } from '@i18n/client';
 import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
+const DEBOUNCE_DELAY = 500;
+
 const SearchView: React.FC<{ lng: string; query: string; products: IProductResponse[] }> = ({
   lng,
   query,
@@ -19,14 +21,23 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
   const [searchQuery, setSearchQuery] = useState(decodeURIComponent(query));
   const [results, setResults] = useState<IProductResponse[]>(products);
   const [loading, setLoading] = useState(false);
+  const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
 
   useEffect(() => {
-    if (!query.trim() || searchQuery === query) return;
+    const handler = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, DEBOUNCE_DELAY);
+
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (!debouncedQuery.trim()) return;
 
     const fetchResults = async () => {
       setLoading(true);
       try {
-        const res: IProductResponse[] = await fetchSearchProducts(searchQuery);
+        const res: IProductResponse[] = await fetchSearchProducts(debouncedQuery);
 
         setResults(res ?? []);
       } catch (error) {
@@ -37,11 +48,11 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
     };
 
     fetchResults();
-  }, [searchQuery]);
+  }, [debouncedQuery]);
 
   return (
     <Layout lng={lng}>
-      <Box maxW='container.md' mx='auto' mt={8} px={4}>
+      <Box maxW='container.md' mx='auto' my={8} px={4}>
         <Text fontSize='2xl' fontWeight='bold' textAlign='center' color='gray.800'>
           {t('search.resultsFor')}{' '}
           <Text as='span' color='#036753'>

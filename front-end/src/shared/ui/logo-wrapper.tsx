@@ -8,7 +8,7 @@ const logoFont = localFont({
 });
 const LogoWrapper = ({ onClick }: { onClick?: () => void }) => {
   return (
-    <Flex alignItems='center' justifyContent='center' gap={1}>
+    <Flex alignItems='center' justifyContent='center' gap={1} cursor='pointer' onClick={onClick}>
       <Image
         mb={2}
         src='/logo.svg'
@@ -19,8 +19,6 @@ const LogoWrapper = ({ onClick }: { onClick?: () => void }) => {
         color='red'
         bg='#3E5A6F'
         p={2}
-        cursor='pointer'
-        onClick={onClick}
       />
       <Text
         fontSize={{ base: '4xl', md: '4xl' }}
@@ -29,7 +27,6 @@ const LogoWrapper = ({ onClick }: { onClick?: () => void }) => {
         textShadow='2px 4px 6px rgba(0, 0, 0, 0.3)'
         className={logoFont.className}
         textAlign='center'
-        onClick={onClick}
       >
         Med
         <Text as='span' position='relative'>

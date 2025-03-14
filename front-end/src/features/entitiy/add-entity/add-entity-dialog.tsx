@@ -1,5 +1,6 @@
 'use client';
 
+import { TFunction } from 'i18next';
 import React, { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
@@ -18,7 +19,7 @@ interface AddEntityDialogProps {
   onClose: () => void;
   onSubmit: (formData: any, token: string) => void;
   tab: 'orders' | 'products' | 'admins';
-  t: (key: string) => string;
+  t: TFunction;
 }
 
 const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSubmit, tab, t }) => {
@@ -29,7 +30,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
 
   const fieldConfigs: Record<
     'orders' | 'products' | 'admins',
-    { name: string; type?: string; required?: boolean; translateKey?: string }[]
+    { name: string; type?: string; required?: boolean; translateKey?: any }[]
   > = {
     orders: [
       { name: 'name', required: true },
@@ -72,7 +73,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
     setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
 
-  const token = sessionStorage.getItem('token');
+  const token = sessionStorage.getItem('token') || '';
 
   const handleSubmit = async () => {
     const requiredFields = fieldConfigs[tab].filter(field => field.required).map(field => field.name);
@@ -128,7 +129,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
         </DialogHeader>
 
         <DialogBody>
-          <VStack spacing={4} align='stretch'>
+          <VStack align='stretch'>
             {fieldConfigs[tab].map(({ name, type, required, translateKey }) => (
               <Box key={name}>
                 <Text fontSize='sm' fontWeight='bold' color='gray.800'>
@@ -198,7 +199,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
         </DialogBody>
         <DialogFooter>
           <Flex justify='flex-end' w='100%'>
-            <Button colorScheme='green' mr={3} isLoading={isSubmitting} onClick={handleSubmit}>
+            <Button colorScheme='green' mr={3} loading={isSubmitting} onClick={handleSubmit}>
               {t('create')}
             </Button>
             <DialogCloseTrigger asChild>

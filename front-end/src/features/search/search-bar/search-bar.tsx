@@ -38,7 +38,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchResults(searchQuery);
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [searchQuery, fetchResults]);

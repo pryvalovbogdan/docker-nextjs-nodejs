@@ -80,10 +80,10 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
               <Flex align='center'>
                 <Flex flexDirection='column'>
                   <Flex align='center' gap={2}>
-                    <Link href={`viber://chat?number=${officePhone.replace(/[^+\d]/g, '')}`} isExternal>
+                    <Link href={`viber://chat?number=${officePhone.replace(/[^+\d]/g, '')}`} target='_blank'>
                       <Icon as={FaViber as ElementType} color='#7C4A9D' boxSize={6} />
                     </Link>
-                    <Link href={`https://t.me/${officePhone.replace(/[^+\d]/g, '')}`} isExternal>
+                    <Link href={`https://t.me/${officePhone.replace(/[^+\d]/g, '')}`} target='_blank'>
                       <Icon as={FaTelegramPlane as ElementType} color='#0088cc' boxSize={6} />
                     </Link>
                     <Link
@@ -96,10 +96,10 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
                     </Link>
                   </Flex>
                   <Flex align='center' gap={2}>
-                    <Link href={`viber://chat?number=${officePhoneSecond.replace(/[^+\d]/g, '')}`} isExternal>
+                    <Link href={`viber://chat?number=${officePhoneSecond.replace(/[^+\d]/g, '')}`} target='_blank'>
                       <Icon as={FaViber as ElementType} color='#7C4A9D' boxSize={6} />
                     </Link>
-                    <Link href={`https://t.me/${officePhoneSecond.replace(/[^+\d]/g, '')}`} isExternal>
+                    <Link href={`https://t.me/${officePhoneSecond.replace(/[^+\d]/g, '')}`} target='_blank'>
                       <Icon as={FaTelegramPlane as ElementType} color='#0088cc' boxSize={6} />
                     </Link>
                     <Link
@@ -136,15 +136,15 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
               boxShadow='lg'
               color='white'
             >
-              <VStack spacing={3}>
+              <VStack>
                 <Heading as='h3' size='lg' color='emerald.300'>
                   {t('weInSocials')}
                 </Heading>
                 <Text fontSize='md' color='gray.200'>
                   {t('followUsOnSocials')}
                 </Text>
-                <HStack spacing={4}>
-                  <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank' isExternal>
+                <HStack>
+                  <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank'>
                     <IconButton
                       aria-label='Instagram'
                       size='md'
@@ -155,7 +155,7 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
                       <FaInstagram size='20px' color='white' />
                     </IconButton>
                   </Link>
-                  <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank' isExternal>
+                  <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank'>
                     <IconButton
                       aria-label='Facebook'
                       size='md'

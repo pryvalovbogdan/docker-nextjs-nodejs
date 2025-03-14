@@ -95,13 +95,25 @@ const Footer = ({
           </Link>
           <Text fontWeight='bold'>{t('weInSocials')}</Text>
           <Flex align='center' gap={4}>
-            <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank' isExternal>
-              <FaInstagram size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
+            <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank'>
+              <Icon
+                as={FaInstagram as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
             </Link>
-            <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank' isExternal>
-              <FaFacebook size='20px' color='white' cursor='pointer' _hover={{ color: 'gray.200' }} />
+            <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank'>
+              <Icon
+                as={FaFacebook as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
             </Link>
-            <Link href={`https://t.me/${officePhone?.replace(/[^+\d]/g, '')}`} isExternal>
+            <Link href={`https://t.me/${officePhone?.replace(/[^+\d]/g, '')}`} target='_blank'>
               <Icon
                 as={FaTelegram as ElementType}
                 boxSize={5}

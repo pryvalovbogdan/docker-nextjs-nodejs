@@ -190,5 +190,9 @@
   "philips": "A Dutch company founded in 1891, which is a global leader in the production of diagnostic equipment",
   "mindray": "A Chinese company founded in 1991, which is a global leader in the production of medical devices and diagnostic systems",
   "weInSocials": "We are on social media",
-  "followUsOnSocials": "Join us"
+  "followUsOnSocials": "Join us",
+  "downloadSuccess": "Успішно завантажено",
+  "downloadError": "Не вдалось завантажити",
+  "downloadCsv": "Завантажити список",
+  "addError": "Не вдалось додати"
 }

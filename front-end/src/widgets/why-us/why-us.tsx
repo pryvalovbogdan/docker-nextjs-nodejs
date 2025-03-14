@@ -46,7 +46,7 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
         </Heading>
       )}
 
-      <Stack mt={6} spacing={4}>
+      <Stack mt={6}>
         {services.map((service, index) => (
           <Flex
             key={index}
@@ -63,9 +63,9 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
             <Icon as={service.icon as ElementType} boxSize={10} color='#036753' mr={4} />
             <Box>
               <Heading size='md' color='gray.800'>
-                {t(service.title)}
+                {t(service.title as any)}
               </Heading>
-              <Text color='gray.700'>{t(service.description)}</Text>
+              <Text color='gray.700'>{t(service.description as any)}</Text>
             </Box>
           </Flex>
         ))}

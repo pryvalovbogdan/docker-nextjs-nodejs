@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Flex, Heading, Image } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
-const images = ['main4.jpg', 'main5.png', 'main3.jpeg'];
+const images = ['GE HealthCare Image (2).webp', 'olympus-europa_press-release_easysuite_or_img_1200.png', 'main3.jpeg'];
 
 interface GalleryImagesProps {
   lng: string;

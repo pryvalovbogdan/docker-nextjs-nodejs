@@ -189,5 +189,6 @@
   "followUsOnSocials": "Приєдуйтесь до нас",
   "downloadSuccess": "Успішно завантажено",
   "downloadError": "Не вдалось завантажити",
-  "downloadCsv": "Завантажити список"
+  "downloadCsv": "Завантажити список",
+  "addError": "Не вдалось додати"
 }

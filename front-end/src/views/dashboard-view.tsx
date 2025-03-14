@@ -32,7 +32,7 @@ const deleteFunctions: Record<TabKey, (token: string, id: string) => Promise<any
 
 const createFunctions: Record<TabKey, CreateFunction> = {
   orders: createOrder,
-  products: createProduct,
+  products: (formData, token = '') => createProduct(formData, token),
 };
 
 const exportCSvFunctions: Record<TabKey, (token: string) => Promise<any>> = {
@@ -68,7 +68,6 @@ export default function Dashboard({ lng }: { lng: string }) {
   const [data, setData] = useState<Record<TabKey, PaginatedData>>({
     orders: { pages: {}, totalPages: 1 },
     products: { pages: {}, totalPages: 1 },
-    admins: { pages: {}, totalPages: 1 },
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -221,8 +220,10 @@ export default function Dashboard({ lng }: { lng: string }) {
       const response = await exportCSvFunctions[selectedTab](token);
 
       if (response.success && response.data) {
+        // Convert CSV string to a Blob
         const csvBlob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
 
+        // Create a URL for the Blob and trigger download
         const url = window.URL.createObjectURL(csvBlob);
         const link = document.createElement('a');
 
@@ -231,6 +232,7 @@ export default function Dashboard({ lng }: { lng: string }) {
         document.body.appendChild(link);
         link.click();
 
+        // Cleanup
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
 

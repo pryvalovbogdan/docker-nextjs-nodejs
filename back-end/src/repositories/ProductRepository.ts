@@ -149,6 +149,7 @@ class ProductRepository {
         { category: { name: ILike(`%${searchText}%`) } },
         { subCategory: { name: ILike(`%${searchText}%`) } },
       ],
+      take: 15,
     });
   };
 }
