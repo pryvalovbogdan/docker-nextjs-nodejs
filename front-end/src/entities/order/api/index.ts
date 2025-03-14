@@ -73,7 +73,7 @@ export async function exportOrders(token: string) {
       throw new Error(`Failed to export orders. Status: ${response.status}`);
     }
 
-    const blob = await response.blob(); // Get CSV as Blob
+    const blob = await response.blob();
 
     return {
       success: true,

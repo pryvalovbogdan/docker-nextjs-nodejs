@@ -3,9 +3,8 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { createAdmin, deleteAdmin, fetchAdmins } from '@/entities/admin/api';
 import { createOrder, deleteOrder, exportOrders, fetchOrders } from '@/entities/order/api';
-import { createProduct, deleteProduct, fetchProductsOffSet } from '@/entities/product/api';
+import { createProduct, deleteProduct, exportProducts, fetchProductsOffSet } from '@/entities/product/api';
 import Pagination from '@/shared/ui/pagination';
 import SkeletonTable from '@/shared/ui/skeleton-table';
 import { Toaster, toaster } from '@/shared/ui/toaster';
@@ -16,7 +15,7 @@ import { Layout } from '@widgets/layout';
 
 const PAGE_SIZE = 10;
 
-type TabKey = 'orders' | 'products' | 'admins';
+type TabKey = 'orders' | 'products';
 
 type FetchFunction = (token: string, page: number, pageSize: number) => Promise<any>;
 type CreateFunction = (formData: any, token?: string) => Promise<any>;
@@ -24,23 +23,21 @@ type CreateFunction = (formData: any, token?: string) => Promise<any>;
 const fetchDataFunctions: Record<TabKey, FetchFunction> = {
   orders: fetchOrders,
   products: fetchProductsOffSet,
-  admins: fetchAdmins,
 };
 
 const deleteFunctions: Record<TabKey, (token: string, id: string) => Promise<any>> = {
   orders: deleteOrder,
   products: deleteProduct,
-  admins: deleteAdmin,
 };
 
 const createFunctions: Record<TabKey, CreateFunction> = {
   orders: createOrder,
   products: createProduct,
-  admins: createAdmin,
 };
 
-const exportCSvFunctions: Record<'orders', (token: string) => Promise<any>> = {
+const exportCSvFunctions: Record<TabKey, (token: string) => Promise<any>> = {
   orders: exportOrders,
+  products: exportProducts,
 };
 
 type PaginatedData = {
@@ -63,13 +60,6 @@ const columns = {
     { columnName: 'category', translateKey: 'columns.category' },
     { columnName: 'country', translateKey: 'columns.country' },
     { columnName: 'subCategory', translateKey: 'columns.subcategory' },
-  ],
-  admins: [
-    { columnName: 'username', translateKey: 'columns.username' },
-    { columnName: 'passwordHash', translateKey: 'columns.password' },
-    { columnName: 'role', translateKey: 'columns.role' },
-    { columnName: 'adminIps', translateKey: 'columns.adminIp' },
-    { columnName: 'createdAt', translateKey: 'columns.createdAt' },
   ],
 };
 
@@ -231,8 +221,9 @@ export default function Dashboard({ lng }: { lng: string }) {
       const response = await exportCSvFunctions[selectedTab](token);
 
       if (response.success && response.data) {
-        // Create a download URL
-        const url = window.URL.createObjectURL(response.data);
+        const csvBlob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+
+        const url = window.URL.createObjectURL(csvBlob);
         const link = document.createElement('a');
 
         link.href = url;
@@ -240,7 +231,6 @@ export default function Dashboard({ lng }: { lng: string }) {
         document.body.appendChild(link);
         link.click();
 
-        // Cleanup
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
 

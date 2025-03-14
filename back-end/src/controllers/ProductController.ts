@@ -283,6 +283,19 @@ class ProductController {
       responseHandler.sendCatchResponse(res, 'Database error');
     }
   };
+
+  exportProductsCSV = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { data, filename } = await this.service.exportProductsToCSV();
+
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Type', 'text/csv');
+      res.send(data);
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      responseHandler.sendCatchResponse(res, 'Failed to export products');
+    }
+  };
 }
 
 export default ProductController;

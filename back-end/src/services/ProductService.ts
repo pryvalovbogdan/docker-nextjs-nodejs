@@ -1,3 +1,5 @@
+import { stringify } from 'csv-stringify/sync';
+
 import { Product } from '../entities';
 import { ProductRepository } from '../repositories';
 import CategoryService from './CategoryService';
@@ -234,6 +236,40 @@ class ProductService {
       console.error('Error searching for products:', error);
 
       return { errors: ['Error searching for products'] };
+    }
+  }
+
+  async exportProductsToCSV(): Promise<{ data: Buffer; filename: string }> {
+    try {
+      const products = await this.repository.getProducts();
+
+      if (!products || products.length === 0) {
+        throw new Error('No products available for export.');
+      }
+
+      const csvString = stringify(
+        products.map(product => ({
+          id: product.id,
+          title: product.title,
+          description: product.description || '',
+          characteristics: product.characteristics || '',
+          brand: product.brand || '',
+          country: product.country || '',
+          price: product.price || '',
+          category: product.category?.name || '',
+          subCategory: product.subCategory?.name || '',
+          images: product.images?.join('|') || '',
+        })),
+        { header: true },
+      );
+
+      return {
+        data: Buffer.from(csvString),
+        filename: `products_export_${Date.now()}.csv`,
+      };
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      throw new Error('Failed to generate CSV for products.');
     }
   }
 }

@@ -167,3 +167,23 @@ export async function createProduct(
     };
   }
 }
+
+export async function exportProducts(token: string) {
+  try {
+    const response = await fetchWrapper('/api/admin/products/export', {
+      headers: { Authorization: token },
+      responseType: 'arraybuffer',
+    });
+
+    const csvString = new TextDecoder('utf-8').decode(response as any);
+
+    return {
+      success: true,
+      data: csvString,
+    };
+  } catch (error) {
+    console.error('Product export error:', error);
+
+    return { success: false, message: 'Product export failed' };
+  }
+}
