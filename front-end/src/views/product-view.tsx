@@ -153,15 +153,40 @@ export const descriptionStyles = `
         background: #036753;
         margin: 15px 0;
     }
+    
+    ul, ol {
+        margin: 15px 0;
+        padding-left: 20px;
+    }
+    
+    ul li, ol li {
+        margin-bottom: 6px;
+        font-size: 16px;
+        color: #333;
+        list-style: none;
+    }
+    
+    ul li::before {
+        content: "• ";
+        color: #036753;
+        font-weight: bold;
+    }
+    
+    ul li[style*="color: #00d78a"]::before {
+        content: none;
+    }
     }
 `;
 
 interface ProductProps {
   product: IProductResponse;
   lng: string;
+  officePhone: string;
+  officePhoneSecond: string;
+  officeEmail: string;
 }
 
-const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
+const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, officePhoneSecond, officeEmail }) => {
   const { t } = useTranslation(lng);
   const [showMore, setShowMore] = useState(true);
   const [selectedImage, setSelectedImage] = useState(product.images?.[0] || '/placeholder.png');
@@ -169,7 +194,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng }) => {
   const toggleShowMore = () => setShowMore(!showMore);
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
       <Flex mt={10}>
         <Breadcrumb.Root bg='rgba(3, 103, 83, 0.7)' ml={10} py={2} px={4} backdropFilter='blur(12px)' borderRadius='md'>
           <Breadcrumb.List>

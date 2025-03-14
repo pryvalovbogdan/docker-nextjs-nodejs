@@ -27,7 +27,7 @@ export async function generateMetadataGeneral(
       ? metaConfig.keywordsKeys.map(key => t(key as TranslationKeys))
       : [t('buyTech'), t('medTech')],
     icons: {
-      icon: metaConfig?.iconPath || '/29.png',
+      icon: metaConfig?.iconPath || '/logo.svg',
     },
   };
 }

@@ -43,8 +43,10 @@ export const importProducts = async () => {
       product.category = category;
       product.subCategory = subCategory;
 
-      if (productData.brandname) {
-        product.brand = productData.brandname;
+      const brand = productData.brandname || productData.brand;
+
+      if (brand) {
+        product.brand = brand;
       }
 
       await AppDataSource.manager.save(product);
