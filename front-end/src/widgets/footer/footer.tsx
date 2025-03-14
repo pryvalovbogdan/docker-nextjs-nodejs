@@ -39,7 +39,7 @@ const Footer = ({
           <Link href={`/${lng}/about`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('aboutUs')}
           </Link>
-          <Link href={`/${lng}#brands`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
+          <Link href={`/${lng}/brand`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('brands')}
           </Link>
         </VStack>
