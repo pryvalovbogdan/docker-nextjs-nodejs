@@ -36,8 +36,9 @@ class S3Service {
     }
   };
 
-  deleteFileS3 = async (key: string): Promise<S3.DeleteObjectOutput> => {
+  deleteFileS3 = async (url: string): Promise<S3.DeleteObjectOutput> => {
     try {
+      const key = url.replace(process.env.CLOUDFRONT_URL!, '');
       const params = {
         Bucket: BUCKET_NAME as string,
         Key: key,

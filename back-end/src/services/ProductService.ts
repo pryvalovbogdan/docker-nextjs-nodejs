@@ -1,4 +1,6 @@
-import { Category, Product } from '../entities';
+import { stringify } from 'csv-stringify/sync';
+
+import { Product } from '../entities';
 import { ProductRepository } from '../repositories';
 import CategoryService from './CategoryService';
 import SubCategoryService from './SubCategoryService';
@@ -14,7 +16,7 @@ class ProductService {
 
   async addProduct(productData: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
     try {
-      if (!productData.category) {
+      if (!productData.category || !productData.category.name) {
         return { errors: ['Category is required'] };
       }
 
@@ -32,13 +34,13 @@ class ProductService {
 
       let subCategory = null;
 
-      if (productData.subCategory) {
+      if (productData.subCategory && productData.subCategory.name) {
         subCategory = (await this.subCategoryService.getSubCategory(productData.subCategory.name)).data;
 
         if (!subCategory) {
           const createSubCategoryResult = await this.subCategoryService.createSubCategory(
             productData.subCategory.name,
-            (category as Category).id,
+            category.id,
           );
 
           if (createSubCategoryResult.errors.length) {
@@ -52,7 +54,7 @@ class ProductService {
       const product = new Product();
 
       Object.assign(product, productData);
-      product.category = category as Category;
+      product.category = category;
       product.subCategory = subCategory || undefined;
 
       const savedProduct = await this.repository.saveProduct(product);
@@ -234,6 +236,40 @@ class ProductService {
       console.error('Error searching for products:', error);
 
       return { errors: ['Error searching for products'] };
+    }
+  }
+
+  async exportProductsToCSV(): Promise<{ data: Buffer; filename: string }> {
+    try {
+      const products = await this.repository.getProducts();
+
+      if (!products || products.length === 0) {
+        throw new Error('No products available for export.');
+      }
+
+      const csvString = stringify(
+        products.map(product => ({
+          id: product.id,
+          title: product.title,
+          description: product.description || '',
+          characteristics: product.characteristics || '',
+          brand: product.brand || '',
+          country: product.country || '',
+          price: product.price || '',
+          category: product.category?.name || '',
+          subCategory: product.subCategory?.name || '',
+          images: product.images?.join('|') || '',
+        })),
+        { header: true },
+      );
+
+      return {
+        data: Buffer.from(csvString),
+        filename: `products_export_${Date.now()}.csv`,
+      };
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      throw new Error('Failed to generate CSV for products.');
     }
   }
 }

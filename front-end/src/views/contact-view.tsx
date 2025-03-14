@@ -1,9 +1,22 @@
 'use client';
 
 import React, { ElementType } from 'react';
-import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaRoad } from 'react-icons/fa';
+import { FaEnvelope, FaFacebook, FaInstagram, FaMapMarkerAlt, FaRoad, FaTelegramPlane, FaViber } from 'react-icons/fa';
 
-import { Box, Button, Container, Flex, Icon, Link, Spinner, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  HStack,
+  Heading,
+  Icon,
+  IconButton,
+  Link,
+  Spinner,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import ContactForm from '@features/contact/send-request/contact-form';
 import { useTranslation } from '@i18n/client';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
@@ -48,7 +61,7 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
     <Layout lng={lng} officeEmail={officeEmail} officePhone={officePhone} officePhoneSecond={officePhoneSecond}>
       <Container maxW='container.xl' py={10}>
         <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' align='flex-start' gap={10} mb={10}>
-          <Box flex='1'>
+          <Flex flexDirection='column' justifyContent='space-between' h='full' flex='1'>
             <Text fontSize='3xl' fontWeight='bold' color='gray.800'>
               {t('contact.title')}
             </Text>
@@ -65,24 +78,39 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
               </Flex>
 
               <Flex align='center'>
-                <Icon as={FaPhone as ElementType} color='#036753' boxSize={5} mr={3} />
                 <Flex flexDirection='column'>
-                  <Link
-                    href={`tel:${officePhone}`}
-                    color='#036753'
-                    fontSize='lg'
-                    _hover={{ textDecoration: 'underline' }}
-                  >
-                    {officePhone}
-                  </Link>
-                  <Link
-                    href={`tel:${officePhoneSecond}`}
-                    color='#036753'
-                    fontSize='lg'
-                    _hover={{ textDecoration: 'underline' }}
-                  >
-                    {officePhoneSecond}
-                  </Link>
+                  <Flex align='center' gap={2}>
+                    <Link href={`viber://chat?number=${officePhone.replace(/[^+\d]/g, '')}`} target='_blank'>
+                      <Icon as={FaViber as ElementType} color='#7C4A9D' boxSize={6} />
+                    </Link>
+                    <Link href={`https://t.me/${officePhone.replace(/[^+\d]/g, '')}`} target='_blank'>
+                      <Icon as={FaTelegramPlane as ElementType} color='#0088cc' boxSize={6} />
+                    </Link>
+                    <Link
+                      href={`tel:${officePhone}`}
+                      color='#036753'
+                      fontSize='lg'
+                      _hover={{ textDecoration: 'underline' }}
+                    >
+                      {officePhone}
+                    </Link>
+                  </Flex>
+                  <Flex align='center' gap={2}>
+                    <Link href={`viber://chat?number=${officePhoneSecond.replace(/[^+\d]/g, '')}`} target='_blank'>
+                      <Icon as={FaViber as ElementType} color='#7C4A9D' boxSize={6} />
+                    </Link>
+                    <Link href={`https://t.me/${officePhoneSecond.replace(/[^+\d]/g, '')}`} target='_blank'>
+                      <Icon as={FaTelegramPlane as ElementType} color='#0088cc' boxSize={6} />
+                    </Link>
+                    <Link
+                      href={`tel:${officePhoneSecond}`}
+                      color='#036753'
+                      fontSize='lg'
+                      _hover={{ textDecoration: 'underline' }}
+                    >
+                      {officePhoneSecond}
+                    </Link>
+                  </Flex>
                 </Flex>
               </Flex>
 
@@ -98,7 +126,50 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
                 </Link>
               </Flex>
             </Flex>
-          </Box>
+
+            <Box
+              mt={{ base: 10, md: '80px' }}
+              textAlign='center'
+              bg='emerald.900'
+              p={6}
+              borderRadius='lg'
+              boxShadow='lg'
+              color='white'
+            >
+              <VStack>
+                <Heading as='h3' size='lg' color='emerald.300'>
+                  {t('weInSocials')}
+                </Heading>
+                <Text fontSize='md' color='gray.200'>
+                  {t('followUsOnSocials')}
+                </Text>
+                <HStack>
+                  <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank'>
+                    <IconButton
+                      aria-label='Instagram'
+                      size='md'
+                      colorScheme='whiteAlpha'
+                      bg='emerald.700'
+                      _hover={{ bg: 'emerald.600' }}
+                    >
+                      <FaInstagram size='20px' color='white' />
+                    </IconButton>
+                  </Link>
+                  <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank'>
+                    <IconButton
+                      aria-label='Facebook'
+                      size='md'
+                      colorScheme='whiteAlpha'
+                      bg='emerald.700'
+                      _hover={{ bg: 'emerald.600' }}
+                    >
+                      <FaFacebook size='20px' color='white' />
+                    </IconButton>
+                  </Link>
+                </HStack>
+              </VStack>
+            </Box>
+          </Flex>
 
           <Box flex='1' w='100%'>
             {isLoaded ? (

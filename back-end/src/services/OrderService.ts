@@ -1,3 +1,5 @@
+import { stringify } from 'csv-stringify/sync';
+
 import { Order } from '../entities';
 import { OrderRepository } from '../repositories';
 import { IEmailBody } from './types';
@@ -62,6 +64,36 @@ class OrderService {
       console.error('Error saving order:', err);
 
       return { errors: ['Error saving order'] };
+    }
+  }
+
+  async exportOrdersToCSV(): Promise<{ data: Buffer; filename: string }> {
+    try {
+      const orders = await this.repository.getAllOrders();
+
+      if (!orders.length) {
+        throw new Error('No orders found');
+      }
+
+      const csvData = stringify(
+        orders.map(order => ({
+          id: order.id,
+          name: order.name,
+          phone: order.phone,
+          email: order.email,
+          date: order.date,
+          status: order.status,
+          product: order.product ? order.product.title : 'N/A',
+          brand: order.product?.brand || 'N/A',
+          price: order.product?.price || 'N/A',
+        })),
+        { header: true },
+      );
+
+      return { data: Buffer.from(csvData), filename: `orders_${Date.now()}.csv` };
+    } catch (error) {
+      console.error('Error exporting orders:', error);
+      throw new Error('Failed to export orders');
     }
   }
 }

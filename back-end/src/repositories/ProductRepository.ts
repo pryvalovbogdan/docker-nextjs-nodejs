@@ -56,6 +56,7 @@ class ProductRepository {
         'category.name',
         'subCategory.name',
       ])
+      .orderBy('product.id', 'DESC')
       .take(limit)
       .skip(offset)
       .getManyAndCount();
@@ -148,6 +149,7 @@ class ProductRepository {
         { category: { name: ILike(`%${searchText}%`) } },
         { subCategory: { name: ILike(`%${searchText}%`) } },
       ],
+      take: 15,
     });
   };
 }

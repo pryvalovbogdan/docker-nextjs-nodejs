@@ -1,31 +1,37 @@
 'use client';
 
-import React, { ElementType, ReactElement } from 'react';
-import { FaCheckCircle, FaCreditCard, FaHeadset, FaTruck } from 'react-icons/fa';
+import React, { ElementType } from 'react';
+import { FaClock, FaHandHoldingUsd, FaHeadset, FaShieldAlt, FaTools } from 'react-icons/fa';
 
-import { Box, Flex, Heading, Icon, Image, Stack, Text } from '@chakra-ui/react';
+import LogoWrapper from '@/shared/ui/logo-wrapper';
+import { Box, Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
 const services = [
   {
     title: 'interestFreeInstallments',
     description: 'interestFreeInstallmentsDescription',
-    icon: FaCreditCard,
+    icon: FaHandHoldingUsd,
   },
   {
-    title: 'serviceSupport',
-    description: 'serviceSupportDescription',
+    title: 'serviceMaintenance',
+    description: 'serviceMaintenanceDescription',
+    icon: FaTools,
+  },
+  {
+    title: 'warrantyService',
+    description: 'warrantyServiceDescription',
+    icon: FaShieldAlt,
+  },
+  {
+    title: 'postWarrantyService',
+    description: 'postWarrantyServiceDescription',
+    icon: FaClock,
+  },
+  {
+    title: 'customerSupport',
+    description: 'customerSupportDescription',
     icon: FaHeadset,
-  },
-  {
-    title: 'officialGuarantee',
-    description: 'officialGuaranteeDescription',
-    icon: FaCheckCircle,
-  },
-  {
-    title: 'freeDelivery',
-    description: 'freeDeliveryDescription',
-    icon: FaTruck,
   },
 ];
 
@@ -34,12 +40,11 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
 
   return (
     <Box py={10} px={6} maxW='6xl' mx='auto'>
-      {withHeading &&
-        ((
-          <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6} fontSize='36px'>
-            {t('whyUs')}
-          </Heading>
-        ) as ReactElement)}
+      {withHeading && (
+        <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6} fontSize='36px'>
+          {t('whyUs')}
+        </Heading>
+      )}
 
       <Stack mt={6}>
         {services.map((service, index) => (
@@ -86,16 +91,7 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
           </Text>
         </Box>
 
-        <Image
-          src='/25.png'
-          alt='24/7 Support'
-          maxW='250px'
-          w='150px'
-          mx='auto'
-          maxH='100px'
-          borderRadius='lg'
-          boxShadow='md'
-        />
+        <LogoWrapper />
       </Flex>
     </Box>
   );

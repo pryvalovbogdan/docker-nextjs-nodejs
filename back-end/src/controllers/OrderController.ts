@@ -64,6 +64,7 @@ class OrderController {
 
   saveOrder = async (req: Request, res: Response): Promise<void> => {
     try {
+      console.log('req.bodyreq.bodyreq.body', req.body);
       const result = await this.service.saveOrder(req.body);
 
       if (result.errors.length) {
@@ -113,7 +114,7 @@ class OrderController {
         return;
       }
 
-      responseHandler.sendSuccessResponse(res, 'Order added successfully', {});
+      responseHandler.sendSuccessResponse(res, 'Order added successfully', result.data);
     } catch (err) {
       console.error('Error updating order:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
@@ -122,8 +123,6 @@ class OrderController {
 
   contact = async (req: Request, res: Response): Promise<void> => {
     const errors = validationResult(req);
-
-    console.log('req.bodreq.bod', req.body, errors);
 
     if (!errors.isEmpty()) {
       responseHandler.sendValidationResponse(res, errors.array());
@@ -152,6 +151,19 @@ class OrderController {
     }
 
     responseHandler.sendSuccessResponse(res, 'Request contact send successfully', {});
+  };
+
+  exportOrdersCSV = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { data, filename } = await this.service.exportOrdersToCSV();
+
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Type', 'text/csv');
+      res.send(data);
+    } catch (error) {
+      console.error('Error exporting orders:', error);
+      responseHandler.sendCatchResponse(res, 'Failed to export orders');
+    }
   };
 }
 

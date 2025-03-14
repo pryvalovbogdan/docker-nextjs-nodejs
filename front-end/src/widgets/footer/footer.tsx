@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import React, { ElementType, useEffect, useState } from 'react';
-import { FaFacebookF, FaInstagram, FaTelegram, FaYoutube } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaTelegram } from 'react-icons/fa';
 import { MdEmail, MdPhone } from 'react-icons/md';
 
 import { fetchCategories } from '@/entities/category/api';
@@ -39,7 +39,7 @@ const Footer = ({
           <Link href={`/${lng}/about`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('aboutUs')}
           </Link>
-          <Link href={`/${lng}#brands`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
+          <Link href={`/${lng}/brand`} color='gray.400' _hover={{ textDecoration: 'underline', color: 'gray.200' }}>
             {t('brands')}
           </Link>
         </VStack>
@@ -93,7 +93,36 @@ const Footer = ({
           <Link href={`mailto:${officeEmail}`} color='gray.400' _hover={{ color: 'gray.200' }}>
             {officeEmail}
           </Link>
-
+          <Text fontWeight='bold'>{t('weInSocials')}</Text>
+          <Flex align='center' gap={4}>
+            <Link href='https://www.instagram.com/medix_._?igsh=em04dnVtM2JpNTM0' target='_blank'>
+              <Icon
+                as={FaInstagram as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
+            </Link>
+            <Link href='https://www.facebook.com/share/1B9zftHSpp/?mibextid=wwXIfr' target='_blank'>
+              <Icon
+                as={FaFacebook as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
+            </Link>
+            <Link href={`https://t.me/${officePhone?.replace(/[^+\d]/g, '')}`} target='_blank'>
+              <Icon
+                as={FaTelegram as ElementType}
+                boxSize={5}
+                color='white'
+                cursor='pointer'
+                _hover={{ color: 'gray.200' }}
+              />
+            </Link>
+          </Flex>
           <Text fontWeight='bold'>{t('workHours')}</Text>
           <Text color='gray.400'>{t('alwaysOpen')}</Text>
         </VStack>
@@ -106,13 +135,6 @@ const Footer = ({
           <Text fontSize='sm' color='gray.400'>
             {t('copyright')}
           </Text>
-
-          <Flex align='center' gap={4}>
-            <Icon as={FaInstagram as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-            <Icon as={FaFacebookF as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-            <Icon as={FaYoutube as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-            <Icon as={FaTelegram as ElementType} boxSize={5} cursor='pointer' _hover={{ color: 'gray.200' }} />
-          </Flex>
         </Flex>
       </Flex>
     </Box>

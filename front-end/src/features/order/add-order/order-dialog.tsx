@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import { submitOrder } from '@/entities/order/api';
+import { createOrder } from '@/entities/order/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import {
@@ -57,7 +57,7 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
 
     setIsSubmitting(true);
 
-    const result = await submitOrder({ ...orderData, productId: product.id });
+    const result = await createOrder({ ...orderData, productId: product.id });
 
     if (result.success) {
       toaster.create({ type: 'success', title: t('orderSuccess') });

@@ -21,13 +21,26 @@ class ProductController {
           const imageKey = randomImageName();
 
           await this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
-          imageKeys.push(imageKey);
+          imageKeys.push(process.env.CLOUDFRONT_URL! + imageKey);
         }
 
         req.body.images = imageKeys;
       }
 
-      const result = await this.service.addProduct(req.body);
+      const category = JSON.parse(req.body.category);
+      const subCategory = req.body.subcategory ? JSON.parse(req.body.subcategory) : null;
+
+      const result = await this.service.addProduct({
+        ...req.body,
+        category,
+        subCategory,
+      });
+
+      if (result.errors.length) {
+        responseHandler.sendCatchResponse(res, result.errors[0]);
+
+        return;
+      }
 
       responseHandler.sendSuccessResponse(res, 'Product added successfully', result.data);
     } catch (error) {
@@ -58,7 +71,7 @@ class ProductController {
     const { id } = req.params;
     const existingProduct = await this.service.getProductById(Number(id));
 
-    if (existingProduct.data?.images.length) {
+    if (existingProduct.data?.images?.length) {
       for (let image of existingProduct.data.images) {
         await this.s3Service.deleteFileS3(image);
       }
@@ -268,6 +281,19 @@ class ProductController {
     } catch (err) {
       console.error('Error searching for products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');
+    }
+  };
+
+  exportProductsCSV = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { data, filename } = await this.service.exportProductsToCSV();
+
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Type', 'text/csv');
+      res.send(data);
+    } catch (error) {
+      console.error('Error exporting products:', error);
+      responseHandler.sendCatchResponse(res, 'Failed to export products');
     }
   };
 }

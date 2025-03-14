@@ -74,7 +74,7 @@ export async function fetchProductByCategory(name: string): Promise<IProductResp
   } catch (error) {
     console.error('Error fetching products by category:', error);
 
-    return [] as IProductResponse[];
+    return [];
   }
 }
 
@@ -88,7 +88,7 @@ export async function fetchProductBySubCategory(name: string): Promise<IProductR
   } catch (error) {
     console.error('Error fetching products by subcategory:', error);
 
-    return {} as IProductResponse[];
+    return [];
   }
 }
 
@@ -102,7 +102,7 @@ export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
   } catch (error) {
     console.error('Error fetching last added products:', error);
 
-    return [] as IProductResponse[];
+    return [];
   }
 }
 
@@ -118,6 +118,72 @@ export async function fetchSearchProducts(query: string, isServerCall?: boolean)
   } catch (error) {
     console.error('Error fetching products:', error);
 
-    return [] as IProductResponse[];
+    return [];
+  }
+}
+
+export async function deleteProduct(token: string, id: string): Promise<{ success: boolean; data: IProductResponse }> {
+  try {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`/api/admin/products/${id}`, {
+      headers: { Authorization: token },
+      method: 'DELETE',
+    });
+
+    return {
+      data,
+      success: true,
+    };
+  } catch (error) {
+    console.error('Error deleting products:', error);
+
+    return {
+      data: {} as IProductResponse,
+      success: false,
+    };
+  }
+}
+
+export async function createProduct(
+  formData: any,
+  token: string,
+): Promise<{ success: boolean; data: IProductResponse }> {
+  try {
+    const { data }: { data: IProductResponse } = await fetchWrapper('/api/admin/products', {
+      headers: { Authorization: token },
+      method: 'POST',
+      body: formData,
+    });
+
+    return {
+      data,
+      success: true,
+    };
+  } catch (error) {
+    console.error('Error adding products:', error);
+
+    return {
+      data: {} as IProductResponse,
+      success: false,
+    };
+  }
+}
+
+export async function exportProducts(token: string) {
+  try {
+    const response = await fetchWrapper('/api/admin/products/export', {
+      headers: { Authorization: token },
+      responseType: 'arraybuffer',
+    });
+
+    const csvString = new TextDecoder('utf-8').decode(response as any);
+
+    return {
+      success: true,
+      data: csvString,
+    };
+  } catch (error) {
+    console.error('Product export error:', error);
+
+    return { success: false, message: 'Product export failed' };
   }
 }

@@ -169,7 +169,7 @@ const BrandsSection = ({ lng }: { lng: string }) => {
               cardWidth={300}
               marginCard={16}
               defaultActivePage={1}
-              cards={brandData.map(brand => ({ ...brand, key: brand.name }))}
+              cards={brandData.slice(0, 8).map(brand => ({ ...brand, key: brand.name }))}
               noCardsText='No brands available'
               CustomArrowBtn={<CustomArrows />}
               variant={['withoutPagination']}

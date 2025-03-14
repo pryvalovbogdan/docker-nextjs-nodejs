@@ -1,4 +1,4 @@
-export async function fetchWrapper<T>(url: string, options: RequestInit = {}): Promise<T> {
+export async function fetchWrapper<T>(url: string, options: any): Promise<T> {
   const response = await fetch(url, options);
 
   if (!response.ok) {

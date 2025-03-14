@@ -6,7 +6,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { LuMenu, LuX } from 'react-icons/lu';
 
 import SearchBar from '@/features/search/search-bar/search-bar';
-import { Box, Flex, IconButton, Image, Link, Text } from '@chakra-ui/react';
+import LogoWrapper from '@/shared/ui/logo-wrapper';
+import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
 const Header: React.FC<{ lng: string }> = ({ lng }) => {
@@ -65,20 +66,8 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
       py={4}
       color='white'
     >
-      <Flex maxW='container.xl' mx='auto' justify='space-between' align='center' px={4}>
-        <Image
-          src='/29.png'
-          alt='Madix'
-          maxW='250px'
-          w='150px'
-          mx='auto'
-          maxH='50px'
-          borderRadius='lg'
-          boxShadow='md'
-          bg='transparent'
-          cursor='pointer'
-          onClick={() => (pathname === `/${lng}` ? scrollToSection('layout') : router.push(`/${lng}`))}
-        />
+      <Flex maxW='container.xl' mx='auto' justify='space-between' alignItems='center' px={4}>
+        <LogoWrapper onClick={() => (pathname === `/${lng}` ? scrollToSection('layout') : router.push(`/${lng}`))} />
 
         <Box flex='1' mx={6} maxW={{ base: '80%', md: '300px' }}>
           <SearchBar lng={lng} />

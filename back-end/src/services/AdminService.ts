@@ -6,9 +6,9 @@ import { importProducts } from '../utils/importProducts';
 class AdminService {
   private repository: AdminRepository = new AdminRepository();
 
-  async login(passwordHash: string, adminIp: string): Promise<{ data?: Admin; errors: string[] }> {
+  async login(passwordHash: string, username: string): Promise<{ data?: Admin; errors: string[] }> {
     try {
-      const admin = await this.repository.findAdminByAdminIp(adminIp);
+      const admin = await this.repository.findAdminByUsername(username);
 
       const isPasswordValid = admin && (await encrypt.comparePassword(passwordHash, admin?.passwordHash as string));
 
@@ -16,11 +16,11 @@ class AdminService {
         return { data: admin, errors: [] };
       }
 
-      return { errors: [`Invalid credentials for ip: ${adminIp}`] };
+      return { errors: [`Invalid credentials for username: ${username}`] };
     } catch (error) {
       console.error('Error in login:', error);
 
-      return { errors: [`Failed to log in admin for ip: ${adminIp}`] };
+      return { errors: [`Failed to log in admin for username: ${username}`] };
     }
   }
 
@@ -79,15 +79,7 @@ class AdminService {
         admin.username = PRIMARY_ADMIN_USERNAME;
         admin.passwordHash = await encrypt.encryptPassword(PRIMARY_ADMIN_PASSWORD);
 
-        admin.adminIps = [
-          PRIMARY_ADMIN_IP,
-          SECONDARY_ADMIN_IP,
-          '172.21.0.5',
-          '172.22.0.5',
-          '172.23.0.5',
-          '172.20.0.5',
-          '172.19.0.5',
-        ];
+        admin.adminIps = [PRIMARY_ADMIN_IP, SECONDARY_ADMIN_IP];
 
         await this.repository.saveAdmin(admin);
         await importProducts();
