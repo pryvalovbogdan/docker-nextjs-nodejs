@@ -42,6 +42,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
     products: [
       { name: 'title', required: true, translateKey: 'columns.title' },
       { name: 'description', type: 'textarea', translateKey: 'columns.description' },
+      { name: 'characteristics', translateKey: 'columns.characteristics' },
       { name: 'brand', translateKey: 'columns.brand' },
       { name: 'category', required: true, translateKey: 'columns.category' },
       { name: 'subcategory', translateKey: 'columns.subcategory' },

@@ -185,6 +185,9 @@ interface ProductProps {
   officePhoneSecond: string;
   officeEmail: string;
 }
+const sanitizeHTML = (html: string) => {
+  return html.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '');
+};
 
 const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, officePhoneSecond, officeEmail }) => {
   const { t } = useTranslation(lng);
@@ -287,11 +290,17 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
               style={{
                 display: '-webkit-box',
                 WebkitBoxOrient: 'vertical',
-                WebkitLineClamp: 8,
+                WebkitLineClamp: 9,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
-              dangerouslySetInnerHTML={{ __html: product.description || product.characteristics || '' }}
+              dangerouslySetInnerHTML={{
+                __html: `
+                    <div class="description-container">
+                      ${sanitizeHTML(product.description || product.characteristics || '')}
+                    </div>
+                  `,
+              }}
             />
 
             {product.price && (

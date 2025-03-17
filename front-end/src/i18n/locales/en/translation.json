@@ -88,7 +88,8 @@
     "category": "Category",
     "country": "Country",
     "password": "Password",
-    "subcategory": "Sub category"
+    "subcategory": "Sub category",
+    "characteristics": "Characteristics"
   },
   "pagination": {
     "page": "Page"
