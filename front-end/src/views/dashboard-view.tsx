@@ -63,6 +63,7 @@ const columns = {
   products: [
     { columnName: 'title', translateKey: 'columns.title' },
     { columnName: 'description', translateKey: 'columns.description' },
+    { columnName: 'characteristics', translateKey: 'columns.characteristics' },
     { columnName: 'brand', translateKey: 'columns.brand' },
     { columnName: 'category', translateKey: 'columns.category' },
     { columnName: 'country', translateKey: 'columns.country' },
