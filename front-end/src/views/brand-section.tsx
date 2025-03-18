@@ -26,7 +26,7 @@ const BrandCard = ({
   const { t } = useTranslation(lng);
 
   const handleRedirect = () => {
-    router.push(`/uk/brand/${name}`);
+    router.push(`/${lng}/brand/${name}`);
   };
 
   return (

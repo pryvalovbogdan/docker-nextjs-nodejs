@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation';
+
 import { fetchProductById } from '@/entities/product/api';
 import { ProductView } from '@/views';
 import { fallbackLng, languages } from '@i18n/settings';
@@ -23,6 +25,10 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
   const product = await fetchProductById(id);
+
+  if (product.error) {
+    redirect(`/${lng}`);
+  }
 
   return (
     <ProductView

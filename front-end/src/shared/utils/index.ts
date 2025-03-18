@@ -15,3 +15,7 @@ export const getInnerText = (html: string) => {
     .replace(/\s+/g, ' ')
     .trim();
 };
+
+export const sanitizeHTML = (html: string) => {
+  return html.replace(/<iframe[^>]*>.*?<\/iframe>/gi, '');
+};

@@ -1,4 +1,4 @@
-import { SubCategory } from '../entities/SubCategory.entity';
+import { SubCategory } from '../entities';
 import SubCategoryRepository from '../repositories/SubCategoryRepository';
 
 class SubCategoryService {
@@ -14,6 +14,10 @@ class SubCategoryService {
 
   async getAllSubCategories(): Promise<{ data?: SubCategory[]; errors: string[] }> {
     return this.repository.getAllSubCategories();
+  }
+
+  async deleteSubCategory(subCategoryId: number): Promise<void> {
+    await this.repository.deleteSubCategory(subCategoryId);
   }
 }
 

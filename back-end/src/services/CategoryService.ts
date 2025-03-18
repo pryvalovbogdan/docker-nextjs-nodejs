@@ -2,11 +2,11 @@ import { Category } from '../entities';
 import CategoryRepository from '../repositories/CategoryRepository';
 
 class CategoryService {
-  private categoryRepository: CategoryRepository = new CategoryRepository();
+  private repository: CategoryRepository = new CategoryRepository();
 
   async getCategory(name: string): Promise<{ data?: Category | null; errors: string[] }> {
     try {
-      const category = await this.categoryRepository.getCategoryByName(name);
+      const category = await this.repository.getCategoryByName(name);
 
       return { data: category, errors: category ? [] : ['Category not found'] };
     } catch (error) {
@@ -18,7 +18,7 @@ class CategoryService {
 
   async createCategory(name: string, subCategory?: string): Promise<{ data?: Category; errors: string[] }> {
     try {
-      const category = await this.categoryRepository.saveCategory({ name }, subCategory);
+      const category = await this.repository.saveCategory({ name }, subCategory);
 
       return { data: category, errors: [] };
     } catch (error) {
@@ -33,7 +33,7 @@ class CategoryService {
     errors: string[];
   }> {
     try {
-      const categories = await this.categoryRepository.getCategoriesWithSubcategories();
+      const categories = await this.repository.getCategoriesWithSubcategories();
 
       return categories.length > 0 ? { data: categories, errors: [] } : { errors: ['No categories found'] };
     } catch (error) {
@@ -41,6 +41,10 @@ class CategoryService {
 
       return { errors: ['Error retrieving categories'] };
     }
+  }
+
+  async deleteCategory(categoryId: number): Promise<void> {
+    await this.repository.deleteCategory(categoryId);
   }
 }
 

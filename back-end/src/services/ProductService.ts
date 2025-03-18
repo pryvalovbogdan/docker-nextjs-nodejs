@@ -81,9 +81,29 @@ class ProductService {
 
   async deleteProduct(productId: number): Promise<{ data?: Product | null; errors: string[] }> {
     try {
-      const deletedProduct = await this.repository.deleteProduct(productId);
+      const product = await this.repository.getProductById(productId);
 
-      return { data: deletedProduct, errors: [] };
+      if (!product) {
+        return { errors: ['Product not found'] };
+      }
+
+      await this.repository.deleteProduct(productId);
+
+      const remainingProductsInCategory = await this.repository.countProductsByCategory(product.category.id);
+
+      if (remainingProductsInCategory === 0) {
+        await this.categoryService.deleteCategory(product.category.id);
+      }
+
+      if (product.subCategory) {
+        const remainingProductsInSubCategory = await this.repository.countProductsBySubCategory(product.subCategory.id);
+
+        if (remainingProductsInSubCategory === 0) {
+          await this.subCategoryService.deleteSubCategory(product.subCategory.id);
+        }
+      }
+
+      return { data: product, errors: [] };
     } catch (error) {
       console.error('Error in deleteProduct:', error);
 

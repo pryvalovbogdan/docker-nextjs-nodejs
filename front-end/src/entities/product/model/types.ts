@@ -31,4 +31,5 @@ export interface IProductResponse {
   price?: number;
   category: { id: number; name: string };
   subCategory?: { id: number; name: string };
+  error?: boolean;
 }

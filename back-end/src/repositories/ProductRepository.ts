@@ -152,6 +152,14 @@ class ProductRepository {
       take: 15,
     });
   };
+
+  async countProductsByCategory(categoryId: number): Promise<number> {
+    return this.productRepository.count({ where: { category: { id: categoryId } } });
+  }
+
+  async countProductsBySubCategory(subCategoryId: number): Promise<number> {
+    return this.productRepository.count({ where: { subCategory: { id: subCategoryId } } });
+  }
 }
 
 export default ProductRepository;
