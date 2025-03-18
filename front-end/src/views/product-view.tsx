@@ -50,22 +50,6 @@ export const descriptionStyles = `
         color: #444;
     }
     
-    /* Lists */
-    ul, ol {
-        margin: 15px 0;
-        padding-left: 20px;
-    }
-    ul li, ol li {
-        margin-bottom: 6px;
-        font-size: 16px;
-        color: #333;
-    }
-    ul li::before {
-        content: "• ";
-        color: #036753;
-        font-weight: bold;
-    }
-
     /* Tables */
     table {
         width: 100%;
@@ -154,28 +138,52 @@ export const descriptionStyles = `
         margin: 15px 0;
     }
     
-    ul, ol {
-        margin: 15px 0;
-        padding-left: 20px;
-    }
-    
     ul li, ol li {
         margin-bottom: 6px;
         font-size: 16px;
-        color: #333;
+        padding: 10px 14px;
+        border-bottom: 1px solid #ddd;
         list-style: none;
     }
-    
-    ul li::before {
+    ul li:last-child, ol li:last-child {
+        border-bottom: none;
+    }
+    li:nth-child(even)::before {
         content: "• ";
-        color: #036753;
+        color: #036753!important;
         font-weight: bold;
+    }
+    
+    li::before {
+        content: "• ";
+        color: white!important;
+        font-weight: bold;
+    }
+    
+    li {
+        background-color: #036753;
+        color: white!important;
+        font-weight: bold;
+    }
+    li:nth-child(even) {
+        background-color: #f9f9f9;
+        color: black!important;
+    }
+    
+    
+    li span {
+       color: white!important;
+    }
+    
+    li:nth-child(even) span {
+       color: black!important;
     }
     
     ul li[style*="color: #00d78a"]::before {
         content: none;
     }
     }
+   
 `;
 
 interface ProductProps {
@@ -296,6 +304,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
               }}
               dangerouslySetInnerHTML={{
                 __html: `
+                    <style>
+                      ${descriptionStyles}
+                    </style>     
                     <div class="description-container">
                       ${sanitizeHTML(product.description || product.characteristics || '')}
                     </div>
@@ -329,24 +340,24 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
 
           {showMore && (
             <Box mt={4}>
-              <Heading size='md' mb={2} color='gray.800'>
-                {t('detailedDescription')}
-              </Heading>
+              {product.description && (
+                <>
+                  <Heading size='md' mb={2} color='gray.800'>
+                    {t('detailedDescription')}
+                  </Heading>
 
-              <Box
-                color='gray.700'
-                dangerouslySetInnerHTML={{
-                  __html: `
-                      <style>
-                      ${descriptionStyles}
-                      </style>    
-                  
-                      <div class="description-container">
-                          ${product.description || ''}
-                      </div>
-                  `,
-                }}
-              />
+                  <Box
+                    color='gray.700'
+                    dangerouslySetInnerHTML={{
+                      __html: `
+                          <div class="description-container">
+                              ${product.description || ''}
+                          </div>
+                      `,
+                    }}
+                  />
+                </>
+              )}
 
               {product.characteristics && (
                 <>
