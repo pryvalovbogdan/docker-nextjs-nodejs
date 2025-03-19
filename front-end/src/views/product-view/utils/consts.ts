@@ -4,7 +4,6 @@ export const descriptionStyles = `
         font-size: 16px;
         line-height: 1.8;
         color: #333;
-        padding: 20px;
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -172,4 +171,46 @@ export const descriptionStyles = `
     }
     }
    
+    .short-description .geo-char {
+       display: none;
+    }
+    
+    
+    .full-description .geo-char {
+       margin-top: 15px;
+    }
+    
+    .full-description {
+       padding: 20px;
+    }
+    
+    .full-characteristic {
+       padding: 20px;
+    }
+    
+    .short-description {
+        padding: 20px 20px 0 20px;
+        
+        .geo-descr {
+            display: block;
+        }
+
+        .geo-descr {
+            counter-reset: list-item;
+        }
+        
+        .geo-descr span {
+            display: block;
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 5px;
+        }
+        .geo-descr span::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+    
+    }
+    
 `;

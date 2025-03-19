@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
-import { sanitizeHTML } from '@/shared/utils';
+import { getIsShownDescription, processDescriptionGeo, sanitizeHTML } from '@/shared/utils';
 import { descriptionStyles } from '@/views/product-view/utils/consts';
 import { Badge, Box, Breadcrumb, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { OrderDialog } from '@features/order';
@@ -27,7 +27,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
   const [selectedImage, setSelectedImage] = useState(product.images?.[0] || '/placeholder.png');
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const images = product.images || [];
+  const images = useMemo(() => product.images || [], [product.images]);
   const currentIndex = images.indexOf(selectedImage);
 
   const toggleShowMore = () => setShowMore(!showMore);
@@ -55,6 +55,8 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goToPreviousImage, goToNextImage]);
+
+  const isShownDescription = getIsShownDescription(product.description || '');
 
   return (
     <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
@@ -154,28 +156,32 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                 </Badge>
               )}
             </Text>
-            <Box
-              mt={4}
-              fontSize='lg'
-              color='gray.700'
-              style={{
-                display: '-webkit-box',
-                WebkitBoxOrient: 'vertical',
-                WebkitLineClamp: 9,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-              dangerouslySetInnerHTML={{
-                __html: `
+            {isShownDescription && (
+              <Box
+                mt={4}
+                fontSize='lg'
+                color='gray.700'
+                style={{
+                  display: '-webkit-box',
+                  WebkitBoxOrient: 'vertical',
+                  WebkitLineClamp: 8,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: `
                     <style>
                       ${descriptionStyles}
                     </style>     
                     <div class="description-container">
-                      ${sanitizeHTML(product.description || product.characteristics || '')}
+                       <div class="short-description">
+                          ${sanitizeHTML(processDescriptionGeo(product.description || '') || product.characteristics || '')}
+                       </div>
                     </div>
                   `,
-              }}
-            />
+                }}
+              />
+            )}
 
             {product.price && (
               <Text fontSize='2xl' fontWeight='bold' color='#036753' mt={3}>
@@ -214,7 +220,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                     dangerouslySetInnerHTML={{
                       __html: `
                           <div class="description-container">
+                             <div class="full-description">
                               ${product.description || ''}
+                             </div>
                           </div>
                       `,
                     }}
@@ -232,7 +240,9 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                     dangerouslySetInnerHTML={{
                       __html: `
                           <div class="description-container">
-                              ${product.characteristics || ''}
+                             <div class="full-characteristic">
+                               ${product.characteristics || ''}
+                             </div>
                           </div>
                       `,
                     }}
