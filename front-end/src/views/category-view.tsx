@@ -7,8 +7,8 @@ import { IProductResponse } from '@/entities/product/model/types';
 import { Pagination } from '@/shared/ui';
 import { getInnerText } from '@/shared/utils';
 import { Box, Flex, Grid, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { ContactButton } from '@features/contact';
 import { useTranslation } from '@i18n/client';
-import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 const ITEMS_PER_PAGE = 9;

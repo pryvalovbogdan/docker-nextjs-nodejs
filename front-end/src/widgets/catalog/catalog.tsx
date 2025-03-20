@@ -15,7 +15,7 @@ import { useTranslation } from '@i18n/client';
 
 const ITEMS_PER_PAGE = 8;
 
-export default function Gallery({
+export default function Catalog({
   products,
   categories,
   lng,

@@ -3,7 +3,13 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import { IconButton } from '@chakra-ui/react';
 
-const ImageButtons = ({ currentIndex, goToPreviousImage, images, goToNextImage }) => {
+interface ImageButtonsProps {
+  currentIndex: number;
+  goToPreviousImage: () => void;
+  goToNextImage: () => void;
+  images: string[];
+}
+const ImageButtons: React.FC<ImageButtonsProps> = ({ currentIndex, goToPreviousImage, images, goToNextImage }) => {
   return (
     <>
       <IconButton
@@ -17,7 +23,7 @@ const ImageButtons = ({ currentIndex, goToPreviousImage, images, goToNextImage }
         boxShadow='md'
         _hover={{ bg: 'emerald.500' }}
         transition='all 0.3s'
-        isDisabled={currentIndex === 0}
+        disabled={currentIndex === 0}
         opacity={currentIndex === 0 ? 0.4 : 1}
         cursor={currentIndex === 0 ? 'not-allowed' : 'pointer'}
         onClick={goToPreviousImage}
@@ -35,7 +41,7 @@ const ImageButtons = ({ currentIndex, goToPreviousImage, images, goToNextImage }
         boxShadow='md'
         _hover={{ bg: 'emerald.500' }}
         transition='all 0.3s'
-        isDisabled={currentIndex === images.length - 1}
+        disabled={currentIndex === images.length - 1}
         opacity={currentIndex === images.length - 1 ? 0.4 : 1}
         cursor={currentIndex === images.length - 1 ? 'not-allowed' : 'pointer'}
         onClick={goToNextImage}

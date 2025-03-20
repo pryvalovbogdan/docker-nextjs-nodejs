@@ -18,7 +18,7 @@ const ContactForm = ({ lng, withMargin }: { lng: string; withMargin?: boolean })
     message: '',
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Record<string, string>>({
     email: '',
     message: '',
   });
@@ -97,7 +97,7 @@ const ContactForm = ({ lng, withMargin }: { lng: string; withMargin?: boolean })
                 onChange={handleInputChange}
                 value={formData[field as keyof typeof formData]}
                 mt={2}
-                borderColor={errors[field] ? 'red.500' : 'gray.300'}
+                borderColor={errors[field as keyof typeof errors] ? 'red.500' : 'gray.300'}
                 w='100%'
                 h='50px'
                 fontSize='md'

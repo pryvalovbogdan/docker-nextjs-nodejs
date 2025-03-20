@@ -6,8 +6,8 @@ import { LuSearch } from 'react-icons/lu';
 import { fetchSearchProducts } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import { Box, Flex, Image, Input, Spinner, Text } from '@chakra-ui/react';
+import { ContactButton } from '@features/contact';
 import { useTranslation } from '@i18n/client';
-import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 const DEBOUNCE_DELAY = 500;

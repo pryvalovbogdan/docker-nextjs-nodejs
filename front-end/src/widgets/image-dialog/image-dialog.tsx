@@ -5,7 +5,17 @@ import { DialogBody, DialogContent, DialogRoot } from '@/shared/ui/dialog';
 import { IconButton, Image } from '@chakra-ui/react';
 import { ImageButtons } from '@widgets/image-dialog/ui';
 
-const ImageDialog = ({
+interface ImageDialogProps {
+  images: string[];
+  currentIndex: number;
+  isDialogOpen: boolean;
+  setDialogOpen: (open: boolean) => void;
+  goToPreviousImage: () => void;
+  goToNextImage: () => void;
+  selectedImage: string;
+}
+
+const ImageDialog: React.FC<ImageDialogProps> = ({
   images,
   currentIndex,
   isDialogOpen,

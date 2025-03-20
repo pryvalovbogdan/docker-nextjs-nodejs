@@ -4,14 +4,10 @@ import { fetchCategories } from '@/entities/category/api';
 import { fetchLastAddedProducts, fetchProductByCategory } from '@/entities/product/api';
 import LastAddedProducts from '@/entities/product/ui/last-added-products';
 import BrandsSection from '@/views/brand-section';
-import ContactForm from '@features/contact/send-request/contact-form';
+import { Catalog, GalleryImages, Layout, WhyUs } from '@/widgets';
+import { ContactButton, ContactForm } from '@features/contact';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
-import { ContactButton } from '@widgets/contact';
-import { GalleryImages } from '@widgets/gallary-images';
-import { Gallery } from '@widgets/gallery';
-import { Layout } from '@widgets/layout';
-import { WhyUs } from '@widgets/why-us';
 
 export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
@@ -35,12 +31,12 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   return (
     <Layout
       lng={lng}
-      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
-      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
-      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND!}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE!}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL!}
     >
       <GalleryImages lng={lng} />
-      <Gallery lng={lng} products={products} categories={categories} />
+      <Catalog lng={lng} products={products} categories={categories} />
       <BrandsSection lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
       <WhyUs lng={lng} withHeading />

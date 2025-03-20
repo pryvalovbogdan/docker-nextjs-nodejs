@@ -8,7 +8,14 @@ import { fetchProductsOffSet, fetchSearchProducts } from '@/entities/product/api
 import { IProductResponse } from '@/entities/product/model/types';
 import { Pagination, SkeletonTable, Toaster } from '@/shared/ui';
 import { Box, Button, Flex, HStack, Input, Skeleton, Text, VStack } from '@chakra-ui/react';
-import { AddEntityDialog, DeleteEntityBtn, DownloadEntityBtn, PaginatedData, TabKey } from '@features/entitiy';
+import {
+  AddEntityDialog,
+  DeleteEntityBtn,
+  DownloadEntityBtn,
+  PaginatedData,
+  TabKey,
+  dashBoardColumns,
+} from '@features/entitiy';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
