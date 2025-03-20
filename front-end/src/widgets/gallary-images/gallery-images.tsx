@@ -13,6 +13,7 @@ const images = [
   'olympus-europa_press-release_easysuite_or_img_1200.png',
   'main3.jpeg',
   'cardiovit-at-180-resting-ecg-in-practice.jpg',
+  '2025-03-20 09.09.15.jpg',
 ];
 
 interface GalleryImagesProps {

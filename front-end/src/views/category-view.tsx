@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
-import Pagination from '@/shared/ui/pagination';
+import { Pagination } from '@/shared/ui';
 import { getInnerText } from '@/shared/utils';
 import { Box, Flex, Grid, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';

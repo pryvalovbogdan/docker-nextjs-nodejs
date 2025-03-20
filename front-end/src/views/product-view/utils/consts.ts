@@ -1,5 +1,4 @@
 export const descriptionStyles = `
-    /* General Container */
     .description-container {
         font-size: 16px;
         line-height: 1.8;
@@ -9,7 +8,6 @@ export const descriptionStyles = `
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
         margin-bottom: 20px;
     
-    /* Headings */
     h1, h2, h3, h4, h5, h6 {
         color: #036753;
         margin-top: 18px;
@@ -17,7 +15,6 @@ export const descriptionStyles = `
         font-weight: bold;
     }
 
-    /* Paragraphs */
     p {
         font-size: 17px;
         color: #444;
@@ -25,19 +22,16 @@ export const descriptionStyles = `
         margin-bottom: 12px;
     }
     
-    /* Strong and Bold Text */
     strong, b {
         color: #024E42;
         font-weight: bold;
     }
 
-    /* Span Styling */
     span {
         font-size: 16px;
         color: #444;
     }
     
-    /* Tables */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -72,7 +66,6 @@ export const descriptionStyles = `
         }
     }
 
-    /* Links & Buttons */
     a {
         color: #036753;
         font-weight: bold;
@@ -97,7 +90,6 @@ export const descriptionStyles = `
         background: #024E42;
     }
 
-    /* Images */
     img {
         max-width: 100%;
         height: auto;
@@ -107,7 +99,6 @@ export const descriptionStyles = `
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    /* Videos (YouTube, etc.) */
     iframe {
         width: 100%;
         max-width: 720px;
@@ -117,7 +108,6 @@ export const descriptionStyles = `
         border-radius: 6px;
     }
 
-    /* Horizontal Rule */
     hr {
         border: none;
         height: 2px;

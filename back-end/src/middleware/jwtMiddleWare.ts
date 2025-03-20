@@ -3,16 +3,10 @@ import jwt from 'jsonwebtoken';
 
 import { IDecodedJwtData, IRequestWithUser } from './types';
 
-const SECRET_KEY = process.env.JWT_SECRET;
-
-if (!SECRET_KEY) {
-  throw new Error('JWT_SECRET is not defined in environment variables');
-}
+const SECRET_KEY = process.env.JWT_SECRET!;
 
 export const validateAdminJWT = (req: IRequestWithUser, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
-
-  console.log('authHeader', authHeader);
 
   if (!authHeader) {
     res.status(401).json({ message: 'Authorization token missing' });

@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { LuMenu, LuX } from 'react-icons/lu';
 
 import SearchBar from '@/features/search/search-bar/search-bar';
-import LogoWrapper from '@/shared/ui/logo-wrapper';
+import { LogoWrapper } from '@/shared/ui';
 import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
