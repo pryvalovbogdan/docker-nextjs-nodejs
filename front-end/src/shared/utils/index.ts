@@ -73,12 +73,6 @@ export const processDescriptionGeo = (description: string) => {
     const firstLine = firstLineMatch[1].trim();
 
     geoDescrContent = geoDescrContent.replace(firstLine, `<strong>${firstLine}</strong>`);
-    const listItems = geoDescrContent
-      .split(',')
-      .map(item => `<p>${item.trim()}</p>`)
-      .join('');
-
-    geoDescrContent = `${optionsTitle}<ul>${listItems}</ul>`;
 
     return description.replace(geoDescrMatch[1], geoDescrContent);
   }
