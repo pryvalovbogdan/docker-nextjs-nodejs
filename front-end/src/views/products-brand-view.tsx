@@ -5,11 +5,11 @@ import React, { JSX, useState } from 'react';
 import ProductCard from '@/entities/brand/ui/product-card';
 import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
-import Pagination from '@/shared/ui/pagination';
+import { Pagination } from '@/shared/ui';
 import { brandData } from '@/shared/utils/data';
 import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { ContactButton } from '@features/contact';
 import { useTranslation } from '@i18n/client';
-import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 interface BrandProductsProps {

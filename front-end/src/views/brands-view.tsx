@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 
 import { brandData } from '@/shared/utils/data';
 import { Box, Container, Heading, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { ContactButton } from '@features/contact';
 import { useTranslation } from '@i18n/client';
-import { ContactButton } from '@widgets/contact';
 import { Layout } from '@widgets/layout';
 
 const BrandsPage = ({
@@ -22,7 +22,7 @@ const BrandsPage = ({
   const router = useRouter();
   const { t } = useTranslation(lng);
   const handleBrandClick = (brandName: string) => {
-    router.push(`/uk/brand/${brandName}`);
+    router.push(`/${lng}/brand/${brandName}`);
   };
 
   return (

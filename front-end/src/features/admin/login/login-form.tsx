@@ -43,8 +43,6 @@ const LoginForm = ({ lng }: { lng: string }) => {
 
     const result = await login(formData);
 
-    console.log('result', result);
-
     if (result.success && result.token) {
       toaster.create({ type: 'info', title: t('login.loginSuccess') });
       sessionStorage.setItem('token', result.token);

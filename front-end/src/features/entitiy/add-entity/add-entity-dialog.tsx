@@ -4,6 +4,8 @@ import { TFunction } from 'i18next';
 import React, { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
+import { createOrder } from '@/entities/order/api';
+import { createProduct } from '@/entities/product/api';
 import {
   DialogBody,
   DialogCloseTrigger,
@@ -12,46 +14,73 @@ import {
   DialogHeader,
   DialogRoot,
 } from '@/shared/ui/dialog';
+import { toaster } from '@/shared/ui/toaster';
 import { Box, Button, Flex, Heading, IconButton, Image, Input, Text, Textarea, VStack } from '@chakra-ui/react';
+import { addEntityDashboardFields } from '@features/entitiy/utils/config';
+import { PaginatedData, TabKey } from '@features/entitiy/utils/types';
 
 interface AddEntityDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (formData: any, token: string) => void;
+  selectedTab: TabKey;
   tab: 'orders' | 'products' | 'admins';
   t: TFunction;
+  setData: React.Dispatch<React.SetStateAction<Record<TabKey, PaginatedData>>>;
+  currentPage: number;
+  setIsDialogOpen: (isOpen: boolean) => void;
 }
 
-const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSubmit, tab, t }) => {
+type CreateFunction = (formData: any, token?: string) => Promise<any>;
+
+const createFunctions: Record<TabKey, CreateFunction> = {
+  orders: createOrder,
+  products: (formData, token = '') => createProduct(formData, token),
+};
+
+const AddEntityDialog: React.FC<AddEntityDialogProps> = ({
+  isOpen,
+  onClose,
+  tab,
+  t,
+  selectedTab,
+  currentPage,
+  setData,
+  setIsDialogOpen,
+}) => {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
-  const fieldConfigs: Record<
-    'orders' | 'products' | 'admins',
-    { name: string; type?: string; required?: boolean; translateKey?: any }[]
-  > = {
-    orders: [
-      { name: 'name', required: true },
-      { name: 'phone', required: true },
-      { name: 'email', type: 'email', required: true },
-      { name: 'date', type: 'date' },
-      { name: 'productId', required: true },
-    ],
-    products: [
-      { name: 'title', required: true, translateKey: 'columns.title' },
-      { name: 'description', type: 'textarea', translateKey: 'columns.description' },
-      { name: 'characteristics', translateKey: 'columns.characteristics' },
-      { name: 'brand', translateKey: 'columns.brand' },
-      { name: 'category', required: true, translateKey: 'columns.category' },
-      { name: 'subcategory', translateKey: 'columns.subcategory' },
-      { name: 'country', translateKey: 'columns.country' },
-    ],
-    admins: [
-      { name: 'columns.username', required: true },
-      { name: 'columns.password', type: 'password', required: true },
-    ],
+  const handleAddEntity = async (formData: any) => {
+    const token = sessionStorage.getItem('token');
+
+    if (!token) return;
+
+    try {
+      const response = await createFunctions[selectedTab](formData, token);
+
+      if (response.success) {
+        toaster.create({ type: 'success', title: `${t(`tabs.${selectedTab}`)} ${t('addSuccess')}` });
+
+        setData(prev => ({
+          ...prev,
+          [selectedTab]: {
+            ...prev[selectedTab],
+            pages: {
+              ...prev[selectedTab].pages,
+              [currentPage]: [response.data, ...(prev[selectedTab].pages[currentPage] || [])],
+            },
+          },
+        }));
+
+        setIsDialogOpen(false);
+      } else {
+        toaster.create({ type: 'error', title: `${t('addError')} ${t(`tabs.${selectedTab}`)}` });
+      }
+    } catch (error) {
+      toaster.create({ type: 'error', title: `${t('addError')} ${t(`tabs.${selectedTab}`)}` });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -74,10 +103,8 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
     setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
 
-  const token = sessionStorage.getItem('token') || '';
-
   const handleSubmit = async () => {
-    const requiredFields = fieldConfigs[tab].filter(field => field.required).map(field => field.name);
+    const requiredFields = addEntityDashboardFields[tab].filter(field => field.required).map(field => field.name);
     const newErrors: Record<string, string> = {};
 
     requiredFields.forEach(field => {
@@ -109,7 +136,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
     selectedImages.forEach(image => formDataToSend.append('image', image));
 
     setIsSubmitting(true);
-    await onSubmit(tab === 'products' ? formDataToSend : Object.fromEntries(formDataToSend.entries()), token);
+    await handleAddEntity(tab === 'products' ? formDataToSend : Object.fromEntries(formDataToSend.entries()));
     setIsSubmitting(false);
   };
 
@@ -131,7 +158,7 @@ const AddEntityDialog: React.FC<AddEntityDialogProps> = ({ isOpen, onClose, onSu
 
         <DialogBody>
           <VStack align='stretch'>
-            {fieldConfigs[tab].map(({ name, type, required, translateKey }) => (
+            {addEntityDashboardFields[tab].map(({ name, type, required, translateKey }) => (
               <Box key={name}>
                 <Text fontSize='sm' fontWeight='bold' color='gray.800'>
                   {t(translateKey || name)} {required && '*'}

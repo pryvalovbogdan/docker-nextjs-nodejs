@@ -5,6 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import { payload } from '../dto/user.dto';
 
 dotenv.config();
+
 const { JWT_SECRET = '' } = process.env;
 
 export class encrypt {

@@ -3,7 +3,7 @@
 import React, { ElementType } from 'react';
 import { FaClock, FaHandHoldingUsd, FaHeadset, FaShieldAlt, FaTools } from 'react-icons/fa';
 
-import LogoWrapper from '@/shared/ui/logo-wrapper';
+import { LogoWrapper } from '@/shared/ui';
 import { Box, Flex, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 

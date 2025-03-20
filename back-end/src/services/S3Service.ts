@@ -4,10 +4,10 @@ const { BUCKET_NAME, BUCKET_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, CL
   process.env;
 
 config.update({
-  region: BUCKET_REGION as string,
+  region: BUCKET_REGION!,
   credentials: {
-    accessKeyId: AWS_ACCESS_KEY_ID as string,
-    secretAccessKey: AWS_SECRET_ACCESS_KEY as string,
+    accessKeyId: AWS_ACCESS_KEY_ID!,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY!,
   },
 });
 
@@ -19,7 +19,7 @@ class S3Service {
   uploadFileS3 = async (key: string, body: Buffer, contentType: string): Promise<string> => {
     try {
       const params = {
-        Bucket: BUCKET_NAME as string,
+        Bucket: BUCKET_NAME!,
         Key: key,
         Body: body,
         ContentType: contentType,
@@ -40,7 +40,7 @@ class S3Service {
     try {
       const key = url.replace(process.env.CLOUDFRONT_URL!, '');
       const params = {
-        Bucket: BUCKET_NAME as string,
+        Bucket: BUCKET_NAME!,
         Key: key,
       };
 
@@ -63,7 +63,7 @@ class S3Service {
       const paths = [`/${key}`];
 
       const params = {
-        DistributionId: CLOUDFRONT_DISTRIBUTION_ID as string,
+        DistributionId: CLOUDFRONT_DISTRIBUTION_ID!,
         InvalidationBatch: {
           CallerReference: key, // to invalidate the same request
           Paths: {
@@ -84,7 +84,7 @@ class S3Service {
   getFileS3 = async (key: string): Promise<string> => {
     try {
       const params = {
-        Bucket: BUCKET_NAME as string,
+        Bucket: BUCKET_NAME!,
         Key: key,
         Expires: 60 * 60, // Signed URL valid for 1 hour
       };

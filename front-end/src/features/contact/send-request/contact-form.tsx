@@ -18,7 +18,7 @@ const ContactForm = ({ lng, withMargin }: { lng: string; withMargin?: boolean })
     message: '',
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Record<string, string>>({
     email: '',
     message: '',
   });
@@ -87,66 +87,34 @@ const ContactForm = ({ lng, withMargin }: { lng: string; withMargin?: boolean })
         onSubmit={onSubmit}
       >
         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6} mb={6}>
-          <Box>
-            <Input
-              name='name'
-              placeholder={t('yourName')}
-              value={formData.name}
-              onChange={handleInputChange}
-              w='100%'
-              h='50px'
-              fontSize='md'
-              bg='white'
-              color='gray.800'
-              borderRadius='md'
-              border='1px solid gray.300'
-              px={4}
-              _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
-            />
-          </Box>
-
-          <Box>
-            <Input
-              name='email'
-              type='email'
-              placeholder={t('yourEmail')}
-              value={formData.email}
-              onChange={handleInputChange}
-              w='100%'
-              h='50px'
-              fontSize='md'
-              bg='white'
-              color='gray.800'
-              borderRadius='md'
-              border='1px solid gray.300'
-              px={4}
-              _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
-            />
-            {errors.email && (
-              <Text color='red.500' fontSize='sm' mt={1}>
-                {errors.email}
-              </Text>
-            )}
-          </Box>
-
-          <Box>
-            <Input
-              name='phone'
-              type='tel'
-              placeholder={t('yourPhone')}
-              value={formData.phone}
-              onChange={handleInputChange}
-              w='100%'
-              h='50px'
-              fontSize='md'
-              bg='white'
-              color='gray.800'
-              borderRadius='md'
-              border='1px solid gray.300'
-              px={4}
-              _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
-            />
-          </Box>
+          {['name', 'phone', 'email'].map(field => (
+            <Box key={field} mt={4}>
+              <Input
+                id={field}
+                name={field}
+                type={field === 'email' ? 'email' : 'text'}
+                placeholder={t(`enter${field.charAt(0).toUpperCase() + field.slice(1)}` as any)}
+                onChange={handleInputChange}
+                value={formData[field as keyof typeof formData]}
+                mt={2}
+                borderColor={errors[field as keyof typeof errors] ? 'red.500' : 'gray.300'}
+                w='100%'
+                h='50px'
+                fontSize='md'
+                bg='white'
+                color='gray.800'
+                borderRadius='md'
+                border='1px solid gray.300'
+                px={4}
+                _focus={{ borderColor: '#036753', boxShadow: '0 0 5px rgba(3, 103, 83, 0.5)' }}
+              />
+              {errors[field] && (
+                <Text color='red.500' fontSize='sm' mt={1}>
+                  {errors[field]}
+                </Text>
+              )}
+            </Box>
+          ))}
         </Grid>
 
         <Box mb={6}>
@@ -191,7 +159,6 @@ const ContactForm = ({ lng, withMargin }: { lng: string; withMargin?: boolean })
           </Button>
         </Flex>
       </Box>
-
       <Toaster />
     </Box>
   );

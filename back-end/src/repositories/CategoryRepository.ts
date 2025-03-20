@@ -58,6 +58,10 @@ class CategoryRepository {
 
     return category;
   }
+
+  async deleteCategory(categoryId: number): Promise<void> {
+    await this.categoryRepository.delete(categoryId);
+  }
 }
 
 export default CategoryRepository;

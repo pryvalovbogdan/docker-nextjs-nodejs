@@ -26,7 +26,7 @@ export async function fetchProductById(id: string): Promise<IProductResponse> {
   } catch (error) {
     console.error('Error fetching products by id:', error);
 
-    return {} as IProductResponse;
+    return { error: true } as IProductResponse;
   }
 }
 

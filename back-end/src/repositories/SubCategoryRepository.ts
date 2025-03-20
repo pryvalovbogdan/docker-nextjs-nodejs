@@ -67,6 +67,10 @@ class SubCategoryRepository {
       return { errors: ['Error retrieving subcategories'] };
     }
   }
+
+  async deleteSubCategory(subCategoryId: number): Promise<void> {
+    await this.subCategoryRepository.delete(subCategoryId);
+  }
 }
 
 export default SubCategoryRepository;
