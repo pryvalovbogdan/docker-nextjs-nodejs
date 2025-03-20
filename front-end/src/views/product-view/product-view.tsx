@@ -3,15 +3,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
-import { getIsShownDescription, processDescriptionGeo, sanitizeHTML } from '@/shared/utils';
+import { getIsShownDescription, hasValidContent, processDescriptionGeo, sanitizeHTML } from '@/shared/utils';
 import { descriptionStyles } from '@/views/product-view/utils/consts';
+import { ImageDialog, Layout } from '@/widgets/';
 import { Badge, Box, Breadcrumb, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { ContactButton } from '@features/contact';
 import { OrderDialog } from '@features/order';
 import { useTranslation } from '@i18n/client';
-import { ImageDialog } from '@widgets/image-dialog';
 import { ImageButtons } from '@widgets/image-dialog/ui';
-import { Layout } from '@widgets/layout';
 
 interface ProductProps {
   product: IProductResponse;
@@ -56,7 +55,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goToPreviousImage, goToNextImage]);
 
-  const isShownDescription = getIsShownDescription(product.description || '');
+  const isShownDescription = hasValidContent(product.description) && getIsShownDescription(product.description || '');
 
   return (
     <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
@@ -209,7 +208,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
 
           {showMore && (
             <Box mt={4}>
-              {product.description && (
+              {hasValidContent(product.description) && (
                 <>
                   <Heading size='md' mb={2} color='gray.800'>
                     {t('detailedDescription')}
@@ -230,7 +229,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                 </>
               )}
 
-              {product.characteristics && (
+              {hasValidContent(product.characteristics) && (
                 <>
                   <Heading size='md' mt={4} mb={2} color='gray.800'>
                     {t('characteristics')}

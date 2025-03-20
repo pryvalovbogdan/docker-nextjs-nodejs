@@ -203,4 +203,12 @@ export const descriptionStyles = `
     
     }
     
+    .description-container span, 
+    .description-container p {
+        font-family: inherit !important;
+        font-size: 16px !important;
+        color: black !important;
+        line-height: 1.8 !important;
+    }
+    
 `;

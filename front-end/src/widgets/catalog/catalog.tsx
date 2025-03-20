@@ -214,7 +214,6 @@ export default function Catalog({
                   fontWeight='bold'
                   onClick={() => {
                     selectCategory(category.name, category.subCategories);
-                    scrollToSection('categories');
                   }}
                 >
                   {category.name}
@@ -233,7 +232,10 @@ export default function Catalog({
                         _hover={{ bg: 'gray.200' }}
                         onClick={() => {
                           setSelectedSubCategory(sub.name);
-                          scrollToSection('categories');
+
+                          if (isMobile) {
+                            setShowMenu(false);
+                          }
                         }}
                         whiteSpace='nowrap'
                         overflow='hidden'
