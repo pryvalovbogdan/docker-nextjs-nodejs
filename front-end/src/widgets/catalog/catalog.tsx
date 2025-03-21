@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { LuChevronDown, LuMenu, LuX } from 'react-icons/lu';
 
 import { ICategoryResponse } from '@/entities/category/model/types';
-import { fetchProductByCategoryUi } from '@/entities/product/api';
+import { fetchProductByCategoryUi, fetchProductsOffSet } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot, Pagination } from '@/shared/ui';
@@ -20,15 +20,19 @@ export default function Catalog({
   categories,
   lng,
 }: {
-  products: IProductResponse[];
+  products: {
+    data: IProductResponse[];
+    totalPages: number;
+  };
   categories: ICategoryResponse[];
   lng: string;
 }) {
-  const subDefault = categories[0].subCategories?.[0] ? categories[0].subCategories[0].name : '';
-  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0].name);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string>(subDefault);
-  const [productState, setProducts] = useState<{ [key: string]: IProductResponse[] }>({
-    [categories[0].name]: products,
+  const [selectedCategory, setSelectedCategory] = useState<string>('default');
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string>();
+  const [productState, setProducts] = useState<{
+    [key: string]: IProductResponse[] | { [key: string]: IProductResponse[] };
+  }>({
+    default: { 1: products.data },
   });
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +40,7 @@ export default function Catalog({
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null as any);
 
-  const isMobile = useIsMobile(768);
+  const isMobile = useIsMobile();
   const router = useRouter();
   const { t } = useTranslation(lng);
 
@@ -55,31 +59,39 @@ export default function Catalog({
   }, [showMenu]);
 
   const selectCategory = async (name: string, subCategories?: { id: number; name: string }[]) => {
-    setSelectedCategory(name);
-    setSelectedSubCategory('');
-    setCurrentPage(1); // Reset to first page when switching category
+    try {
+      setSelectedCategory(name);
+      setSelectedSubCategory('');
+      setCurrentPage(1);
 
-    if (subCategories?.length) {
-      setSelectedSubCategory(subCategories[0].name);
+      if (subCategories?.length) {
+        setSelectedSubCategory(subCategories[0].name);
+      }
+
+      if (productState[name]?.length) return;
+
+      setLoading(true);
+      const fetchedProducts: IProductResponse[] = await fetchProductByCategoryUi(name);
+
+      setProducts(prev => ({
+        ...prev,
+        [name]: fetchedProducts,
+      }));
+    } catch (e) {
+      console.log('Failed to load category', e);
+    } finally {
+      setLoading(false);
     }
-
-    if (productState[name]?.length) return;
-
-    setLoading(true);
-    const fetchedProducts: IProductResponse[] = await fetchProductByCategoryUi(name);
-
-    setProducts(prev => ({
-      ...prev,
-      [name]: fetchedProducts,
-    }));
-
-    setLoading(false);
   };
 
+  const currentCategoryData = productState[selectedCategory];
+
   const filteredProducts =
-    productState[selectedCategory]?.filter(product =>
-      selectedSubCategory ? product.subCategory?.name === selectedSubCategory : true,
-    ) || [];
+    selectedCategory !== 'default' && Array.isArray(currentCategoryData) && currentCategoryData.length
+      ? currentCategoryData.filter(product =>
+          selectedSubCategory ? product.subCategory?.name === selectedSubCategory : true,
+        )
+      : [];
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -94,13 +106,99 @@ export default function Catalog({
     }
   };
 
-  const renderProducts = () => {
-    if (loading) {
-      return <Spinner size='xl' color='#036753' />;
-    }
+  const fetchData = async (page = 1): Promise<void> => {
+    const token = sessionStorage.getItem('token') || '';
 
+    try {
+      const defaultState = productState.default;
+
+      if (!Array.isArray(defaultState) && defaultState[page]) {
+        setCurrentPage(page);
+
+        return;
+      }
+
+      setLoading(true);
+      const response = await fetchProductsOffSet(token, page, 8);
+
+      if (response.success) {
+        setProducts(prev => ({
+          ...prev,
+          default: {
+            ...(Array.isArray(prev.default) ? { 1: prev.default } : prev.default),
+            [page]: response.products,
+          },
+        }));
+
+        setCurrentPage(page);
+      }
+    } catch (e) {
+      console.error('Failed to load products', e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderProducts = () => {
     if (paginatedProducts.length > 0) {
       return paginatedProducts.map(product => (
+        <Flex
+          key={product.id}
+          borderWidth={1}
+          p={4}
+          borderRadius='lg'
+          shadow='md'
+          w='100%'
+          maxWidth={isMobile ? '100%' : '320px'}
+          alignItems='center'
+          flexDirection='column'
+          cursor='pointer'
+          transition='all 0.3s'
+          borderColor='gray.200'
+          _hover={{
+            shadow: 'lg',
+            borderColor: '#036753',
+          }}
+          onClick={() => router.push(`/${lng}/product/${product.id}`)}
+          height='280px'
+          display='flex'
+          justifyContent='space-between'
+        >
+          {product.images && product.images.length > 0 && (
+            <Image
+              src={product.images[0] || '/placeholder.webp'}
+              alt={product.title}
+              mb={2}
+              borderRadius='md'
+              height='150px'
+              objectFit='cover'
+            />
+          )}
+          <Heading size='sm' color='gray.700' textAlign='center'>
+            {product.title}
+          </Heading>
+          {product.description && (
+            <Text
+              fontSize='sm'
+              mt={2}
+              color='gray.500'
+              whiteSpace={isMobile ? 'normal' : 'nowrap'}
+              overflow='hidden'
+              textOverflow='ellipsis'
+              maxWidth='100%'
+              display='block'
+            >
+              {product.description ? getInnerText(product.description).slice(0, 150) : product.characteristics}
+            </Text>
+          )}
+        </Flex>
+      ));
+    }
+
+    const defaultCategory = productState.default;
+
+    if (!Array.isArray(defaultCategory) && defaultCategory[currentPage]?.length > 0) {
+      return defaultCategory[currentPage]?.map(product => (
         <Flex
           key={product.id}
           borderWidth={1}
@@ -201,7 +299,7 @@ export default function Catalog({
           {t('categories')}
         </Heading>
         <Stack gap='4' w='full'>
-          <AccordionRoot variant='plain' collapsible defaultValue={[categories[0].name]}>
+          <AccordionRoot variant='plain' collapsible>
             {categories.map(category => (
               <AccordionItem key={category.name} value={category.name} w='full'>
                 <AccordionItemTrigger
@@ -214,7 +312,6 @@ export default function Catalog({
                   fontWeight='bold'
                   onClick={() => {
                     selectCategory(category.name, category.subCategories);
-                    scrollToSection('categories');
                   }}
                 >
                   {category.name}
@@ -233,7 +330,11 @@ export default function Catalog({
                         _hover={{ bg: 'gray.200' }}
                         onClick={() => {
                           setSelectedSubCategory(sub.name);
-                          scrollToSection('categories');
+                          setCurrentPage(1);
+
+                          if (isMobile) {
+                            setShowMenu(false);
+                          }
                         }}
                         whiteSpace='nowrap'
                         overflow='hidden'
@@ -250,16 +351,22 @@ export default function Catalog({
         </Stack>
       </VStack>
       <Flex gap={6} flexDirection='column' w='100%'>
-        <Grid
-          templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
-          gap={6}
-          w='100%'
-          alignItems='stretch'
-          justifyContent='center'
-          gridAutoRows='min-content'
-        >
-          {renderProducts()}
-        </Grid>
+        {loading ? (
+          <Flex h='584px' w='100%' justifyContent='center' alignItems='center'>
+            <Spinner size='xl' color='#036753' />
+          </Flex>
+        ) : (
+          <Grid
+            templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
+            gap={6}
+            w='100%'
+            alignItems='stretch'
+            justifyContent='center'
+            gridAutoRows='min-content'
+          >
+            {renderProducts()}
+          </Grid>
+        )}
 
         {filteredProducts.length > ITEMS_PER_PAGE && (
           <Pagination
@@ -269,6 +376,18 @@ export default function Catalog({
             }}
             currentPage={currentPage}
             totalPages={totalPages}
+          />
+        )}
+
+        {selectedCategory === 'default' && (
+          <Pagination
+            handlePageChange={page => {
+              fetchData(page);
+              scrollToSection('categories');
+            }}
+            currentPage={currentPage}
+            totalPages={products.totalPages}
+            isMobile={isMobile}
           />
         )}
       </Flex>

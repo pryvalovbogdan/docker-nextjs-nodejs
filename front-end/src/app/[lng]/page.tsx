@@ -1,7 +1,7 @@
 import { connection } from 'next/server';
 
 import { fetchCategories } from '@/entities/category/api';
-import { fetchLastAddedProducts, fetchProductByCategory } from '@/entities/product/api';
+import { fetchLastAddedProducts, fetchProductsOffSet } from '@/entities/product/api';
 import LastAddedProducts from '@/entities/product/ui/last-added-products';
 import BrandsSection from '@/views/brand-section';
 import { Catalog, GalleryImages, Layout, WhyUs } from '@/widgets';
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
 
   await connection();
   const categories = await fetchCategories();
-  const products = await fetchProductByCategory(categories[0]?.name || '');
+  const products = await fetchProductsOffSet('', 1, 8, true);
   const lastAddedProducts = await fetchLastAddedProducts();
 
   return (
@@ -36,7 +36,11 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
       officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL!}
     >
       <GalleryImages lng={lng} />
-      <Catalog lng={lng} products={products} categories={categories} />
+      <Catalog
+        lng={lng}
+        products={{ data: products.products, totalPages: products.totalPages }}
+        categories={categories}
+      />
       <BrandsSection lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
       <WhyUs lng={lng} withHeading />

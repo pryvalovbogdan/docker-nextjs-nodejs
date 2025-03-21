@@ -96,3 +96,13 @@ export const getIsShownDescription = (description: string) => {
 
   return geoDescrMatch ? !(!geoDescrContent && !geoCharContent) : true;
 };
+
+export const hasValidContent = (htmlString: string | undefined) => {
+  if (!htmlString) return false;
+
+  const div = document.createElement('div');
+
+  div.innerHTML = htmlString;
+
+  return div.innerText.trim().length > 0;
+};

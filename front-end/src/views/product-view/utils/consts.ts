@@ -23,7 +23,6 @@ export const descriptionStyles = `
     }
     
     strong, b {
-        color: #024E42;
         font-weight: bold;
     }
 
@@ -90,15 +89,6 @@ export const descriptionStyles = `
         background: #024E42;
     }
 
-    img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 10px auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
     iframe {
         width: 100%;
         max-width: 720px;
@@ -117,7 +107,10 @@ export const descriptionStyles = `
     
     ul li, ol li {
         margin-bottom: 6px;
-        font-size: 16px;
+        font-family: inherit !important;
+        font-weight: 500;
+        font-size: 16px !important;
+        line-height: 1.8 !important;
         padding: 10px 14px;
         border-bottom: 1px solid #ddd;
         list-style: none;
@@ -125,22 +118,19 @@ export const descriptionStyles = `
     ul li:last-child, ol li:last-child {
         border-bottom: none;
     }
-    li:nth-child(even)::before {
-        content: "• ";
-        color: rgba(3, 103, 83, 0.8)!important;
-        font-weight: bold;
-    }
-    
-    li::before {
-        content: "• ";
-        color: white!important;
-        font-weight: bold;
-    }
+    // li:nth-child(even)::before {
+    //     content: "• ";
+    //
+    // }
+    //
+    // li::before {
+    //     content: "• ";
+    //     color: black!important;
+    // }
     
     li {
-        background-color: rgba(3, 103, 83, 0.8);
-        color: white!important;
-        font-weight: bold;
+         background-color: #f9f9f9;
+         color: black!important;
     }
     li:nth-child(even) {
         background-color: #f9f9f9;
@@ -149,7 +139,7 @@ export const descriptionStyles = `
     
     
     li span {
-       color: white!important;
+       color: black!important;
     }
     
     li:nth-child(even) span {
@@ -179,6 +169,7 @@ export const descriptionStyles = `
     }
     
     .short-description {
+        max-height: 275px;
         padding: 20px 20px 0 20px;
         
         .geo-descr {
@@ -203,4 +194,54 @@ export const descriptionStyles = `
     
     }
     
+    .description-container span, 
+    .description-container p {
+        font-family: inherit !important;
+        font-size: 16px !important;
+        color: black !important;
+        line-height: 1.8 !important;
+    }
+    
+  
+    
+    .geo-char, .geo-wrap, .tab-pane {
+    width: 100%;
+    display: block;
+}
+
+
+.geo-wrap p,
+.geo-wrap span,
+.tab-pane p,
+.tab-pane span {
+    width: 100%;
+    font-family: inherit !important;
+    font-weight: 500;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+}
+
+.geo-char .rtejustify span {
+    display: inline;
+}
+
+.with-image p,
+.with-image span {
+   display: block;
+   color: red;
+}
+
+
+.tab-pane li span {
+    width: auto;
+    display: inline;
+}
+
+.full-characteristic li span {
+    font-weight: 500!important;
+}
+.description-container li b,
+.description-container li span {
+    font-weight: 500!important;
+}
 `;
