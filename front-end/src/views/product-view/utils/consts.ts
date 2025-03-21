@@ -90,14 +90,14 @@ export const descriptionStyles = `
         background: #024E42;
     }
 
-    img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 10px auto;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+    // img {
+    //     max-width: 100%;
+    //     height: auto;
+    //     display: block;
+    //     margin: 10px auto;
+    //     border-radius: 8px;
+    //     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    // }
 
     iframe {
         width: 100%;
@@ -179,6 +179,7 @@ export const descriptionStyles = `
     }
     
     .short-description {
+        max-height: 275px;
         padding: 20px 20px 0 20px;
         
         .geo-descr {
@@ -211,4 +212,26 @@ export const descriptionStyles = `
         line-height: 1.8 !important;
     }
     
+  
+    
+    .geo-char, .geo-wrap, .tab-pane {
+    width: 100%;
+    display: block;
+}
+
+.geo-char p,
+.geo-char span,
+.geo-wrap p,
+.geo-wrap span,
+.tab-pane p,
+.tab-pane span {
+    width: 100%;
+    display: block;
+}
+
+.tab-pane li span {
+    width: auto;
+    display: inline;
+}
+
 `;
