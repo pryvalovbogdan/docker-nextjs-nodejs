@@ -23,7 +23,6 @@ export const descriptionStyles = `
     }
     
     strong, b {
-        color: #024E42;
         font-weight: bold;
     }
 
@@ -119,15 +118,15 @@ export const descriptionStyles = `
     ul li:last-child, ol li:last-child {
         border-bottom: none;
     }
-    li:nth-child(even)::before {
-        content: "• ";
-
-    }
-    
-    li::before {
-        content: "• ";
-        color: black!important;
-    }
+    // li:nth-child(even)::before {
+    //     content: "• ";
+    //
+    // }
+    //
+    // li::before {
+    //     content: "• ";
+    //     color: black!important;
+    // }
     
     li {
          background-color: #f9f9f9;
