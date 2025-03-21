@@ -100,9 +100,13 @@ export const getIsShownDescription = (description: string) => {
 export const hasValidContent = (htmlString: string | undefined) => {
   if (!htmlString) return false;
 
-  const div = document.createElement('div');
+  if (typeof window !== 'undefined') {
+    const div = document.createElement('div');
 
-  div.innerHTML = htmlString;
+    div.innerHTML = htmlString;
 
-  return div.innerText.trim().length > 0;
+    return div.innerText.trim().length > 0;
+  }
+
+  return true;
 };
