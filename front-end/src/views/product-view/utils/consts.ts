@@ -90,15 +90,6 @@ export const descriptionStyles = `
         background: #024E42;
     }
 
-    // img {
-    //     max-width: 100%;
-    //     height: auto;
-    //     display: block;
-    //     margin: 10px auto;
-    //     border-radius: 8px;
-    //     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    // }
-
     iframe {
         width: 100%;
         max-width: 720px;
@@ -130,20 +121,17 @@ export const descriptionStyles = `
     }
     li:nth-child(even)::before {
         content: "• ";
-        color: rgba(3, 103, 83, 0.8)!important;
-        font-weight: bold;
+
     }
     
     li::before {
         content: "• ";
-        color: white!important;
-        font-weight: bold;
+        color: black!important;
     }
     
     li {
-        background-color: rgba(3, 103, 83, 0.8);
-        color: white!important;
-        font-weight: bold;
+         background-color: #f9f9f9;
+         color: black!important;
     }
     li:nth-child(even) {
         background-color: #f9f9f9;
@@ -152,7 +140,7 @@ export const descriptionStyles = `
     
     
     li span {
-       color: white!important;
+       color: black!important;
     }
     
     li:nth-child(even) span {

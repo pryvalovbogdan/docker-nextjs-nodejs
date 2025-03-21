@@ -1,4 +1,4 @@
-import { IProductResponse, ProductsApiResponse } from '@/entities/product/model/types';
+import { IProductResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -30,11 +30,24 @@ export async function fetchProductById(id: string): Promise<IProductResponse> {
   }
 }
 
-export async function fetchProductsOffSet(token: string, page: number = 1, limit: number = 5) {
+interface IFetchOffsetResp {
+  products: IProductResponse[];
+  totalPages: number;
+  success: boolean;
+  message: string;
+}
+export async function fetchProductsOffSet(
+  token: string,
+  page: number,
+  limit: number,
+  isServerCall?: boolean,
+): Promise<IFetchOffsetResp> {
   try {
-    const response = (await fetchWrapper(`/api/products/offset?page=${page}&limit=${limit}`, {
-      headers: { Authorization: token },
-    })) as ProductsApiResponse;
+    const prefixUrl = isServerCall ? baseURL : '';
+    const response: { message: string; data: { products: IProductResponse[]; totalPages: number } } =
+      await fetchWrapper(`${prefixUrl}/api/products/offset?page=${page}&limit=${limit}`, {
+        cache: 'force-cache',
+      });
 
     return {
       success: true,
@@ -43,9 +56,9 @@ export async function fetchProductsOffSet(token: string, page: number = 1, limit
       totalPages: response.data.totalPages,
     };
   } catch (error) {
-    console.error('Order fetch error:', error);
+    console.error('Product fetch error:', error);
 
-    return { success: false, message: 'Order fetch failed' };
+    return { success: false, message: 'Order fetch failed' } as IFetchOffsetResp;
   }
 }
 
