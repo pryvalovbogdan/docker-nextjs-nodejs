@@ -117,7 +117,10 @@ export const descriptionStyles = `
     
     ul li, ol li {
         margin-bottom: 6px;
-        font-size: 16px;
+        font-family: inherit !important;
+        font-weight: 500;
+        font-size: 16px !important;
+        line-height: 1.8 !important;
         padding: 10px 14px;
         border-bottom: 1px solid #ddd;
         list-style: none;
@@ -219,19 +222,39 @@ export const descriptionStyles = `
     display: block;
 }
 
-.geo-char p,
-.geo-char span,
+
 .geo-wrap p,
 .geo-wrap span,
 .tab-pane p,
 .tab-pane span {
     width: 100%;
-    display: block;
+    font-family: inherit !important;
+    font-weight: 500;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
 }
+
+.geo-char .rtejustify span {
+    display: inline;
+}
+
+.with-image p,
+.with-image span {
+   display: block;
+   color: red;
+}
+
 
 .tab-pane li span {
     width: auto;
     display: inline;
 }
 
+.full-characteristic li span {
+    font-weight: 500!important;
+}
+.description-container li b,
+.description-container li span {
+    font-weight: 500!important;
+}
 `;
