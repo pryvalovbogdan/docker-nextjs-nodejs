@@ -244,4 +244,27 @@ export const descriptionStyles = `
 .description-container li span {
     font-weight: 500!important;
 }
+
+.properties-sublist__el{
+    display: flex;
+}
+
+.properties-list__el-title{
+    font-size: 22px;
+    margin-bottom: 20px;
+    background: white;
+}
+
+.properties-list__el {
+    background: white!important;
+}
+
+.properties-sublist__el-title {
+    margin-right: 15px;
+    width: 50%;
+}
+
+.properties-sublist__el-value {
+    width: 50%;
+}
 `;
