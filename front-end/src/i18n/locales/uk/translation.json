@@ -194,5 +194,6 @@
   "downloadCsv": "Завантажити список",
   "addError": "Не вдалось додати",
   "searchPlaceholder": "Введіть назву продукту",
-  "searchProduct": "Знайти товар"
+  "searchProduct": "Знайти товар",
+  "update": "Оновити"
 }

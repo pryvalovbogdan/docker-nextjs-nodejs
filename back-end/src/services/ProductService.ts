@@ -1,11 +1,9 @@
 import { stringify } from 'csv-stringify/sync';
 
-import { Product } from '../entities';
+import { Category, Product, SubCategory } from '../entities';
 import { ProductRepository } from '../repositories';
 import CategoryService from './CategoryService';
 import SubCategoryService from './SubCategoryService';
-
-// Add SubCategory service
 
 class ProductService {
   private repository: ProductRepository = new ProductRepository();
@@ -69,7 +67,22 @@ class ProductService {
 
   async updateProduct(productId: number, data: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
     try {
-      const updatedProduct = await this.repository.updateProduct(productId, data);
+      let category = null;
+      let subCategory = null;
+
+      if (data.category?.name) {
+        category = (await this.categoryService.getCategory(data.category.name)).data;
+      }
+
+      if (data.subCategory?.name) {
+        subCategory = (await this.subCategoryService.getSubCategory(data.subCategory.name)).data;
+      }
+
+      const updatedProduct = await this.repository.updateProduct(productId, {
+        ...data,
+        category: category as Category,
+        subCategory: subCategory as SubCategory,
+      });
 
       return { data: updatedProduct, errors: [] };
     } catch (error) {

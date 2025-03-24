@@ -16,6 +16,7 @@ import {
   TabKey,
   dashBoardColumns,
 } from '@features/entitiy';
+import UpdateProductDialog from '@features/product/update-product/update-product-dialog';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
@@ -41,6 +42,8 @@ export default function Dashboard({ lng }: { lng: string }) {
   const { t } = useTranslation(lng);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState();
 
   const router = useRouter();
 
@@ -214,6 +217,19 @@ export default function Dashboard({ lng }: { lng: string }) {
                     {renderCellValue(row, column.columnName)}
                   </Text>
                 ))}
+                {selectedTab === 'products' && (
+                  <HStack>
+                    <Button
+                      variant='outline'
+                      onClick={() => {
+                        setSelectedId(row.id);
+                        setIsUpdateDialogOpen(true);
+                      }}
+                    >
+                      {t('update')}
+                    </Button>
+                  </HStack>
+                )}
                 <HStack>
                   <DeleteEntityBtn
                     id={row.id}
@@ -233,6 +249,17 @@ export default function Dashboard({ lng }: { lng: string }) {
           currentPage={currentPage}
           totalPages={data[selectedTab].totalPages}
         />
+
+        {isUpdateDialogOpen && (
+          <UpdateProductDialog
+            setIsDialogOpen={setIsUpdateDialogOpen}
+            t={t}
+            isOpen={isUpdateDialogOpen}
+            data={data.products.pages[currentPage].find(item => item.id === selectedId)}
+            setData={setData}
+            currentPage={currentPage}
+          />
+        )}
       </Box>
     </Layout>
   );

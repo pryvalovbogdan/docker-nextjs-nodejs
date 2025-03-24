@@ -200,3 +200,29 @@ export async function exportProducts(token: string) {
     return { success: false, message: 'Product export failed' };
   }
 }
+
+export async function updateProduct(
+  formData: any,
+  token: string,
+  id: number,
+): Promise<{ success: boolean; data: IProductResponse }> {
+  try {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`/api/admin/products/${id}`, {
+      headers: { Authorization: token },
+      method: 'POST',
+      body: formData,
+    });
+
+    return {
+      data,
+      success: true,
+    };
+  } catch (error) {
+    console.error('Error adding products:', error);
+
+    return {
+      data: {} as IProductResponse,
+      success: false,
+    };
+  }
+}

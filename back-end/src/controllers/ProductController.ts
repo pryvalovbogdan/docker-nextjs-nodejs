@@ -52,7 +52,27 @@ class ProductController {
   updateProduct = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
-    const result = await this.service.updateProduct(Number(id), req.body);
+    const category = JSON.parse(req.body.category);
+    const subCategory = req.body.subcategory ? JSON.parse(req.body.subcategory) : null;
+
+    let images = req.body.images;
+
+    if (typeof images === 'string') {
+      images = [images];
+    } else if (Array.isArray(images)) {
+      images = req.body.images;
+    } else {
+      images = [];
+    }
+
+    const product = {
+      ...req.body,
+      images,
+      category,
+      subCategory,
+    };
+
+    const result = await this.service.updateProduct(Number(id), product);
 
     if (result.errors.length) {
       responseHandler.sendFailResponse(res, result.errors.join(', '));

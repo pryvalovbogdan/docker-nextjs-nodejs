@@ -19,7 +19,7 @@ import { Box, Button, Flex, Heading, IconButton, Image, Input, Text, Textarea, V
 import { addEntityDashboardFields } from '@features/entitiy/utils/config';
 import { PaginatedData, TabKey } from '@features/entitiy/utils/types';
 
-interface AddEntityDialogProps {
+interface IAddEntityDialogProps {
   isOpen: boolean;
   onClose: () => void;
   selectedTab: TabKey;
@@ -37,7 +37,7 @@ const createFunctions: Record<TabKey, CreateFunction> = {
   products: (formData, token = '') => createProduct(formData, token),
 };
 
-const AddEntityDialog: React.FC<AddEntityDialogProps> = ({
+const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({
   isOpen,
   onClose,
   tab,
