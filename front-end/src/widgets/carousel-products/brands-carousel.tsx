@@ -146,7 +146,7 @@ const CustomPaginationBtn = () => {
   );
 };
 
-const BrandsSection = ({ lng }: { lng: string }) => {
+const BrandsCarousel = ({ lng }: { lng: string }) => {
   const { t } = useTranslation(lng);
 
   return (
@@ -179,4 +179,4 @@ const BrandsSection = ({ lng }: { lng: string }) => {
   );
 };
 
-export default BrandsSection;
+export default BrandsCarousel;

@@ -1,5 +1,5 @@
 import { fetchProductByCategory } from '@/entities/product/api';
-import CategoryView from '@/views/category-view';
+import { CategoryView } from '@/views';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 

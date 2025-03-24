@@ -1,4 +1,4 @@
-import LoginView from '@/views/login-view';
+import { LoginView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
 export { generateStaticParams };

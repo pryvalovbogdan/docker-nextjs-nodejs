@@ -1,5 +1,5 @@
 import { Toaster } from '@/shared/ui/toaster';
-import LoginForm from '@features/admin/login/login-form';
+import { LoginForm } from '@features/admin';
 import { Layout } from '@widgets/layout';
 
 const LoginView = ({ lng }: { lng: string }) => {

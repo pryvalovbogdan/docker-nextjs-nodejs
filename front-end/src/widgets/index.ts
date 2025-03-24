@@ -5,3 +5,4 @@ export * from './gallary-images';
 export * from './image-dialog';
 export * from './why-us';
 export * from './layout';
+export * from './carousel-products';

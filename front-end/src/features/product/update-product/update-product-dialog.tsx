@@ -37,7 +37,12 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   setData,
   currentPage,
 }) => {
-  const mappedData = { ...data, category: data.category.name, subCategory: data.subCategory?.name || null };
+  const mappedData: Record<string, any> = {
+    ...data,
+    category: data.category.name,
+    subCategory: data.subCategory?.name || null,
+  };
+
   const [formData, setFormData] = useState<Record<string, any>>(mappedData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);

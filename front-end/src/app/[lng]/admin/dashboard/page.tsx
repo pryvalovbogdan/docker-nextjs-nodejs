@@ -1,4 +1,4 @@
-import Dashboard from '@/views/dashboard-view';
+import { DashboardView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
 export { generateStaticParams };
@@ -12,5 +12,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
 export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
 
-  return <Dashboard lng={lng} />;
+  return <DashboardView lng={lng} />;
 }

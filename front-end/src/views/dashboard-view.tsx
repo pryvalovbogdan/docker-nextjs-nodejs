@@ -16,7 +16,7 @@ import {
   TabKey,
   dashBoardColumns,
 } from '@features/entitiy';
-import UpdateProductDialog from '@features/product/update-product/update-product-dialog';
+import { UpdateProductDialog } from '@features/product';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
 
