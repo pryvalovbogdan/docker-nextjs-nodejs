@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { LuChevronDown, LuMenu, LuX } from 'react-icons/lu';
 
@@ -36,13 +36,16 @@ export default function Catalog({
   });
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
   const [showMenu, setShowMenu] = useState(false);
+
   const menuRef = useRef<HTMLDivElement>(null as any);
 
   const isMobile = useIsMobile();
   const router = useRouter();
   const { t } = useTranslation(lng);
+
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -138,6 +141,45 @@ export default function Catalog({
       setLoading(false);
     }
   };
+
+  const setShadowParams = (name: string, value: string, clearParams?: string[]) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    clearParams?.forEach(param => params.delete(param));
+
+    params.set(name, value.toString());
+    router.push(`?${params.toString()}`, { scroll: false });
+  };
+
+  useEffect(() => {
+    const category = searchParams.get('category');
+    const subcategory = searchParams.get('subcategory');
+    const page = searchParams.get('gallerypage');
+
+    if (category) {
+      const subCategory = categories.find(item => item.name === category)?.subCategories?.[0]?.name;
+
+      selectCategory(category);
+
+      if (subCategory) {
+        setSelectedSubCategory(subCategory);
+      }
+
+      setOpenAccordion(category);
+    }
+
+    if (subcategory) {
+      setSelectedSubCategory(subcategory);
+    }
+
+    if (page) {
+      if (selectedCategory === 'default') {
+        fetchData(Number(page));
+      } else {
+        setCurrentPage(Number(page));
+      }
+    }
+  }, []);
 
   const renderProducts = () => {
     if (paginatedProducts.length > 0) {
@@ -299,7 +341,12 @@ export default function Catalog({
           {t('categories')}
         </Heading>
         <Stack gap='4' w='full'>
-          <AccordionRoot variant='plain' collapsible>
+          <AccordionRoot
+            variant='plain'
+            collapsible
+            value={openAccordion}
+            onValueChange={value => setOpenAccordion(value)}
+          >
             {categories.map(category => (
               <AccordionItem key={category.name} value={category.name} w='full'>
                 <AccordionItemTrigger
@@ -312,6 +359,15 @@ export default function Catalog({
                   fontWeight='bold'
                   onClick={() => {
                     selectCategory(category.name, category.subCategories);
+
+                    const clearParams = ['gallerypage'];
+
+                    if (!category.subCategories?.length) {
+                      clearParams.push('subcategory');
+                    }
+
+                    setShadowParams('category', category.name, clearParams);
+                    setOpenAccordion(category.name);
                   }}
                 >
                   {category.name}
@@ -331,6 +387,8 @@ export default function Catalog({
                         onClick={() => {
                           setSelectedSubCategory(sub.name);
                           setCurrentPage(1);
+
+                          setShadowParams('subcategory', sub.name, ['gallerypage']);
 
                           if (isMobile) {
                             setShowMenu(false);
@@ -373,6 +431,8 @@ export default function Catalog({
             handlePageChange={page => {
               setCurrentPage(page);
               scrollToSection('categories');
+
+              setShadowParams('gallerypage', page.toString());
             }}
             currentPage={currentPage}
             totalPages={totalPages}
@@ -384,6 +444,8 @@ export default function Catalog({
             handlePageChange={page => {
               fetchData(page);
               scrollToSection('categories');
+
+              setShadowParams('gallerypage', page.toString());
             }}
             currentPage={currentPage}
             totalPages={products.totalPages}

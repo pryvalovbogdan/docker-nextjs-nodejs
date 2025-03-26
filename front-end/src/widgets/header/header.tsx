@@ -80,7 +80,12 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
                 key={item.id}
                 _hover={{ color: '#F2F2F2', textDecoration: 'underline' }}
                 color='white'
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => {
+                  const params = new URLSearchParams();
+
+                  router.push(`?${params.toString()}`, { scroll: false });
+                  scrollToSection(item.id);
+                }}
                 cursor='pointer'
                 transition='color 0.2s'
               >
