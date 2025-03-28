@@ -102,10 +102,12 @@ class ProductService {
 
       await this.repository.deleteProduct(productId);
 
-      const remainingProductsInCategory = await this.repository.countProductsByCategory(product.category.id);
+      if (product.category) {
+        const remainingProductsInCategory = await this.repository.countProductsByCategory(product.category.id);
 
-      if (remainingProductsInCategory === 0) {
-        await this.categoryService.deleteCategory(product.category.id);
+        if (remainingProductsInCategory === 0) {
+          await this.categoryService.deleteCategory(product.category.id);
+        }
       }
 
       if (product.subCategory) {

@@ -217,8 +217,8 @@ export const brandData: IBrandData[] = [
   // Sinivision
   {
     src: '/sinivision.jpeg',
-    alt: 'Sinivision',
-    name: 'Sinivision',
+    alt: 'Sinovision',
+    name: 'Sinovision',
     description: `    <h1>Sinovision – Виробник Медичного Обладнання</h1>
 
     <div><strong>Sinovision</strong> – китайська компанія, яка спеціалізується на розробці та виробництві <strong>медичного обладнання</strong>, зокрема <strong>комп'ютерних томографів (КТ)</strong>. Їхні продукти відомі своєю <strong>інноваційністю</strong> та <strong>високою якістю</strong>.</div>

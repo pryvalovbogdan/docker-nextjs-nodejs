@@ -6,6 +6,7 @@ import { Category } from '../entities';
 import { Product } from '../entities';
 import { SubCategory } from '../entities';
 import '../prefetched-data/data.json';
+import { normalize } from './utils';
 
 const jsonFilePath = path.resolve(__dirname, '../prefetched-data/data.json');
 
@@ -15,23 +16,30 @@ export const importProducts = async () => {
     const products = JSON.parse(rawData);
 
     for (const productData of products) {
-      console.log(`Processing product: ${productData.title}`);
+      const normalizedCategoryName = normalize(productData.category);
+      let category = await AppDataSource.manager.findOne(Category, { where: { name: normalizedCategoryName } });
 
-      let category = await AppDataSource.manager.findOne(Category, { where: { name: productData.category } });
-
-      if (!category) {
-        category = new Category();
-        category.name = productData.category;
-        await AppDataSource.manager.save(category);
+      if (productData.category?.length) {
+        if (!category) {
+          category = new Category();
+          category.name = productData.category;
+          category = await AppDataSource.manager.save(category);
+        }
+      } else {
+        category = null;
       }
 
       let subCategory = await AppDataSource.manager.findOne(SubCategory, { where: { name: productData.subcategory } });
 
-      if (!subCategory) {
-        subCategory = new SubCategory();
-        subCategory.name = productData.subcategory;
-        subCategory.category = category;
-        await AppDataSource.manager.save(subCategory);
+      if (productData?.subcategory?.length) {
+        if (category && !subCategory) {
+          subCategory = new SubCategory();
+          subCategory.name = productData.subcategory;
+          subCategory.category = category;
+          await AppDataSource.manager.save(subCategory);
+        }
+      } else {
+        subCategory = null;
       }
 
       const product = new Product();
@@ -41,7 +49,10 @@ export const importProducts = async () => {
       product.characteristics = productData.characteristics;
       product.images = productData.imgUrls || productData.images;
       product.category = category;
-      product.subCategory = subCategory;
+
+      if (subCategory) {
+        product.subCategory = subCategory;
+      }
 
       const brand = productData.brandname || productData.brand;
 
