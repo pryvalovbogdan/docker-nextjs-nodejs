@@ -36,7 +36,7 @@ export default function Catalog({
   });
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [openAccordion, setOpenAccordion] = useState<string | undefined>(undefined);
+  const [openAccordion, setOpenAccordion] = useState<string[]>();
   const [showMenu, setShowMenu] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null as any);
@@ -165,7 +165,7 @@ export default function Catalog({
         setSelectedSubCategory(subCategory);
       }
 
-      setOpenAccordion(category);
+      setOpenAccordion([category]);
     }
 
     if (subcategory) {
@@ -344,8 +344,8 @@ export default function Catalog({
           <AccordionRoot
             variant='plain'
             collapsible
-            value={openAccordion as any}
-            onValueChange={value => setOpenAccordion(value as any)}
+            value={openAccordion}
+            onValueChange={value => setOpenAccordion(value.value)}
           >
             {categories.map(category => (
               <AccordionItem key={category.name} value={category.name} w='full'>
@@ -367,7 +367,7 @@ export default function Catalog({
                     }
 
                     setShadowParams('category', category.name, clearParams);
-                    setOpenAccordion(category.name);
+                    setOpenAccordion([category.name]);
                   }}
                 >
                   {category.name}
