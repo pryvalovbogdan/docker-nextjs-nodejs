@@ -27,7 +27,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           brand VARCHAR(255),
           country VARCHAR(255),
           price DECIMAL(10, 2) DEFAULT NULL,
-          categoryId INT NOT NULL,
+          categoryId INT NULL,
           subcategoryId INT NULL,
           CONSTRAINT fk_category FOREIGN KEY (categoryId) REFERENCES categories(id) ON DELETE CASCADE,
           CONSTRAINT fk_subcategory FOREIGN KEY (subcategoryId) REFERENCES subcategories(id) ON DELETE CASCADE
@@ -64,46 +64,118 @@ export class InitDatabase1734879537080 implements MigrationInterface {
           createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      -- Insert categories and return IDs
+      -- Insert categories
       INSERT INTO categories (name) VALUES 
-          ('Ендоскопічне обладнання'),
-          ('Комп''ютерна томографія'),
-          ('Біохімічні аналізатори')
-      RETURNING id, name;
+        ('Хірургія'),
+        ('Кардіологія'),
+        ('Реанімація'),
+        ('Меблі для медичних закладів'),
+        ('Фізіотерапевтичне та реабілітаційне обладнання'),
+        ('Офтальмологія'),
+        ('Обладнання для неонатології, акушерства, гінекології'),
+        ('Кисневе обладнання'),
+        ('Стерилізація'),
+        ('Лабораторне обладнання'),
+        ('Ендоскопічне обладнання'),
+        ('Радіологія'),
+        ('УЗД'),
+        ('Лазери медичні'),
+        ('ЛОР'),
+        ('Стоматологія'),
+        ('Косметологія та дерматологія'),
+        ('Б/в обладнання');
 
-      -- Insert subcategories linked to categories
-      INSERT INTO subcategories (name, categoryId) VALUES 
-          ('Гастроскопія', (SELECT id FROM categories WHERE name = 'Ендоскопічне обладнання')),
-          ('Рентгенологія', (SELECT id FROM categories WHERE name = 'Комп''ютерна томографія')),
-          ('Лабораторне обладнання', (SELECT id FROM categories WHERE name = 'Біохімічні аналізатори'));
+      -- Insert subcategories
+      INSERT INTO subcategories (name, categoryId) VALUES
+        ('Операційні столи', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Операційні світильники', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Відсмоктувачі хірургічні', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Інфузійне обладнання', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Операційні мікроскопи', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Електрохірургія', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Нейрохірургія', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Хірургічні інструменти', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Набори інструментів', (SELECT id FROM categories WHERE name = 'Хірургія')),
 
-      -- Insert sample products with category and subcategory references
-      INSERT INTO products (title, description, images, brand, country, price, characteristics, categoryId, subcategoryId)
-      VALUES
-          ('Відеогастроскоп EVIS EXERA III GIF-H185 OLYMPUS', 
-              'Маневрений відеогастроскоп GIF-H185 з високоякісною HDTV-візуалізацією...',
-              ARRAY['https://d2vh67xigqba1o.cloudfront.net/0de8e1ce33c84614b64a00958b6d651f7b7a481f0b85fccf142cd21d35ced4f9'], 
-              'OLYMPUS', 'Японія', NULL,
-              'Переваги: Dual Focus, Close Focus, NBI, HDTV; ...',
-              (SELECT id FROM categories WHERE name = 'Ендоскопічне обладнання'),
-              (SELECT id FROM subcategories WHERE name = 'Гастроскопія')),
+        ('Електрокардіографи', (SELECT id FROM categories WHERE name = 'Кардіологія')),
+        ('Монітори пацієнтів', (SELECT id FROM categories WHERE name = 'Кардіологія')),
+        ('Холтери ЕКГ та АТ', (SELECT id FROM categories WHERE name = 'Кардіологія')),
+        ('Зовнішні кардіостимулятори', (SELECT id FROM categories WHERE name = 'Кардіологія')),
+        ('Пояси для ЕКГ', (SELECT id FROM categories WHERE name = 'Кардіологія')),
 
-          ('Комп''ютерний томограф Aquilion Start 32 зрізи Canon Medical Systems', 
-              'Aquilion Start - високоякісна КТ-система...',
-              ARRAY['https://d2vh67xigqba1o.cloudfront.net/a64a654901556493859406778ac4a0dfe660926a56bc5dfafbee5c7e5751a192'], 
-              'Canon', 'Японія', NULL,
-              'Час обертання: 1,0 сек, 1,5 сек, 0,75 сек; ...',
-              (SELECT id FROM categories WHERE name = 'Комп''ютерна томографія'),
-              (SELECT id FROM subcategories WHERE name = 'Рентгенологія')),
+        ('Апарати штучної вентиляції легенів', (SELECT id FROM categories WHERE name = 'Реанімація')),
+        ('Апарати наркозно-дихальні', (SELECT id FROM categories WHERE name = 'Реанімація')),
+        ('Дефібрилятори', (SELECT id FROM categories WHERE name = 'Реанімація')),
+        ('Ларингоскопи', (SELECT id FROM categories WHERE name = 'Реанімація')),
 
-          ('Автоматичний біохімічний аналізатор BA-400 з ISE модулем', 
-              'Біохімічний аналізатор BA-400 для турбидиметричних і біохімічних досліджень...',
-              ARRAY['https://d2vh67xigqba1o.cloudfront.net/74f3db5355cd3d51f57dad9ec609b460c29e4715291d4bee4320db0e4b509b1d'], 
-              'BioSystems', 'Іспанія', NULL,
-              'Пропускна спроможність: 400 тестів/год або 640 тестів...',
-              (SELECT id FROM categories WHERE name = 'Біохімічні аналізатори'),
-              (SELECT id FROM subcategories WHERE name = 'Лабораторне обладнання'));
+        ('Ліжка медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Столики медичного призначення', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Штативи', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Стійки медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Шафи медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Кушетки медичні  та столи масажні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Візки медичні та візки для перевезення хворих', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Стільці медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Крісла медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Тумби медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
 
+        ('Ультразвукова терапія', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+        ('Терапія', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+        ('Електротерапія', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+        ('Опромінювачі фізіотерапевтичні', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+        ('Комбінована терапія', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+        ('Лазерна терапія', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+        ('Реабілітаційне обладнання', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
+
+        ('Офтальмологічні мікроскопи', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
+        ('Лампи щілинні', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
+        ('Офтальмоскопи', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
+        ('Діагностика', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
+
+        ('Фетальні монітори та доплери', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Гінекологічні крісла-столи', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Інкубатори для новонароджених', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Меблі для неонталогії', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Ліжка акушерські', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Кольпоскопи', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Білірубінометри', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+        ('Обладнання для фототерапії', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
+
+        ('Стерилізатори медичні', (SELECT id FROM categories WHERE name = 'Стерилізація')),
+        ('Сухожарові шафи', (SELECT id FROM categories WHERE name = 'Стерилізація')),
+        ('Аквадистилятори', (SELECT id FROM categories WHERE name = 'Стерилізація')),
+        ('Мийні машини', (SELECT id FROM categories WHERE name = 'Стерилізація')),
+        
+        ('Жорстка ендоскопія', (SELECT id FROM categories WHERE name = 'Ендоскопічне обладнання')),
+        ('Гнучка ендоскопія', (SELECT id FROM categories WHERE name = 'Ендоскопічне обладнання')),
+        ('Додаткове обладнання для ендоскопії', (SELECT id FROM categories WHERE name = 'Ендоскопічне обладнання')),
+
+        ('Біохімія', (SELECT id FROM categories WHERE name = 'Лабораторне обладнання')),
+        ('Гематологія', (SELECT id FROM categories WHERE name = 'Лабораторне обладнання')),
+        ('Аналіз електролітів та газів крові', (SELECT id FROM categories WHERE name = 'Лабораторне обладнання')),
+        ('Імуноферментний Аналіз', (SELECT id FROM categories WHERE name = 'Лабораторне обладнання')),
+        ('Росхідні матеріали та допоміжні матеріали для лабораторії', (SELECT id FROM categories WHERE name = 'Лабораторне обладнання')),
+
+        ('КТ', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('МРТ', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('Рентген апарати стаціонарні та пересувні', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('Ангіографи', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('Флюрографи', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('Денситометри', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('Мамографи', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        
+        ('Лазери', (SELECT id FROM categories WHERE name = 'Лазери медичні')),
+
+        ('Стоматологічні установки', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Компресори та аспіратори', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Стерилізація', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Візіографи', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Дентальні рентгени', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Стоматологічні лазери', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        
+        ('Дерматологія', (SELECT id FROM categories WHERE name = 'Косметологія та дерматологія')),
+        ('Косметологія', (SELECT id FROM categories WHERE name = 'Косметологія та дерматологія'));
+        
       -- Insert sample orders
       INSERT INTO orders (name, phone, email, date, productId, status)
       VALUES
@@ -113,12 +185,6 @@ export class InitDatabase1734879537080 implements MigrationInterface {
               (SELECT id FROM products WHERE title = 'Комп''ютерний томограф Aquilion Start 32 зрізи Canon Medical Systems'), 'pending'),
           ('Alice Johnson', 1122334455, 'alicej@example.com', '2024-03-01', 
               (SELECT id FROM products WHERE title = 'Автоматичний біохімічний аналізатор BA-400 з ISE модулем'), 'active');
-
-      -- Insert sample news
-      INSERT INTO news (title, description, images, date)
-      VALUES
-          ('New Product Launch', 'We are excited to announce our new product!', ARRAY['news1.jpg'], '2024-03-01'),
-          ('Company Milestone', 'Our company reached 1M customers!', ARRAY['news2.jpg', 'news3.jpg'], '2024-03-15');
     `);
   }
 

@@ -30,9 +30,9 @@ export class Product {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   price: number;
 
-  @ManyToOne(() => Category, category => category.products, { nullable: false })
+  @ManyToOne(() => Category, category => category.products, { nullable: true })
   @JoinColumn({ name: 'categoryid' })
-  category: Category;
+  category: Category | null;
 
   @ManyToOne(() => SubCategory, subCategory => subCategory.products, { nullable: true })
   @JoinColumn({ name: 'subcategoryid' })

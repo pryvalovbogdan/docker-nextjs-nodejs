@@ -3,8 +3,7 @@ import { connection } from 'next/server';
 import { fetchCategories } from '@/entities/category/api';
 import { fetchLastAddedProducts, fetchProductsOffSet } from '@/entities/product/api';
 import LastAddedProducts from '@/entities/product/ui/last-added-products';
-import BrandsSection from '@/views/brand-section';
-import { Catalog, GalleryImages, Layout, WhyUs } from '@/widgets';
+import { BrandsCarousel, Catalog, GalleryImages, Layout, WhyUs } from '@/widgets';
 import { ContactButton, ContactForm } from '@features/contact';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
@@ -41,7 +40,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
         products={{ data: products.products, totalPages: products.totalPages }}
         categories={categories}
       />
-      <BrandsSection lng={lng} />
+      <BrandsCarousel lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
       <WhyUs lng={lng} withHeading />
       <ContactForm lng={lng} withMargin />

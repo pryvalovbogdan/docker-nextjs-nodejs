@@ -1,4 +1,4 @@
-import BrandsPage from '@/views/brands-view';
+import { BrandsView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
 export { generateStaticParams };
@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   const { lng } = await params;
 
   return (
-    <BrandsPage
+    <BrandsView
       lng={lng}
       officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND!}
       officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE!}

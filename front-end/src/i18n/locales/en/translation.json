@@ -198,5 +198,6 @@
   "downloadCsv": "Download list",
   "addError": "Failed to add",
   "searchPlaceholder": "Enter product name",
-  "searchProduct": "Find product"
+  "searchProduct": "Find product",
+  "update": "Update"
 }

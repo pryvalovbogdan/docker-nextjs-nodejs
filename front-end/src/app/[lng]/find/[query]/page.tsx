@@ -1,5 +1,5 @@
 import { fetchSearchProducts } from '@/entities/product/api';
-import SearchView from '@/views/search-view';
+import { SearchView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
 export { generateStaticParams };

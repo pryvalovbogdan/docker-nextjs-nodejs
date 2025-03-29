@@ -1,6 +1,6 @@
 import { connection } from 'next/server';
 
-import ContactView from '@/views/contact-view';
+import { ContactView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
 export { generateStaticParams };
