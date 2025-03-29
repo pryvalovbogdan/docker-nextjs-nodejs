@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
-import { LuChevronDown, LuChevronUp, LuMenu, LuX } from 'react-icons/lu';
+import { LuChevronDown, LuMenu, LuX } from 'react-icons/lu';
 
 import { ICategoryResponse } from '@/entities/category/model/types';
 import { fetchProductByCategoryUi, fetchProductsOffSet } from '@/entities/product/api';
@@ -341,12 +341,7 @@ export default function Catalog({
           {t('categories')}
         </Heading>
         <Stack gap='4' w='full'>
-          <AccordionRoot
-            variant='plain'
-            collapsible
-            value={openAccordion}
-            onValueChange={value => setOpenAccordion(value.value)}
-          >
+          <AccordionRoot variant='plain' collapsible value={openAccordion}>
             {categories.map(category => (
               <AccordionItem key={category.name} value={category.name} w='full'>
                 <AccordionItemTrigger
@@ -452,25 +447,6 @@ export default function Catalog({
             isMobile={isMobile}
           />
         )}
-
-        <IconButton
-          aria-label='Scroll to top'
-          position='absolute'
-          bottom={{ base: '73px', md: '35px' }}
-          left={{ base: '10px', md: '295px' }}
-          size='lg'
-          borderRadius='full'
-          colorScheme='green'
-          transition='background 0.3s ease-in-out'
-          bg='#036753'
-          _hover={{ bg: '#024D3E' }}
-          _active={{ bg: '#02372A' }}
-          shadow='lg'
-          zIndex={1000}
-          onClick={() => scrollToSection('categories')}
-        >
-          <LuChevronUp size={24} />
-        </IconButton>
       </Flex>
     </Flex>
   );
