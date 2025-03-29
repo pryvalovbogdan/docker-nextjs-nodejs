@@ -82,12 +82,13 @@ export class InitDatabase1734879537080 implements MigrationInterface {
         ('Лазери медичні'),
         ('ЛОР'),
         ('Стоматологія'),
-        ('Косметологія та дерматологія');
+        ('Косметологія та дерматологія'),
+        ('Б/в обладнання');
 
       -- Insert subcategories
       INSERT INTO subcategories (name, categoryId) VALUES
         ('Операційні столи', (SELECT id FROM categories WHERE name = 'Хірургія')),
-        ('Операційні світильник', (SELECT id FROM categories WHERE name = 'Хірургія')),
+        ('Операційні світильники', (SELECT id FROM categories WHERE name = 'Хірургія')),
         ('Відсмоктувачі хірургічні', (SELECT id FROM categories WHERE name = 'Хірургія')),
         ('Інфузійне обладнання', (SELECT id FROM categories WHERE name = 'Хірургія')),
         ('Операційні мікроскопи', (SELECT id FROM categories WHERE name = 'Хірургія')),
@@ -99,22 +100,20 @@ export class InitDatabase1734879537080 implements MigrationInterface {
         ('Електрокардіографи', (SELECT id FROM categories WHERE name = 'Кардіологія')),
         ('Монітори пацієнтів', (SELECT id FROM categories WHERE name = 'Кардіологія')),
         ('Холтери ЕКГ та АТ', (SELECT id FROM categories WHERE name = 'Кардіологія')),
-        ('Зовнішні кардиостимулятори', (SELECT id FROM categories WHERE name = 'Кардіологія')),
+        ('Зовнішні кардіостимулятори', (SELECT id FROM categories WHERE name = 'Кардіологія')),
         ('Пояси для ЕКГ', (SELECT id FROM categories WHERE name = 'Кардіологія')),
 
         ('Апарати штучної вентиляції легенів', (SELECT id FROM categories WHERE name = 'Реанімація')),
         ('Апарати наркозно-дихальні', (SELECT id FROM categories WHERE name = 'Реанімація')),
-        ('Дефибрилятори', (SELECT id FROM categories WHERE name = 'Реанімація')),
-        ('Кисневі концентатори', (SELECT id FROM categories WHERE name = 'Реанімація')),
-        ('Ларингоскоп', (SELECT id FROM categories WHERE name = 'Реанімація')),
+        ('Дефібрилятори', (SELECT id FROM categories WHERE name = 'Реанімація')),
+        ('Ларингоскопи', (SELECT id FROM categories WHERE name = 'Реанімація')),
 
         ('Ліжка медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Столики медичного призначення', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Штативи', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Стійки медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
-        ('Ширми', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Шафи медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
-        ('Кушетки та столи масажні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
+        ('Кушетки медичні  та столи масажні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Візки медичні та візки для перевезення хворих', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Стільці медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
         ('Крісла медичні', (SELECT id FROM categories WHERE name = 'Меблі для медичних закладів')),
@@ -129,8 +128,7 @@ export class InitDatabase1734879537080 implements MigrationInterface {
         ('Реабілітаційне обладнання', (SELECT id FROM categories WHERE name = 'Фізіотерапевтичне та реабілітаційне обладнання')),
 
         ('Офтальмологічні мікроскопи', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
-        ('Щилинні лампи', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
-        ('Офтальмологічні операційні столи', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
+        ('Лампи щілинні', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
         ('Офтальмоскопи', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
         ('Діагностика', (SELECT id FROM categories WHERE name = 'Офтальмологія')),
 
@@ -143,8 +141,6 @@ export class InitDatabase1734879537080 implements MigrationInterface {
         ('Білірубінометри', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
         ('Обладнання для фототерапії', (SELECT id FROM categories WHERE name = 'Обладнання для неонатології, акушерства, гінекології')),
 
-        ('Реанімація', (SELECT id FROM categories WHERE name = 'Кисневе обладнання')),
-        
         ('Стерилізатори медичні', (SELECT id FROM categories WHERE name = 'Стерилізація')),
         ('Сухожарові шафи', (SELECT id FROM categories WHERE name = 'Стерилізація')),
         ('Аквадистилятори', (SELECT id FROM categories WHERE name = 'Стерилізація')),
@@ -165,15 +161,17 @@ export class InitDatabase1734879537080 implements MigrationInterface {
         ('Рентген апарати стаціонарні та пересувні', (SELECT id FROM categories WHERE name = 'Радіологія')),
         ('Ангіографи', (SELECT id FROM categories WHERE name = 'Радіологія')),
         ('Флюрографи', (SELECT id FROM categories WHERE name = 'Радіологія')),
-        ('Денсинометри', (SELECT id FROM categories WHERE name = 'Радіологія')),
+        ('Денситометри', (SELECT id FROM categories WHERE name = 'Радіологія')),
         ('Мамографи', (SELECT id FROM categories WHERE name = 'Радіологія')),
         
         ('Лазери', (SELECT id FROM categories WHERE name = 'Лазери медичні')),
 
         ('Стоматологічні установки', (SELECT id FROM categories WHERE name = 'Стоматологія')),
-        ('Стоматологічні комперсори', (SELECT id FROM categories WHERE name = 'Стоматологія')),
-        ('Стоматологічні меблі', (SELECT id FROM categories WHERE name = 'Стоматологія')),
-        ('Коагулятори стоматологічні', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Компресори та аспіратори', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Стерилізація', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Візіографи', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Дентальні рентгени', (SELECT id FROM categories WHERE name = 'Стоматологія')),
+        ('Стоматологічні лазери', (SELECT id FROM categories WHERE name = 'Стоматологія')),
         
         ('Дерматологія', (SELECT id FROM categories WHERE name = 'Косметологія та дерматологія')),
         ('Косметологія', (SELECT id FROM categories WHERE name = 'Косметологія та дерматологія'));

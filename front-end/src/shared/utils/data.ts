@@ -6,7 +6,7 @@ interface IBrandData {
 }
 export const brandData: IBrandData[] = [
   {
-    src: '/shimadzu.png',
+    src: '/companies-logos/shimadzu.png',
     alt: 'SHIMADZU',
     name: 'SHIMADZU',
     description: `<div class="field-content" bis_skin_checked="1"><p class="rtejustify"><strong>SHIMADZU</strong> - провідний світовий виробник передових медичних технологій, що мають більш ніж 140-річний досвід роботи як справжні "професіонали рентгенівського випромінювання".</p>
@@ -16,7 +16,7 @@ export const brandData: IBrandData[] = [
     </div>`,
   },
   {
-    src: '/generalelectric.png',
+    src: '/companies-logos/generalelectric.png',
     alt: 'General Electric',
     name: 'GE Healthcare',
     description:
@@ -25,7 +25,7 @@ export const brandData: IBrandData[] = [
       'GE HealthCare також займається розробкою цифрових медичних технологій, діагностики на основі штучного інтелекту та ІТ-рішень для охорони здоров’я, які покращують ефективність робочих процесів медичних працівників. Співпрацюючи з лікарнями, дослідницькими установами та медичними закладами по всьому світу, компанія надає передові інструменти для раннього виявлення хвороб, персоналізованого лікування та оптимізації операційних процесів.',
   },
   {
-    src: '/olympus.png',
+    src: '/companies-logos/olympus.png',
     alt: 'Olympus Logo',
     name: 'Olympus',
     description: `    <h1>Olympus Corporation – Виробник Медичного Обладнання</h1>
@@ -42,7 +42,7 @@ export const brandData: IBrandData[] = [
     `,
   },
   {
-    src: '/drager.svg',
+    src: '/companies-logos/drager.svg',
     alt: 'Dräger',
     name: 'Dräger',
     description: `       <div><strong>Dräger</strong> – німецька компанія, заснована у <strong>1889 році</strong>, яка спеціалізується на виробництві 
@@ -57,7 +57,7 @@ export const brandData: IBrandData[] = [
     `,
   },
   {
-    src: '/fujifilm.webp',
+    src: '/companies-logos/fujifilm.webp',
     alt: 'Fujifilm',
     name: 'Fujifilm',
     description: `    <h1>Fujifilm – Виробник Медичного Обладнання</h1>
@@ -75,7 +75,7 @@ export const brandData: IBrandData[] = [
     `,
   },
   {
-    src: '/philips.svg',
+    src: '/companies-logos/philips.svg',
     alt: 'Philips',
     name: 'Philips',
     description: `    <h1>Philips – Виробник Медичного Обладнання</h1>
@@ -91,7 +91,7 @@ export const brandData: IBrandData[] = [
 `,
   },
   {
-    src: '/mindray1.png',
+    src: '/companies-logos/mindray1.png',
     alt: 'Mindray',
     name: 'Mindray',
     description: `<h1>Mindray – Виробник Медичного Обладнання</h1>
@@ -107,7 +107,7 @@ export const brandData: IBrandData[] = [
     </ul>`,
   },
   {
-    src: '/quanta-system.png',
+    src: '/companies-logos/quanta-system.png',
     alt: 'Quanta System',
     name: 'Quanta System',
     description:
@@ -120,7 +120,7 @@ export const brandData: IBrandData[] = [
       '        </div>',
   },
   {
-    src: '/2017760.png',
+    src: '/companies-logos/2017760.png',
     alt: 'KEISEI MEDICAL',
     name: 'KEISEI MEDICAL',
     description:
@@ -133,7 +133,7 @@ export const brandData: IBrandData[] = [
       '        </div>',
   },
   {
-    src: '/maquet.png',
+    src: '/companies-logos/maquet.png',
     alt: 'Maquet',
     name: 'Maquet',
     description: `    <div><strong>Maquet</strong> – німецька компанія, заснована у <strong>1838 році</strong>, що є частиною <strong>Getinge Group</strong>. 
@@ -148,7 +148,7 @@ export const brandData: IBrandData[] = [
     </ul>`,
   },
   {
-    src: '/erbe.png',
+    src: '/companies-logos/erbe.png',
     alt: 'Erbe',
     name: 'Erbe',
     description: `    <div><strong>Erbe Elektromedizin</strong> – німецька компанія, заснована у <strong>1851 році</strong>, яка є лідером у виробництві 
@@ -163,7 +163,7 @@ export const brandData: IBrandData[] = [
     </ul>`,
   },
   {
-    src: '/famed.webp',
+    src: '/companies-logos/famed.webp',
     alt: 'Famed',
     name: 'Famed',
     description: `    <div><strong>Famed Żywiec</strong> – польська компанія, заснована у <strong>1947 році</strong>, яка є одним із провідних виробників 
@@ -178,7 +178,7 @@ export const brandData: IBrandData[] = [
     </ul>`,
   },
   {
-    src: '/brightfield.png',
+    src: '/companies-logos/brightfield.png',
     alt: 'Brightfield',
     name: 'Brightfield',
     description: `    <div><strong>Brightfield HealthCare</strong> – компанія, що спеціалізується на розробці та просуванні інноваційного медичного обладнання для діагностики та терапії. Використання інноваційних технологій, тісний зв'язок з практичною медициною та продумана маркетингова політика дозволяють створювати якісні та високотехнологічні продукти для потреб сучасної медицини.</div>
@@ -192,7 +192,7 @@ export const brandData: IBrandData[] = [
   },
   // BTL
   {
-    src: '/btl.jpg',
+    src: '/companies-logos/btl.jpg',
     alt: 'BTL',
     name: 'BTL',
     description: `<div>
@@ -203,7 +203,7 @@ export const brandData: IBrandData[] = [
   },
   // IMAX
   {
-    src: '/imax.png',
+    src: '/companies-logos/imax.png',
     alt: 'IMAX',
     name: 'IMAX',
     description: `<div>
@@ -216,7 +216,7 @@ export const brandData: IBrandData[] = [
 
   // Sinivision
   {
-    src: '/sinivision.jpeg',
+    src: '/companies-logos/sinivision.jpeg',
     alt: 'Sinovision',
     name: 'Sinovision',
     description: `    <h1>Sinovision – Виробник Медичного Обладнання</h1>
@@ -231,7 +231,7 @@ export const brandData: IBrandData[] = [
   },
   // Progetti
   {
-    src: '/progetti.png',
+    src: '/companies-logos/progetti.png',
     alt: 'Progetti',
     name: 'Progetti',
     description: `<div>
@@ -246,7 +246,7 @@ export const brandData: IBrandData[] = [
   },
   // Promek
   {
-    src: '/promek.png',
+    src: '/companies-logos/promek.png',
     alt: 'Promek',
     name: 'Promek',
     description: `    <h1>Promek – Виробник Медичного Обладнання</h1>
@@ -262,7 +262,7 @@ export const brandData: IBrandData[] = [
   },
   // Medima
   {
-    src: '/medima.png',
+    src: '/companies-logos/medima.png',
     alt: 'Medima',
     name: 'Medima',
     description: `    <div><strong>Medima</strong> – польська компанія, заснована у <strong>2004 році</strong>, яка спеціалізується на розробці та виробництві <strong>медичного обладнання</strong> та <strong>медичного програмного забезпечення</strong>. Компанія відома своїми інноваційними рішеннями у сфері безпечного дозування рідин як внутрішньовенно, так і ентерально.</div>
@@ -277,7 +277,7 @@ export const brandData: IBrandData[] = [
   },
   // Osypka
   {
-    src: '/osypka.png',
+    src: '/companies-logos/osypka.png',
     alt: 'Osypka',
     name: 'Osypka',
     description: `    <div><strong>OSYPKA</strong> – німецька компанія, заснована у 1977 році, яка спеціалізується на розробці та виробництві інноваційних медичних технологій, зокрема для інтервенційної кардіології та педіатричної кардіології. Компанія відома своїми високоякісними продуктами та рішеннями для активних імплантатів і катетерів.</div>
@@ -293,7 +293,7 @@ export const brandData: IBrandData[] = [
   },
   // Heaco
   {
-    src: '/heaco.png',
+    src: '/companies-logos/heaco.png',
     alt: 'Heaco',
     name: 'Heaco',
     description: `     <div><strong>Heaco</strong> – інноваційна компанія, що спеціалізується на розробці, виробництві та постачанні сучасного медичного обладнання. Компанія орієнтована на високі стандарти якості та надійності, забезпечуючи лікарні та клініки передовими технологіями для діагностики та лікування.</div>
@@ -311,7 +311,7 @@ export const brandData: IBrandData[] = [
   // Shrek
 
   {
-    src: '/shrek.avif',
+    src: '/companies-logos/shrek.avif',
     alt: 'Shrek',
     name: 'Shrek',
     description: `    <div><strong>Shrek Medical</strong> – китайська компанія, відома своєю спеціалізацією на розробці та виробництві <strong>ендоскопічного обладнання</strong>. Їхня продукція широко використовується в медичних закладах для діагностики та хірургічних втручань, забезпечуючи високу якість зображення та надійність у роботі.</div>
@@ -326,7 +326,7 @@ export const brandData: IBrandData[] = [
   },
   // Anke
   {
-    src: '/anke.png',
+    src: '/companies-logos/anke.png',
     alt: 'Anke',
     name: 'Anke',
     description: `
@@ -345,7 +345,7 @@ export const brandData: IBrandData[] = [
   },
   // Біомед
   {
-    src: '/біомед.svg',
+    src: '/companies-logos/біомед.svg',
     alt: 'Біомед',
     name: 'Біомед',
     description: `
@@ -357,7 +357,7 @@ export const brandData: IBrandData[] = [
   },
   // Атон
   {
-    src: '/атон.png',
+    src: '/companies-logos/атон.png',
     alt: 'Атон',
     name: 'Атон',
     description: `    <div><strong>Приватне науково-виробниче підприємство «Атон»</strong> є одним з провідних українських виробників сучасних високоякісних медичних меблів. Компанія розробляє продукцію, параметри якої відповідають рекомендаціям фахівців та персоналу установ Міністерства охорони здоров'я України.</div>
@@ -371,7 +371,7 @@ export const brandData: IBrandData[] = [
   },
   // Віола
   {
-    src: '/віола.png',
+    src: '/companies-logos/віола.png',
     alt: 'Віола',
     name: 'Віола',
     description: `    <h1>Віола-Медтехніка – Виробник Медичного та Стоматологічного Обладнання</h1>
@@ -387,7 +387,7 @@ export const brandData: IBrandData[] = [
   },
   // Walkbot
   {
-    src: '/walkbot.png',
+    src: '/companies-logos/walkbot.png',
     alt: 'Walkbot',
     name: 'Walkbot',
     description: `     <h1>Walkbot – Роботизовані Системи для Реабілітації</h1>
@@ -404,7 +404,7 @@ export const brandData: IBrandData[] = [
   },
   // Bama Technology
   {
-    src: '/Bama Technology.webp',
+    src: '/companies-logos/Bama Technology.webp',
     alt: 'Bama Technology',
     name: 'Bama Technology',
     description: `    <h1>BAMA Technology – Виробник Роботизованого Реабілітаційного Обладнання</h1>
@@ -419,7 +419,7 @@ export const brandData: IBrandData[] = [
   },
   // Bowa
   {
-    src: '/bowa.png',
+    src: '/companies-logos/bowa.png',
     alt: 'Bowa',
     name: 'Bowa',
     description: `    <div><strong>BOWA Medical</strong> – німецька компанія, заснована у 1977 році, яка спеціалізується на розробці та виробництві високочастотних електрохірургічних систем. Компанія є провідним постачальником інноваційних рішень для хірургії, орієнтуючись на безпеку, ефективність та зручність використання своєї продукції.</div>
@@ -435,7 +435,7 @@ export const brandData: IBrandData[] = [
   },
   // Hitachi
   {
-    src: '/hitachi.png',
+    src: '/companies-logos/hitachi.png',
     alt: 'Hitachi',
     name: 'Hitachi',
     description: `     <div><strong>Hitachi</strong> – всесвітньо відома японська компанія, яка спеціалізується на розробці та виробництві високотехнологічного медичного обладнання. Завдяки інноваційним технологіям та надійності, Hitachi займає провідні позиції на ринку діагностичних пристроїв. </div>
@@ -450,7 +450,7 @@ export const brandData: IBrandData[] = [
   },
   // Granum
   {
-    src: '/granum.jpeg',
+    src: '/companies-logos/granum.jpeg',
     alt: 'Granum',
     name: 'Granum',
     description: `    <p><strong>Granum</strong> – це китайський бренд, відомий виробництвом високоякісного медичного та стоматологічного обладнання. Компанія пропонує широкий асортимент продукції, яка забезпечує ефективну роботу медичних закладів та лабораторій.</p>
@@ -465,7 +465,7 @@ export const brandData: IBrandData[] = [
   },
   // Sonoscape
   {
-    src: '/sonoscape.webp',
+    src: '/companies-logos/sonoscape.webp',
     alt: 'Sonoscape',
     name: 'Sonoscape',
     description: ` 
@@ -479,7 +479,7 @@ export const brandData: IBrandData[] = [
   },
   // Hisense Medical
   {
-    src: '/Hisense Medical.jpeg',
+    src: '/companies-logos/Hisense Medical.jpeg',
     alt: 'Hisense Medical',
     name: 'Hisense Medical',
     description: `
@@ -495,7 +495,7 @@ export const brandData: IBrandData[] = [
   },
   // Lowenstein
   {
-    src: '/lowenstein.png',
+    src: '/companies-logos/lowenstein.png',
     alt: 'Lowenstein',
     name: 'Lowenstein',
     description: `    <div><strong>Löwenstein Medical</strong> – німецька компанія з понад 35-річним досвідом у розробці та дистрибуції медичних технологій. Основна спеціалізація компанії – вентиляція, яка включає підтримку дихання, порятунок життів, збереження здоров'я та спрощення догляду за пацієнтами. Як сімейне підприємство, Löwenstein Medical бачить себе партнером для пацієнтів та клієнтів, гарантуючи якість продукції, виготовленої в Німеччині.</div>
@@ -511,7 +511,7 @@ export const brandData: IBrandData[] = [
   },
   // Schiller
   {
-    src: '/schiller.jpg',
+    src: '/companies-logos/schiller.jpg',
     alt: 'Schiller',
     name: 'Schiller',
     description: `
@@ -527,7 +527,7 @@ export const brandData: IBrandData[] = [
   },
   // Matachana
   {
-    src: '/matachana.png',
+    src: '/companies-logos/matachana.png',
     alt: 'Matachana',
     name: 'Matachana',
     description: `    <div><strong>Matachana</strong> – іспанська компанія, заснована у 1962 році Антоніо Матачаною, яка спеціалізується на виробництві стерилізаційного та дезінфекційного обладнання для секторів охорони здоров'я, науки про життя та фармацевтики. За понад 60 років діяльності компанія перетворилася з сімейного підприємства на глобального лідера у своїй галузі.</div>
@@ -541,7 +541,7 @@ export const brandData: IBrandData[] = [
   },
   // Bactosfera
   {
-    src: '/bactosfera.png',
+    src: '/companies-logos/bactosfera.png',
     alt: 'Bactosfera',
     name: 'Bactosfera',
     description: `     <div><strong>BactoSfera</strong> – українська компанія, заснована у 2011 році, яка спеціалізується на розробці та виробництві інноваційних продуктів для побутового, промислового та медичного застосування. Основна увага приділяється пристроям, що базуються на бактерицидній дії ультрафіолетового випромінювання, забезпечуючи ефективну дезінфекцію повітря та поверхонь.</div>
@@ -552,5 +552,31 @@ export const brandData: IBrandData[] = [
         <li><strong>Тубус-кварци</strong>: портативні прилади для локального кварцування, які застосовуються в лікуванні ЛОР-захворювань та дерматологічних проблем. Вони забезпечують швидке одужання та профілактику інфекцій.</li>
         <li><strong>Рециркулятори</strong>: пристрої закритого типу для безперервного знезараження повітря в присутності людей. Вони безпечні у використанні та підходять для офісів, житлових приміщень і медичних закладів.</li>
     </ul>`,
+  },
+  {
+    src: '/companies-logos/examion.svg',
+    alt: 'Examion',
+    name: 'Examion',
+    description: `<div><strong>EXAMION</strong> – німецька компанія, що спеціалізується на розробці та впровадженні цифрових рентгенівських систем для медичної, стоматологічної та ветеринарної практики. Компанія має понад 30 років досвіду на ринку медичної візуалізації та є надійним постачальником інноваційних рішень у сфері цифрової діагностики.</div>
+
+<h2>Основні напрями діяльності:</h2>
+<ul>
+    <li><strong>Цифрові рентгенівські системи</strong>: EXAMION пропонує повністю інтегровані рішення для цифрової рентгенографії, включаючи як стаціонарні, так і мобільні системи. Вони розроблені з урахуванням сучасних вимог до продуктивності, ергономіки та безпеки пацієнтів.</li>
+    <li><strong>Програмне забезпечення X-AQS</strong>: власна платформа компанії для керування процесами візуалізації, архівації та обробки зображень. Забезпечує ефективний робочий процес і високу якість діагностичних знімків.</li>
+    <li><strong>Обслуговування та технічна підтримка</strong>: EXAMION надає повний спектр послуг з установки, обслуговування та ремонту обладнання, а також консультування з питань оптимізації рентген-діагностики.</li>
+</ul>`,
+  },
+  {
+    src: '/companies-logos/logo-tontarra.png',
+    alt: 'Тоntarra',
+    name: 'Tontarra',
+    description: `<div><strong>TONTARRA</strong> – німецька компанія з багаторічним досвідом у сфері медичних технологій, яка спеціалізується на розробці, виробництві та дистрибуції високоякісних хірургічних інструментів. Компанія була заснована у 1960-х роках та відома своєю точністю, інноваційністю та відповідністю найвищим стандартам якості.</div>
+
+<h2>Основні напрями діяльності:</h2>
+<ul>
+    <li><strong>Хірургічні інструменти</strong>: широкий асортимент інструментів для загальної хірургії, ортопедії, нейрохірургії, ЛОР-хірургії, урології та гінекології. Усі інструменти виготовлені з високоякісної нержавіючої сталі та проходять ретельний контроль якості.</li>
+    <li><strong>Ендоскопічні системи</strong>: інноваційні рішення для малоінвазивної хірургії, включаючи лапароскопію та артроскопію. Компанія пропонує повні комплекти інструментів та аксесуарів для ендоскопічних процедур.</li>
+    <li><strong>Індивідуальні рішення</strong>: можливість розробки інструментів за індивідуальними вимогами замовника, що забезпечує гнучкість та адаптацію до специфічних потреб клінік та хірургів.</li>
+</ul>`,
   },
 ];

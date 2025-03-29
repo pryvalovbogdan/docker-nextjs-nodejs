@@ -6,7 +6,6 @@ import { Category } from '../entities';
 import { Product } from '../entities';
 import { SubCategory } from '../entities';
 import '../prefetched-data/data.json';
-import { normalize } from './utils';
 
 const jsonFilePath = path.resolve(__dirname, '../prefetched-data/data.json');
 
@@ -16,8 +15,7 @@ export const importProducts = async () => {
     const products = JSON.parse(rawData);
 
     for (const productData of products) {
-      const normalizedCategoryName = normalize(productData.category);
-      let category = await AppDataSource.manager.findOne(Category, { where: { name: normalizedCategoryName } });
+      let category = await AppDataSource.manager.findOne(Category, { where: { name: productData.category } });
 
       if (productData.category?.length) {
         if (!category) {
