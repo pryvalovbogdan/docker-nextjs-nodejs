@@ -341,12 +341,7 @@ export default function Catalog({
           {t('categories')}
         </Heading>
         <Stack gap='4' w='full'>
-          <AccordionRoot
-            variant='plain'
-            collapsible
-            value={openAccordion}
-            onValueChange={value => setOpenAccordion(value.value)}
-          >
+          <AccordionRoot variant='plain' collapsible value={openAccordion}>
             {categories.map(category => (
               <AccordionItem key={category.name} value={category.name} w='full'>
                 <AccordionItemTrigger
