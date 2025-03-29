@@ -344,8 +344,8 @@ export default function Catalog({
           <AccordionRoot
             variant='plain'
             collapsible
-            value={openAccordion}
-            onValueChange={value => setOpenAccordion(value)}
+            value={openAccordion as any}
+            onValueChange={value => setOpenAccordion(value as any)}
           >
             {categories.map(category => (
               <AccordionItem key={category.name} value={category.name} w='full'>
