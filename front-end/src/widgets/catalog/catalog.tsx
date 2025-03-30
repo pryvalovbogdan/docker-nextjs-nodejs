@@ -367,7 +367,6 @@ export default function Catalog({
                       setCurrentPage(1);
                       setSelectedCategory('default');
                       setSelectedSubCategory('');
-                      fetchData(1);
 
                       setOpenAccordion([]);
                     } else {
