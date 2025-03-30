@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
 
   await connection();
   const categories = await fetchCategories();
-  const products = await fetchProductsOffSet('', 1, 8, true);
+  const products = await fetchProductsOffSet('', 1, 12, true);
   const lastAddedProducts = await fetchLastAddedProducts();
 
   return (

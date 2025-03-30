@@ -60,7 +60,15 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
   return (
     <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
       <Flex mt={10}>
-        <Breadcrumb.Root bg='rgba(3, 103, 83, 0.7)' ml={10} py={2} px={4} backdropFilter='blur(12px)' borderRadius='md'>
+        <Breadcrumb.Root
+          bg='rgba(3, 103, 83, 0.7)'
+          ml={6}
+          py={2}
+          px={4}
+          mr={6}
+          backdropFilter='blur(12px)'
+          borderRadius='md'
+        >
           <Breadcrumb.List>
             <Breadcrumb.Item>
               <Breadcrumb.Link
