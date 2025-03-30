@@ -13,7 +13,8 @@ import { getInnerText } from '@/shared/utils';
 import { Button, Flex, Grid, Heading, IconButton, Image, Spinner, Stack, Text, VStack } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE_DESKTOP = 12;
+const ITEMS_PER_PAGE_MOBILE = 4;
 
 export default function Catalog({
   products,
@@ -44,6 +45,8 @@ export default function Catalog({
   const isMobile = useIsMobile();
   const router = useRouter();
   const { t } = useTranslation(lng);
+
+  const itemsPerScreen = isMobile ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP;
 
   const searchParams = useSearchParams();
 
@@ -96,8 +99,8 @@ export default function Catalog({
         )
       : [];
 
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-  const paginatedProducts = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerScreen);
+  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerScreen, currentPage * itemsPerScreen);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -122,7 +125,7 @@ export default function Catalog({
       }
 
       setLoading(true);
-      const response = await fetchProductsOffSet(token, page, 8);
+      const response = await fetchProductsOffSet(token, page, itemsPerScreen);
 
       if (response.success) {
         setProducts(prev => ({
@@ -240,7 +243,9 @@ export default function Catalog({
     const defaultCategory = productState.default;
 
     if (!Array.isArray(defaultCategory) && defaultCategory[currentPage]?.length > 0 && selectedCategory === 'default') {
-      return defaultCategory[currentPage]?.map(product => (
+      const productsPerScreen = isMobile ? defaultCategory[currentPage]?.slice(0, 4) : defaultCategory[currentPage];
+
+      return productsPerScreen?.map(product => (
         <Flex
           key={product.id}
           borderWidth={1}
@@ -352,50 +357,68 @@ export default function Catalog({
                   py={3}
                   borderRadius='md'
                   fontWeight='bold'
+                  my={2}
                   onClick={() => {
-                    selectCategory(category.name, category.subCategories);
-
                     const clearParams = ['gallerypage'];
 
-                    if (!category.subCategories?.length) {
-                      clearParams.push('subcategory');
-                    }
+                    if (selectedCategory === category.name) {
+                      clearParams.push('category', 'subcategory');
+                      setShadowParams('', '', clearParams);
+                      setCurrentPage(1);
+                      setSelectedCategory('default');
+                      setSelectedSubCategory('');
 
-                    setShadowParams('category', category.name, clearParams);
-                    setOpenAccordion([category.name]);
+                      setOpenAccordion([]);
+                    } else {
+                      selectCategory(category.name, category.subCategories);
+
+                      if (!category.subCategories?.length) {
+                        clearParams.push('subcategory');
+                      }
+
+                      setShadowParams('category', category.name, clearParams);
+                      setOpenAccordion([category.name]);
+                    }
                   }}
                 >
-                  {category.name}
-                  {category.subCategories?.length ? <LuChevronDown /> : null}
+                  <Flex justifyContent='space-between' w='100%' alignItems='baseline'>
+                    {category.name}
+                    {category.subCategories?.length ? (
+                      <Text ml={1} minWidth='15px'>
+                        <LuChevronDown />
+                      </Text>
+                    ) : null}
+                  </Flex>
                 </AccordionItemTrigger>
                 <AccordionItemContent p={0}>
                   <VStack align='start' w='full'>
-                    {category.subCategories?.map(sub => (
-                      <Button
-                        key={sub.name}
-                        variant='ghost'
-                        fontWeight={selectedSubCategory === sub.name ? 'bold' : 'normal'}
-                        color={selectedSubCategory === sub.name ? '#036753' : 'gray.700'}
-                        justifyContent='flex-start'
-                        w='250px'
-                        _hover={{ bg: 'gray.200' }}
-                        onClick={() => {
-                          setSelectedSubCategory(sub.name);
-                          setCurrentPage(1);
+                    {openAccordion?.includes(category.name) &&
+                      category.subCategories?.map(sub => (
+                        <Button
+                          key={sub.name}
+                          variant='ghost'
+                          fontWeight={selectedSubCategory === sub.name ? 'bold' : 'normal'}
+                          color={selectedSubCategory === sub.name ? '#036753' : 'gray.700'}
+                          justifyContent='flex-start'
+                          w='250px'
+                          _hover={{ bg: 'gray.200' }}
+                          onClick={() => {
+                            setSelectedSubCategory(sub.name);
+                            setCurrentPage(1);
 
-                          setShadowParams('subcategory', sub.name, ['gallerypage']);
+                            setShadowParams('subcategory', sub.name, ['gallerypage']);
 
-                          if (isMobile) {
-                            setShowMenu(false);
-                          }
-                        }}
-                        whiteSpace='nowrap'
-                        overflow='hidden'
-                        textOverflow='ellipsis'
-                      >
-                        {sub.name}
-                      </Button>
-                    ))}
+                            if (isMobile) {
+                              setShowMenu(false);
+                            }
+                          }}
+                          whiteSpace='nowrap'
+                          overflow='hidden'
+                          textOverflow='ellipsis'
+                        >
+                          {sub.name}
+                        </Button>
+                      ))}
                   </VStack>
                 </AccordionItemContent>
               </AccordionItem>
@@ -405,7 +428,7 @@ export default function Catalog({
       </VStack>
       <Flex gap={6} flexDirection='column' w='100%'>
         {loading ? (
-          <Flex h='584px' w='100%' justifyContent='center' alignItems='center'>
+          <Flex h='888px' w='100%' justifyContent='center' alignItems='center'>
             <Spinner size='xl' color='#036753' />
           </Flex>
         ) : (
@@ -421,7 +444,7 @@ export default function Catalog({
           </Grid>
         )}
 
-        {filteredProducts.length > ITEMS_PER_PAGE && (
+        {filteredProducts.length > itemsPerScreen && (
           <Pagination
             handlePageChange={page => {
               setCurrentPage(page);
@@ -431,6 +454,7 @@ export default function Catalog({
             }}
             currentPage={currentPage}
             totalPages={totalPages}
+            isMobile={isMobile}
           />
         )}
 

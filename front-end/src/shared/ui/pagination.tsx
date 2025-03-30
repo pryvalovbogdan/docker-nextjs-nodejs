@@ -10,7 +10,7 @@ interface IPaginationProps {
 }
 
 const Pagination = ({ totalPages, currentPage, handlePageChange, isMobile }: IPaginationProps) => {
-  const MAX_VISIBLE_PAGES = isMobile ? 4 : 10;
+  const MAX_VISIBLE_PAGES = isMobile ? 4 : 12;
   let pages: (number | string)[] = [];
 
   if (totalPages <= MAX_VISIBLE_PAGES) {
