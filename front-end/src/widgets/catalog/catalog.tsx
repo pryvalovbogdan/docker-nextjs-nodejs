@@ -359,7 +359,7 @@ export default function Catalog({
                   fontWeight='bold'
                   my={2}
                   onClick={() => {
-                    const clearParams = ['gallerypage'];
+                    const clearParams = ['gallerypage', 'subcategory'];
 
                     if (selectedCategory === category.name) {
                       clearParams.push('category', 'subcategory');
