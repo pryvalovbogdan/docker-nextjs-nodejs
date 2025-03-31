@@ -72,6 +72,10 @@ class ProductService {
 
       if (data.category?.name) {
         category = (await this.categoryService.getCategory(data.category.name)).data;
+
+        if (!category) {
+          return { errors: [`There no such category: ${data.category?.name}`] };
+        }
       }
 
       if (data.subCategory?.name) {

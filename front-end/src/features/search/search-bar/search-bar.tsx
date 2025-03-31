@@ -136,7 +136,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
                 onMouseDown={() => router.push(`/${lng}/product/${product.id}`)}
               >
                 <Image
-                  src={product.images?.[0] || '/placeholder.png'}
+                  src={product.images?.[0] || '/placeholder.webp'}
                   alt={product.title}
                   boxSize='40px'
                   borderRadius='md'

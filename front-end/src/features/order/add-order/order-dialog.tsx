@@ -105,7 +105,7 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
           <DialogBody>
             <Flex gap={4} mb={4} align='center'>
               <Image
-                src={product.images?.[0] || '/placeholder.png'}
+                src={product.images?.[0] || '/placeholder.webp'}
                 alt={product.title}
                 w='80px'
                 h='80px'

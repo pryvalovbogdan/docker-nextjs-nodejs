@@ -113,7 +113,7 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
                 }}
               >
                 <Image
-                  src={product.images?.[0] || '/placeholder.png'}
+                  src={product.images?.[0] || '/placeholder.webp'}
                   alt={product.title}
                   boxSize='70px'
                   borderRadius='md'
