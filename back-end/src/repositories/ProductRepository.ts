@@ -18,6 +18,7 @@ class ProductRepository {
     await this.productRepository.update(productId, { ...data, images: currentProduct?.images });
 
     return await this.productRepository.findOne({
+      relations: ['category', 'subCategory'],
       where: { id: productId },
     });
   };

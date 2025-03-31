@@ -29,7 +29,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
               cursor='pointer'
             >
               <Image
-                src={product.images[0] || '/placeholder.png'}
+                src={product.images[0] || '/placeholder.webp'}
                 alt={product.title}
                 objectFit='contain'
                 w='full'

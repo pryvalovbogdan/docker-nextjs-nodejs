@@ -40,7 +40,7 @@ const ProductCard = ({ product, lng }: ProductProps) => {
     >
       <Box bg='gray.50' display='flex' justifyContent='center' alignItems='center' onClick={handleRedirect}>
         <Image
-          src={product.images?.[0] || '/placeholder.png'}
+          src={product.images?.[0] || '/placeholder.webp'}
           alt={product.title}
           objectFit='contain'
           w='100%'

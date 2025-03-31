@@ -23,7 +23,7 @@ interface ProductProps {
 const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, officePhoneSecond, officeEmail }) => {
   const { t } = useTranslation(lng);
   const [showMore, setShowMore] = useState(true);
-  const [selectedImage, setSelectedImage] = useState(product.images?.[0] || '/placeholder.png');
+  const [selectedImage, setSelectedImage] = useState(product.images?.[0] || '/placeholder.webp');
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const images = useMemo(() => product.images || [], [product.images]);

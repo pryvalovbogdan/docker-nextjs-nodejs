@@ -114,6 +114,10 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
 
     const formDataToSend = new FormData();
 
+    if (!formData.subcategory?.length) {
+      delete formData.subcategory;
+    }
+
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         if (key === 'category') {
