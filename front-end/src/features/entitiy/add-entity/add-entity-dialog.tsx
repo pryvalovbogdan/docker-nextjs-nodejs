@@ -171,6 +171,7 @@ const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({
                     borderColor={errors[name] ? 'red.500' : 'gray.300'}
                     bg='gray.50'
                     mt={1}
+                    rows={6}
                   />
                 ) : (
                   <Input

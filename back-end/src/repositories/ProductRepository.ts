@@ -11,9 +11,13 @@ class ProductRepository {
   };
 
   updateProduct = async (productId: number, data: Partial<Product>): Promise<Product | null> => {
-    await this.productRepository.update(productId, data);
+    const currentProduct = await this.productRepository.findOne({
+      where: { id: productId },
+    });
 
-    return this.productRepository.findOne({
+    await this.productRepository.update(productId, { ...data, images: currentProduct?.images });
+
+    return await this.productRepository.findOne({
       where: { id: productId },
     });
   };

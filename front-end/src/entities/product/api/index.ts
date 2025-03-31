@@ -6,6 +6,7 @@ export async function fetchBrandProducts(name: string): Promise<IProductResponse
   try {
     const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`, {
       cache: 'force-cache',
+      next: { revalidate: 3600 },
     });
 
     return data;
@@ -18,9 +19,7 @@ export async function fetchBrandProducts(name: string): Promise<IProductResponse
 
 export async function fetchProductById(id: string): Promise<IProductResponse> {
   try {
-    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
-      cache: 'force-cache',
-    });
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`);
 
     return data;
   } catch (error) {
@@ -45,9 +44,7 @@ export async function fetchProductsOffSet(
   try {
     const prefixUrl = isServerCall ? baseURL : '';
     const response: { message: string; data: { products: IProductResponse[]; totalPages: number } } =
-      await fetchWrapper(`${prefixUrl}/api/products/offset?page=${page}&limit=${limit}`, {
-        cache: 'force-cache',
-      });
+      await fetchWrapper(`${prefixUrl}/api/products/offset?page=${page}&limit=${limit}`);
 
     return {
       success: true,
@@ -67,6 +64,7 @@ export async function fetchProductByCategoryUi(name: string): Promise<IProductRe
     const encodedName = encodeURIComponent(name);
     const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${encodedName}`, {
       cache: 'force-cache',
+      next: { revalidate: 3600 },
     });
 
     return data;
@@ -81,6 +79,7 @@ export async function fetchProductByCategory(name: string): Promise<IProductResp
   try {
     const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, {
       cache: 'force-cache',
+      next: { revalidate: 3600 },
     });
 
     return data;
@@ -109,6 +108,7 @@ export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
   try {
     const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/products/last-added`, {
       cache: 'force-cache',
+      next: { revalidate: 3600 },
     });
 
     return data;
@@ -125,6 +125,7 @@ export async function fetchSearchProducts(query: string, isServerCall?: boolean)
 
     const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`, {
       cache: 'force-cache',
+      next: { revalidate: 3600 },
     });
 
     return data;
