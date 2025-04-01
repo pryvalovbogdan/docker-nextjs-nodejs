@@ -6,7 +6,7 @@ import { Carousel, CarouselContextProvider, useCarouselContext } from 'react-car
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 import { brandData } from '@/shared/utils/data';
-import { Box, Button, Flex, Heading, IconButton, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, IconButton, Image, useBreakpointValue } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
 interface IBrandCard {
@@ -15,8 +15,9 @@ interface IBrandCard {
   src?: string;
   alt?: string;
   lng: string;
+  description?: string;
 }
-const BrandCard = ({ style, name, src, alt, lng }: IBrandCard) => {
+const BrandCard = ({ style, name, src, alt, lng, description }: IBrandCard) => {
   const router = useRouter();
   const { t } = useTranslation(lng);
 
@@ -56,18 +57,35 @@ const BrandCard = ({ style, name, src, alt, lng }: IBrandCard) => {
         <Heading size='md' color='gray.800'>
           {name}
         </Heading>
-        <Text
-          fontSize='sm'
-          color='gray.600'
-          mt={1}
-          maxHeight='3em'
-          overflow='hidden'
-          textOverflow='ellipsis'
-          display='-webkit-box'
-          style={{ WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
-        >
-          {t(name?.toLowerCase() as any)}
-        </Text>
+        <div
+          style={{
+            color: '#4B5563',
+            fontSize: '0.875rem',
+            overflow: 'hidden',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            maxHeight: '3em',
+          }}
+          dangerouslySetInnerHTML={{
+            __html: `
+               <style>
+                 .brand-description-container p { 
+                   text-indent: 20px; 
+                   margin-bottom: 10px; 
+                 }
+                 .brand-description-container b, 
+                 .brand-description-container strong { 
+                   padding-right: 5px; 
+                   padding-left: 5px; 
+                 }
+               </style>
+               <div class="brand-description-container">
+                 ${description?.slice(0, 250)}
+               </div>
+             `,
+          }}
+        />
       </Box>
     </Flex>
   );
@@ -121,27 +139,63 @@ const CustomArrows = () => {
 const CustomPaginationBtn = () => {
   const { currentPage, totalPageCount, onCurrentPage } = useCarouselContext();
 
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const MAX_VISIBLE_PAGES = isMobile ? 4 : 8;
+
+  const getPaginationRange = () => {
+    const pages: (number | string)[] = [];
+
+    if (totalPageCount <= MAX_VISIBLE_PAGES) {
+      return Array.from({ length: totalPageCount }, (_, i) => i + 1);
+    }
+
+    const sidePages = Math.floor((MAX_VISIBLE_PAGES - 2) / 2);
+    const startPage = Math.max(2, currentPage - sidePages);
+    const endPage = Math.min(totalPageCount - 1, currentPage + sidePages);
+
+    if (startPage > 2) {
+      pages.push(1, '...');
+    } else {
+      pages.push(1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    if (endPage < totalPageCount - 1) {
+      pages.push('...', totalPageCount);
+    } else {
+      pages.push(totalPageCount);
+    }
+
+    return pages;
+  };
+
+  const paginationRange = getPaginationRange();
+
   return (
     <Flex justify='center' mt={4} gap={2}>
-      {[...Array(totalPageCount)].map((_, index) => {
-        const pageNumber = index + 1;
-
-        return (
+      {paginationRange.map((page, index) =>
+        typeof page === 'number' ? (
           <Button
-            key={pageNumber}
-            onClick={() => onCurrentPage(pageNumber)}
-            bg={currentPage === pageNumber ? 'emerald.600' : 'emerald.800'}
+            key={page}
+            onClick={() => onCurrentPage(page)}
+            bg={currentPage === page ? 'emerald.600' : 'emerald.800'}
             color='white'
             _hover={{ bg: 'emerald.500' }}
-            _selected={{ bg: 'emerald.700', color: 'white' }}
             borderRadius='md'
             px={4}
             py={2}
           >
-            {pageNumber}
+            {page}
           </Button>
-        );
-      })}
+        ) : (
+          <Box key={`ellipsis-${index}`} px={2} color='gray.500'>
+            ...
+          </Box>
+        ),
+      )}
     </Flex>
   );
 };
@@ -164,7 +218,7 @@ const BrandsCarousel = ({ lng }: { lng: string }) => {
               cardWidth={300}
               marginCard={16}
               defaultActivePage={1}
-              cards={brandData.slice(0, 9).map(brand => ({ ...brand, key: brand.name }))}
+              cards={brandData.map(brand => ({ ...brand, key: brand.name }))}
               noCardsText='No brands available'
               CustomArrowBtn={<CustomArrows />}
               variant={['withoutPagination']}
