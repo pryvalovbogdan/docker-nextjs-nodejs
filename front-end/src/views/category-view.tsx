@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
+import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { Pagination } from '@/shared/ui';
 import { getInnerText } from '@/shared/utils';
 import { Box, Flex, Grid, Heading, Image, Text, VStack } from '@chakra-ui/react';
@@ -22,6 +23,7 @@ const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query:
   const router = useRouter();
 
   const decodedQuery = decodeURIComponent(query);
+  const isMobile = useIsMobile();
 
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
@@ -138,7 +140,12 @@ const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query:
             </Grid>
 
             {totalPages > 1 && (
-              <Pagination totalPages={totalPages} currentPage={currentPage} handlePageChange={setCurrentPage} />
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                handlePageChange={setCurrentPage}
+                isMobile={isMobile}
+              />
             )}
           </>
         )}

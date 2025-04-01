@@ -2,15 +2,20 @@
 
 import NextLink from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ElementType, useEffect, useRef, useState } from 'react';
+import { FaTelegramPlane, FaViber } from 'react-icons/fa';
 import { LuMenu, LuX } from 'react-icons/lu';
 
 import SearchBar from '@/features/search/search-bar/search-bar';
 import { LogoWrapper } from '@/shared/ui';
-import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { Box, Flex, Icon, IconButton, Link, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
-const Header: React.FC<{ lng: string }> = ({ lng }) => {
+const Header: React.FC<{ lng: string; officePhoneSecond: string; officePhone: string }> = ({
+  lng,
+  officePhone,
+  officePhoneSecond,
+}) => {
   const { t } = useTranslation(lng);
   const pathname = usePathname();
   const router = useRouter();
@@ -18,7 +23,6 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const links = [
-    { name: t('links.home'), url: `/${lng}`, id: 'layout' },
     { name: t('links.brands'), url: `/${lng}/brand`, id: '' },
     { name: t('links.categories'), url: `/${lng}#categories`, id: 'categories' },
     { name: t('links.contact'), url: `/${lng}/contacts`, id: '' },
@@ -73,7 +77,7 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
           <SearchBar lng={lng} />
         </Box>
 
-        <Flex flex={1} justify='space-around' display={{ base: 'none', md: 'flex' }}>
+        <Flex flex={1} justify='space-around' alignItems='center' display={{ base: 'none', md: 'flex' }}>
           {links.map(item =>
             pathname === `/${lng}` && item.id ? (
               <Text
@@ -104,6 +108,38 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
               </Link>
             ),
           )}
+
+          {officePhone && officePhoneSecond && (
+            <Flex flexDirection='column'>
+              <Flex align='center' gap={2}>
+                <Link href={`viber://chat?number=${officePhone?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                  <Icon as={FaViber as ElementType} color='white' boxSize={6} />
+                </Link>
+                <Link href={`https://t.me/${officePhone?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                  <Icon as={FaTelegramPlane as ElementType} color='white' boxSize={6} />
+                </Link>
+                <Link href={`tel:${officePhone}`} color='white' fontSize='lg' _hover={{ textDecoration: 'underline' }}>
+                  {officePhone}
+                </Link>
+              </Flex>
+              <Flex align='center' gap={2}>
+                <Link href={`viber://chat?number=${officePhoneSecond?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                  <Icon as={FaViber as ElementType} color='white' boxSize={6} />
+                </Link>
+                <Link href={`https://t.me/${officePhoneSecond?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                  <Icon as={FaTelegramPlane as ElementType} color='white' boxSize={6} />
+                </Link>
+                <Link
+                  href={`tel:${officePhoneSecond}`}
+                  color='white'
+                  fontSize='lg'
+                  _hover={{ textDecoration: 'underline' }}
+                >
+                  {officePhoneSecond}
+                </Link>
+              </Flex>
+            </Flex>
+          )}
         </Flex>
 
         <IconButton
@@ -118,7 +154,48 @@ const Header: React.FC<{ lng: string }> = ({ lng }) => {
           {isMenuOpen ? <LuX size={24} /> : <LuMenu size={24} />}
         </IconButton>
       </Flex>
-
+      {officePhone && officePhoneSecond && (
+        <Flex
+          display={{ base: 'flex', md: 'none' }}
+          maxWidth='100%'
+          flexDirection='column'
+          margin='0 10px'
+          justifyContent='center'
+          alignItems='center'
+        >
+          <Flex align='center' gap={2}>
+            <Flex align='center' gap={2}>
+              <Link href={`viber://chat?number=${officePhone?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                <Icon as={FaViber as ElementType} color='white' boxSize={6} />
+              </Link>
+              <Link href={`https://t.me/${officePhone?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                <Icon as={FaTelegramPlane as ElementType} color='white' boxSize={6} />
+              </Link>
+            </Flex>
+            <Link href={`tel:${officePhone}`} color='white' fontSize='lg' _hover={{ textDecoration: 'underline' }}>
+              {officePhone}
+            </Link>
+          </Flex>
+          <Flex align='center' gap={2}>
+            <Flex align='center' gap={2}>
+              <Link href={`viber://chat?number=${officePhoneSecond?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                <Icon as={FaViber as ElementType} color='white' boxSize={6} />
+              </Link>
+              <Link href={`https://t.me/${officePhoneSecond?.replace(/[^+\d]/g, '')}`} target='_blank'>
+                <Icon as={FaTelegramPlane as ElementType} color='white' boxSize={6} />
+              </Link>
+            </Flex>
+            <Link
+              href={`tel:${officePhoneSecond}`}
+              color='white'
+              fontSize='lg'
+              _hover={{ textDecoration: 'underline' }}
+            >
+              {officePhoneSecond}
+            </Link>
+          </Flex>
+        </Flex>
+      )}
       {isMenuOpen && (
         <Box
           ref={menuRef}

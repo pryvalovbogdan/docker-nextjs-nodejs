@@ -432,16 +432,45 @@ export default function Catalog({
             <Spinner size='xl' color='#036753' />
           </Flex>
         ) : (
-          <Grid
-            templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
-            gap={6}
-            w='100%'
-            alignItems='stretch'
-            justifyContent='center'
-            gridAutoRows='min-content'
-          >
-            {renderProducts()}
-          </Grid>
+          <Flex flexDirection='column' alignItems='center'>
+            {selectedCategory !== 'default' && (
+              <Flex
+                w='fit-content'
+                mb={10}
+                px={4}
+                py={2}
+                borderRadius='lg'
+                bg='white'
+                boxShadow='sm'
+                alignItems='center'
+                justifyContent='center'
+                gap={2}
+                flexWrap='wrap'
+                fontSize={{ base: 'md', sm: 'lg', md: 'xl' }}
+                fontWeight='bold'
+                textAlign='center'
+              >
+                <Text color='#036753'>{selectedCategory}</Text>
+                {selectedSubCategory && (
+                  <>
+                    <Text color='black'>/</Text>
+                    <Text color='black'>{selectedSubCategory}</Text>
+                  </>
+                )}
+              </Flex>
+            )}
+
+            <Grid
+              templateColumns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
+              gap={6}
+              w='100%'
+              alignItems='stretch'
+              justifyContent='center'
+              gridAutoRows='min-content'
+            >
+              {renderProducts()}
+            </Grid>
+          </Flex>
         )}
 
         {filteredProducts.length > itemsPerScreen && (
