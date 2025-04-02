@@ -94,7 +94,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
             _focus={{ outline: 'none' }}
           />
           <Box ml={2}>
-            <Kbd color='gray.600' fontSize='xs'>
+            <Kbd color='gray.600' fontSize='xs' onClick={handleSearch}>
               ⌘K
             </Kbd>
           </Box>
