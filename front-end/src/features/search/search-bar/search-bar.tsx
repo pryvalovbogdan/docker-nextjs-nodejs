@@ -43,7 +43,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery, fetchResults]);
 
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (event: React.FormEvent<HTMLElement>) => {
     event.preventDefault();
 
     if (searchQuery.trim()) {
@@ -93,7 +93,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
             color='gray.800'
             _focus={{ outline: 'none' }}
           />
-          <Box ml={2}>
+          <Box ml={2} onClick={handleSearch}>
             <Kbd color='gray.600' fontSize='xs'>
               ⌘K
             </Kbd>

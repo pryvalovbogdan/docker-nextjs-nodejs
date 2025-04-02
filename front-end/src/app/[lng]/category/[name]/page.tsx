@@ -27,5 +27,14 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
 
   const products = await fetchProductByCategory(decodedName);
 
-  return <CategoryView products={products} lng={lng} query={decodedName} />;
+  return (
+    <CategoryView
+      products={products}
+      lng={lng}
+      query={decodedName}
+      officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
+      officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
+      officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+    />
+  );
 }

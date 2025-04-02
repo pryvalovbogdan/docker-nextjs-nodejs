@@ -12,11 +12,14 @@ import { Layout } from '@widgets/layout';
 
 const DEBOUNCE_DELAY = 500;
 
-const SearchView: React.FC<{ lng: string; query: string; products: IProductResponse[] }> = ({
-  lng,
-  query,
-  products,
-}) => {
+const SearchView: React.FC<{
+  lng: string;
+  query: string;
+  products: IProductResponse[];
+  officePhoneSecond: string;
+  officePhone: string;
+  officeEmail: string;
+}> = ({ lng, query, products, officePhoneSecond, officeEmail, officePhone }) => {
   const { t } = useTranslation(lng);
   const [searchQuery, setSearchQuery] = useState(decodeURIComponent(query));
   const [results, setResults] = useState<IProductResponse[]>(products);
@@ -51,7 +54,7 @@ const SearchView: React.FC<{ lng: string; query: string; products: IProductRespo
   }, [debouncedQuery]);
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail} officePhone={officePhone}>
       <Box maxW='container.md' mx='auto' my={8} px={4}>
         <Text fontSize='2xl' fontWeight='bold' textAlign='center' color='gray.800'>
           {t('search.resultsFor')}{' '}

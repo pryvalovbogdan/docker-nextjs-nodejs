@@ -14,11 +14,14 @@ import { Layout } from '@widgets/layout';
 
 const ITEMS_PER_PAGE = 9;
 
-const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query: string }> = ({
-  lng,
-  products,
-  query,
-}) => {
+const CategoryView: React.FC<{
+  lng: string;
+  products: IProductResponse[];
+  query: string;
+  officePhoneSecond: string;
+  officePhone: string;
+  officeEmail: string;
+}> = ({ lng, products, query, officePhoneSecond, officePhone, officeEmail }) => {
   const { t } = useTranslation(lng);
   const router = useRouter();
 
@@ -30,7 +33,7 @@ const CategoryView: React.FC<{ lng: string; products: IProductResponse[]; query:
   const displayedProducts = products.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
-    <Layout lng={lng}>
+    <Layout lng={lng} officePhoneSecond={officePhoneSecond} officePhone={officePhone} officeEmail={officeEmail}>
       <Box maxW='6xl' mx='auto' py={8} px={6}>
         <Flex align='center' justifyContent='center' w='100%'>
           <Heading
