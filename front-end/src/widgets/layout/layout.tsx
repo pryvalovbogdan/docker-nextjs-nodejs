@@ -15,7 +15,7 @@ const Layout: React.FC<{
 }> = ({ children, lng, officePhone, officePhoneSecond, officeEmail }) => {
   return (
     <Box minH='100vh' display='flex' flexDirection='column' color='black' bg='#F7FCFD' id='layout'>
-      <Header lng={lng} />
+      <Header lng={lng} officePhoneSecond={officePhoneSecond || ''} officePhone={officePhone || ''} />
       <Box as='main' flex='1'>
         {children}
       </Box>

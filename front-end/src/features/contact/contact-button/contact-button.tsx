@@ -107,7 +107,7 @@ const ContactButton = ({ lng }: { lng: string }) => {
                 width='100%'
                 height='100%'
                 borderRadius='full'
-                bg='teal.700'
+                bg='red.700'
                 opacity={0.3}
                 zIndex={-1}
                 animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0, 0.3] }}
@@ -118,7 +118,7 @@ const ContactButton = ({ lng }: { lng: string }) => {
                 width='80%'
                 height='80%'
                 borderRadius='full'
-                bg='teal.600'
+                bg='red.500'
                 opacity={0.5}
                 zIndex={-1}
                 animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }}
@@ -127,7 +127,7 @@ const ContactButton = ({ lng }: { lng: string }) => {
               <IconButton
                 aria-label='Contact Us'
                 color='white'
-                bg='teal.700'
+                bg='red.600'
                 _hover={{ bg: 'teal.800' }}
                 _active={{ bg: 'teal.900', transform: 'scale(0.9)' }}
                 borderRadius='full'
@@ -233,7 +233,7 @@ const ContactButton = ({ lng }: { lng: string }) => {
           </DialogBody>
 
           <DialogFooter>
-            <Button onClick={handleSubmit} loading={isLoading} bg='#036753' color='white'>
+            <Button onClick={handleSubmit} loading={isLoading} bg='#ff5555' color='white'>
               {t('submit')}
             </Button>
             <DialogCloseTrigger asChild>

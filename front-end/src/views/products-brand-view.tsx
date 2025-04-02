@@ -30,7 +30,7 @@ const ProductsBrandView = ({
   officeEmail,
 }: BrandProductsProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const isMobile = useIsMobile(768);
+  const isMobile = useIsMobile();
   const { t } = useTranslation(lng);
 
   const itemsPerPage = isMobile ? 2 : 8;
@@ -97,7 +97,12 @@ const ProductsBrandView = ({
         {totalPages > 1 &&
           ((
             <Box mt={products.length > 8 ? 16 : 8} mx={15}>
-              <Pagination totalPages={totalPages} currentPage={currentPage} handlePageChange={handlePageChange} />
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+                isMobile={isMobile}
+              />
             </Box>
           ) as JSX.Element)}
       </Box>
