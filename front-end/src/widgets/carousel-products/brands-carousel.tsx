@@ -19,7 +19,6 @@ interface IBrandCard {
 }
 const BrandCard = ({ style, name, src, alt, lng, description }: IBrandCard) => {
   const router = useRouter();
-  const { t } = useTranslation(lng);
 
   const handleRedirect = () => {
     router.push(`/${lng}/brand/${name}`);
@@ -141,6 +140,8 @@ const CustomPaginationBtn = () => {
 
   const isMobile = useBreakpointValue({ base: true, md: false });
   const MAX_VISIBLE_PAGES = isMobile ? 4 : 8;
+
+  if (!currentPage || !totalPageCount) return null;
 
   const getPaginationRange = () => {
     const pages: (number | string)[] = [];
