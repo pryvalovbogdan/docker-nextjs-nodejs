@@ -43,7 +43,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery, fetchResults]);
 
-  const handleSearch = (event: React.FormEvent<any>) => {
+  const handleSearch = (event: React.FormEvent<HTMLElement>) => {
     event.preventDefault();
 
     if (searchQuery.trim()) {
