@@ -1,3 +1,5 @@
+import { connection } from 'next/server';
+
 import { BrandsView } from '@/views';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
 
@@ -11,6 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
 
 export default async function Page({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
+
+  await connection();
 
   return (
     <BrandsView
