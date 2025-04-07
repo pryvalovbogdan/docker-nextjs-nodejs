@@ -181,10 +181,17 @@ const CustomPaginationBtn = () => {
         typeof page === 'number' ? (
           <Button
             key={page}
-            onClick={() => onCurrentPage(page)}
-            bg={currentPage === page ? 'emerald.600' : 'emerald.800'}
-            color='white'
-            _hover={{ bg: 'emerald.500' }}
+            onClick={() => onCurrentPage(page as number)}
+            bg={currentPage === page ? 'white' : 'emerald.800'}
+            color={currentPage === page ? 'emerald.700' : 'white'}
+            fontWeight='bold'
+            border={currentPage === page ? '2px solid' : 'none'}
+            borderColor={currentPage === page ? 'emerald.700' : 'transparent'}
+            boxShadow={currentPage === page ? 'md' : 'none'}
+            _hover={{
+              bg: currentPage === page ? 'white' : 'emerald.600',
+              color: currentPage === page ? 'emerald.800' : 'white',
+            }}
             borderRadius='md'
             px={4}
             py={2}

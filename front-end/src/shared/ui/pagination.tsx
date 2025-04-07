@@ -82,11 +82,17 @@ const Pagination = ({ totalPages, currentPage, handlePageChange, isMobile }: IPa
         typeof page === 'number' ? (
           <Button
             key={page}
-            onClick={() => handlePageChange(page)}
-            bg={currentPage === page ? 'emerald.700' : 'emerald.800'}
-            color='white'
-            _hover={{ bg: 'emerald.600' }}
-            _selected={{ bg: 'emerald.700', color: 'white' }}
+            onClick={() => handlePageChange(page as number)}
+            bg={currentPage === page ? 'white' : 'emerald.800'}
+            color={currentPage === page ? 'emerald.700' : 'white'}
+            border={currentPage === page ? '2px solid' : 'none'}
+            borderColor={currentPage === page ? 'emerald.700' : 'transparent'}
+            boxShadow={currentPage === page ? 'md' : 'none'}
+            fontWeight='700'
+            _hover={{
+              bg: currentPage === page ? 'white' : 'emerald.600',
+              color: currentPage === page ? 'emerald.800' : 'white',
+            }}
           >
             {page}
           </Button>
