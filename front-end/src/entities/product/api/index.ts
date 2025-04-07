@@ -17,7 +17,21 @@ export async function fetchBrandProducts(name: string): Promise<IProductResponse
 export async function fetchProductById(id: string): Promise<IProductResponse> {
   try {
     const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
-      next: { revalidate: 0 },
+      next: { revalidate: 60 },
+    });
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by id:', error);
+
+    return { error: true } as IProductResponse;
+  }
+}
+
+export async function fetchProductByIdCache(id: string): Promise<IProductResponse> {
+  try {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
+      cache: 'force-cache',
     });
 
     return data;
