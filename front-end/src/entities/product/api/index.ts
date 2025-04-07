@@ -4,10 +4,7 @@ import { baseURL } from '@/shared/api/consts';
 
 export async function fetchBrandProducts(name: string): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`);
 
     return data;
   } catch (error) {
@@ -62,10 +59,7 @@ export async function fetchProductsOffSet(
 export async function fetchProductByCategoryUi(name: string): Promise<IProductResponse[]> {
   try {
     const encodedName = encodeURIComponent(name);
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${encodedName}`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${encodedName}`);
 
     return data;
   } catch (error) {
@@ -77,10 +71,7 @@ export async function fetchProductByCategoryUi(name: string): Promise<IProductRe
 
 export async function fetchProductByCategory(name: string): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`);
 
     return data;
   } catch (error) {
@@ -92,9 +83,7 @@ export async function fetchProductByCategory(name: string): Promise<IProductResp
 
 export async function fetchProductBySubCategory(name: string): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/subcategories/${name}`, {
-      cache: 'force-cache',
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/subcategories/${name}`);
 
     return data;
   } catch (error) {
@@ -106,10 +95,7 @@ export async function fetchProductBySubCategory(name: string): Promise<IProductR
 
 export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/products/last-added`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/products/last-added`);
 
     return data;
   } catch (error) {
@@ -123,10 +109,7 @@ export async function fetchSearchProducts(query: string, isServerCall?: boolean)
   try {
     const prefixUrl = isServerCall ? baseURL : '';
 
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`, {
-      cache: 'force-cache',
-      next: { revalidate: 3600 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`);
 
     return data;
   } catch (error) {

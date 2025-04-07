@@ -26,7 +26,6 @@ export async function fetchOrders(token: string, page: number = 1, limit: number
   try {
     const response: OrdersApiResponse = await fetchWrapper(`/api/admin/orders?page=${page}&limit=${limit}`, {
       headers: { Authorization: token },
-      cache: 'force-cache',
     });
 
     return {

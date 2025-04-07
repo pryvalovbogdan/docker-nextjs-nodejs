@@ -5,9 +5,7 @@ import { baseURL } from '@/shared/api/consts';
 export async function fetchCategories(isClient?: boolean): Promise<ICategoryResponse[]> {
   try {
     const prefix = !isClient ? baseURL : '';
-    const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${prefix}/api/subcategories/`, {
-      cache: 'force-cache',
-    });
+    const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${prefix}/api/subcategories/`);
 
     return data;
   } catch (error) {
