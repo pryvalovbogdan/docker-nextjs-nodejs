@@ -4,7 +4,9 @@ import { baseURL } from '@/shared/api/consts';
 
 export async function fetchBrandProducts(name: string): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/brand/${name}`, {
+      next: { revalidate: 60 },
+    });
 
     return data;
   } catch (error) {
@@ -125,7 +127,9 @@ export async function fetchSearchProducts(query: string, isServerCall?: boolean)
   try {
     const prefixUrl = isServerCall ? baseURL : '';
 
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`, {
+      next: { revalidate: 60 },
+    });
 
     return data;
   } catch (error) {
