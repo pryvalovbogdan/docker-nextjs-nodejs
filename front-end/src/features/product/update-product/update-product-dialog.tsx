@@ -121,9 +121,9 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         if (key === 'category') {
-          formDataToSend.append(key, JSON.stringify({ name: value.trim() }));
+          formDataToSend.append(key, JSON.stringify({ name: value }));
         } else if (key === 'subcategory') {
-          formDataToSend.append(key, JSON.stringify({ name: value.trim() }));
+          formDataToSend.append(key, JSON.stringify({ name: value }));
         } else {
           formDataToSend.append(key, String(value));
         }
