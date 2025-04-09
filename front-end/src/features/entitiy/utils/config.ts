@@ -34,7 +34,7 @@ export const addEntityDashboardFields: Record<
     { name: 'characteristics', type: 'textarea', translateKey: 'columns.characteristics' },
     { name: 'brand', translateKey: 'columns.brand' },
     { name: 'category', required: true, translateKey: 'columns.category' },
-    { name: 'subcategory', translateKey: 'columns.subcategory' },
+    { name: 'subCategory', translateKey: 'columns.subcategory' },
     { name: 'country', translateKey: 'columns.country' },
   ],
   admins: [

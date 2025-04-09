@@ -87,9 +87,12 @@ export async function fetchProductByCategoryUi(name: string): Promise<IProductRe
   }
 }
 
-export async function fetchProductByCategory(name: string): Promise<IProductResponse[]> {
+export async function fetchProductByCategory(
+  name: string,
+  props?: { next: { revalidate: number } },
+): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, props);
 
     return data;
   } catch (error) {

@@ -28,7 +28,7 @@ class ProductController {
       }
 
       const category = JSON.parse(req.body.category);
-      const subCategory = req.body.subcategory ? JSON.parse(req.body.subcategory) : null;
+      const subCategory = req.body.subCategory ? JSON.parse(req.body.subCategory) : null;
 
       const result = await this.service.addProduct({
         ...req.body,
@@ -53,7 +53,7 @@ class ProductController {
     const { id } = req.params;
 
     const category = JSON.parse(req.body.category);
-    const subCategory = req.body.subcategory ? JSON.parse(req.body.subcategory) : null;
+    const subCategory = req.body.subCategory ? JSON.parse(req.body.subCategory) : null;
 
     const product = {
       ...req.body,

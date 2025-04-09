@@ -25,7 +25,9 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
 
   const decodedName = decodeURIComponent(name);
 
-  const products = await fetchProductByCategory(decodedName);
+  const products = await fetchProductByCategory(decodedName, {
+    next: { revalidate: 60 },
+  });
 
   return (
     <CategoryView

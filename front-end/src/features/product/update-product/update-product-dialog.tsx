@@ -114,15 +114,11 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
 
     const formDataToSend = new FormData();
 
-    if (!formData.subcategory?.length) {
-      delete formData.subcategory;
-    }
-
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         if (key === 'category') {
           formDataToSend.append(key, JSON.stringify({ name: value }));
-        } else if (key === 'subcategory') {
+        } else if (key === 'subCategory') {
           formDataToSend.append(key, JSON.stringify({ name: value }));
         } else {
           formDataToSend.append(key, String(value));
@@ -161,7 +157,7 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
                   {type === 'textarea' ? (
                     <Textarea
                       name={name}
-                      value={formData[name] || mappedData?.[name] || ''}
+                      value={formData[name] || ''}
                       onChange={handleChange}
                       borderColor={errors[name] ? 'red.500' : 'gray.300'}
                       bg='gray.50'
@@ -172,7 +168,7 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
                     <Input
                       name={name}
                       type={type || 'text'}
-                      value={formData[name] || mappedData?.[name] || ''}
+                      value={formData[name] || ''}
                       onChange={handleChange}
                       borderColor={errors[name] ? 'red.500' : 'gray.300'}
                       bg='gray.50'

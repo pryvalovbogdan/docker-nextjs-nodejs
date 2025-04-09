@@ -125,7 +125,7 @@ const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({
       if (value !== undefined && value !== null) {
         if (key === 'category') {
           formDataToSend.append(key, JSON.stringify({ name: value }));
-        } else if (key === 'subcategory') {
+        } else if (key === 'subCategory') {
           formDataToSend.append(key, JSON.stringify({ name: value }));
         } else {
           formDataToSend.append(key, String(value));
