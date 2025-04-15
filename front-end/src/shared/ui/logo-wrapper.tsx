@@ -9,7 +9,7 @@ const logoFont = localFont({
 const LogoWrapper = ({ onClick }: { onClick?: () => void }) => {
   return (
     <Flex alignItems='center' justifyContent='center' cursor='pointer' onClick={onClick}>
-      <Image src='/logo.svg' alt='Madix' h='51px' w='51px' color='red' />
+      <Image src='/logo.png' alt='Madix' h='51px' w='51px' color='red' />
       <Text
         fontSize={{ base: '4xl', md: '4xl' }}
         fontWeight='bold'
