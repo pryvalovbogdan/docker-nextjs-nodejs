@@ -2,6 +2,7 @@
 
 import { TFunction } from 'i18next';
 import React, { useState } from 'react';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 
 import { updateProduct } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
@@ -14,7 +15,7 @@ import {
   DialogRoot,
 } from '@/shared/ui/dialog';
 import { toaster } from '@/shared/ui/toaster';
-import { Box, Button, Flex, Heading, Input, Text, Textarea, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, IconButton, Image, Input, Text, Textarea, VStack } from '@chakra-ui/react';
 import { PaginatedData, TabKey } from '@features/entitiy';
 import { addEntityDashboardFields } from '@features/entitiy/utils/config';
 
@@ -46,6 +47,7 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   const [formData, setFormData] = useState<Record<string, any>>(mappedData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const handleUpdateProduct = async (formData: any) => {
     const token = sessionStorage.getItem('token');
@@ -126,6 +128,8 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
       }
     });
 
+    selectedImages.forEach(image => formDataToSend.append('image', image));
+
     setIsSubmitting(true);
     await handleUpdateProduct(formDataToSend);
     setIsSubmitting(false);
@@ -135,6 +139,16 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
     setFormData({});
     setErrors({});
     setIsDialogOpen(false);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedImages([...selectedImages, ...Array.from(e.target.files)]);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
 
   return (
@@ -184,6 +198,36 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
               );
             })}
           </VStack>
+          <Box>
+            <Text fontSize='sm' fontWeight='bold' color='gray.800'>
+              {t('images')}
+            </Text>
+            <Input type='file' multiple accept='image/*' onChange={handleImageUpload} />
+            {errors.images && (
+              <Text color='red.500' fontSize='sm'>
+                {errors.images}
+              </Text>
+            )}
+            <Flex mt={2} gap={2} flexWrap='wrap'>
+              {selectedImages.map((file, index) => (
+                <Box key={index} position='relative' border='1px solid gray' borderRadius='md' p={1}>
+                  <Image src={URL.createObjectURL(file)} alt='preview' boxSize='80px' objectFit='cover' />
+                  <IconButton
+                    size='xs'
+                    aria-label='Remove image'
+                    color='white'
+                    bg='emerald.800'
+                    position='absolute'
+                    top='-6px'
+                    right='-6px'
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    <AiOutlineCloseCircle />
+                  </IconButton>
+                </Box>
+              ))}
+            </Flex>
+          </Box>
         </DialogBody>
         <DialogFooter>
           <Flex justify='flex-end' w='100%'>

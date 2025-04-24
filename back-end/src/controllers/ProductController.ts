@@ -55,6 +55,21 @@ class ProductController {
     const category = JSON.parse(req.body.category);
     const subCategory = req.body.subCategory ? JSON.parse(req.body.subCategory) : null;
 
+    const files = req.files as File[];
+
+    const imageKeys: string[] = [];
+
+    if (files?.length) {
+      for (let file of files) {
+        const imageKey = randomImageName();
+
+        await this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
+        imageKeys.push(process.env.CLOUDFRONT_URL! + imageKey);
+      }
+
+      req.body.images = imageKeys;
+    }
+
     const product = {
       ...req.body,
       category,
