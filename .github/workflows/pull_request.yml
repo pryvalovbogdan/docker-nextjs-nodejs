@@ -73,6 +73,9 @@ jobs:
         working-directory: ./front-end
 
       - name: Build Frontend
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+          DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
         run: yarn build
         working-directory: ./front-end
 
