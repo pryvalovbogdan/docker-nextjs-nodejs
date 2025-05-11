@@ -12,18 +12,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.BACKEND_URL;
   const domain = process.env.DOMAIN_URL;
 
+  const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
+    url: `${domain}/uk/${path}`,
+    lastModified: new Date().toISOString(),
+    priority: 1,
+    changeFrequency: 'monthly',
+  })) as MetadataRoute.Sitemap;
+
   try {
+    console.log('baseUrl', baseUrl, domain);
+
     const [categories, products] = await Promise.all([
       fetchWrapper<{ data: any }>(`${baseUrl}/api/categories`),
       fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
     ]);
 
-    const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
-      url: `${domain}/uk/${path}`,
-      lastModified: new Date().toISOString(),
-      priority: 1,
-      changeFrequency: 'monthly',
-    }));
+    console.log('categories', categories, products);
 
     const categoryRoutes = categories.data
       .filter((name: string | null): name is string => Boolean(name))
@@ -41,10 +45,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
     }));
 
+    console.log('categoryRoutes', categoryRoutes);
+
     return [...staticRoutes, ...categoryRoutes, ...productRoutes];
   } catch (e) {
     console.error('Error generating sitemap:', e);
 
-    return [];
+    return [...staticRoutes];
   }
 }
