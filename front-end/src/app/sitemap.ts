@@ -2,13 +2,19 @@ import { MetadataRoute } from 'next';
 
 import { fetchWrapper } from '@/shared/api/client';
 
+type Product = {
+  id: number;
+  title: string;
+  images?: { url: string }[];
+};
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.BACKEND_URL;
   const domain = process.env.DOMAIN_URL;
 
   const [categories, products] = await Promise.all([
-    fetchWrapper(`${baseUrl}/api/categories`),
-    fetchWrapper(`${baseUrl}/api/products`),
+    fetchWrapper<{ data: any }>(`${baseUrl}/api/categories`),
+    fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
   ]);
 
   const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
