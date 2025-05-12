@@ -9,7 +9,7 @@ type Product = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+  const baseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://server:8080';
   const domain = process.env.DOMAIN_URL || process.env.NEXT_PUBLIC_DOMAIN_URL || 'https://medix.com.ua';
 
   const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
