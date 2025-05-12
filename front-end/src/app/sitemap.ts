@@ -9,7 +9,7 @@ type Product = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/';
+  const baseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
   const domain = process.env.DOMAIN_URL || process.env.NEXT_PUBLIC_DOMAIN_URL || 'https://medix.com.ua';
 
   const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
@@ -51,14 +51,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (e) {
     console.error('Error generating sitemap:', e);
 
-    return [
-      ...staticRoutes,
-      {
-        url: `Error generating sitemap:${e}`,
-        lastModified: new Date().toISOString(),
-        priority: 1,
-        changeFrequency: 'monthly',
-      },
-    ];
+    staticRoutes.push({
+      url: `Error generating sitemap:`,
+      lastModified: new Date().toISOString(),
+      priority: 1,
+      changeFrequency: 'monthly',
+    });
+
+    return [...staticRoutes];
   }
 }
