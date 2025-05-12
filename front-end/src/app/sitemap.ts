@@ -23,8 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.log('baseUrl', baseUrl, domain);
 
     const [categories, products] = await Promise.all([
-      fetchWrapper<{ data: any }>(`${baseUrl}/api/categories`),
-      fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
+      fetchWrapper<{ data: any }>(`/api/categories`),
+      fetchWrapper<{ data: Product[] }>(`/api/products`),
     ]);
 
     console.log('categories', categories, products);
@@ -52,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error generating sitemap:', e);
 
     staticRoutes.push({
-      url: `Error generating sitemap:`,
+      url: `Error generating sitemap: ${e}`,
       lastModified: new Date().toISOString(),
       priority: 1,
       changeFrequency: 'monthly',
