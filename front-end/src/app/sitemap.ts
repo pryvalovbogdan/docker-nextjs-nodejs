@@ -23,8 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.log('baseUrl', baseUrl, domain);
 
     const [categories, products] = await Promise.all([
-      fetchWrapper<{ data: any }>(`/api/categories`),
-      fetchWrapper<{ data: Product[] }>(`/api/products`),
+      fetchWrapper<{ data: any }>(`${baseUrl}/api/categories`),
+      fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
     ]);
 
     console.log('categories', categories, products);
