@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { contactLimiter, orderLimiter } from '../configs/rateLimit.config';
-import { NewsController, OrderController, ProductController } from '../controllers';
+import { HealthController, NewsController, OrderController, ProductController } from '../controllers';
 import CategoryController from '../controllers/CategoryController';
 import { validateProps } from '../utils/validation';
 
@@ -12,7 +12,9 @@ const newsController = new NewsController();
 const orderController = new OrderController();
 const productController = new ProductController();
 const categoryController = new CategoryController();
+const healthController = new HealthController();
 
+router.get('/health', healthController.check);
 router.get('/products', productController.getProducts);
 router.get('/products/offset', productController.getProductsOffset);
 router.get('/products/last-added', productController.getLastAddedProducts);

@@ -29,11 +29,17 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 2
 
   client:
     build:
       context: ./front-end
       dockerfile: ${DOCKERFILE:-Dockerfile.dev}
+      network: host
     env_file: .env
     environment:
       - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
@@ -41,9 +47,10 @@ services:
       - ./front-end:/app
     ports:
       - "3000:3000"
-    depends_on:
-      - server
     restart: always
+    depends_on:
+      server:
+        condition: service_healthy
 
   nginx:
     build:
