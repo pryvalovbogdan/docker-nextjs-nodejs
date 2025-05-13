@@ -9,8 +9,8 @@ type Product = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || 'http://13.60.173.79';
-  const domain = process.env.DOMAIN_URL || process.env.NEXT_PUBLIC_DOMAIN_URL || 'https://medix.com.ua';
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const domain = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
   const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
     url: `${domain}/uk/${path}${baseUrl}`,
