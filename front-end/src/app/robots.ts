@@ -1,6 +1,9 @@
 import { MetadataRoute } from 'next';
+import { connection } from 'next/server';
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  await connection();
+
   return {
     rules: [
       {
@@ -9,6 +12,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin'],
       },
     ],
-    sitemap: `${process.env.DOMAIN_URL}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/sitemap.xml`,
   };
 }

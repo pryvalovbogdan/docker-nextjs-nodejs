@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const domain = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
   const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
-    url: `${domain}/uk/${path}${baseUrl}`,
+    url: `${domain}/uk/${path}`,
     lastModified: new Date().toISOString(),
     priority: 1,
     changeFrequency: 'monthly',
