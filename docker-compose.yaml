@@ -39,7 +39,6 @@ services:
     build:
       context: ./front-end
       dockerfile: ${DOCKERFILE:-Dockerfile.dev}
-      network: host
     env_file: .env
     environment:
       - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
