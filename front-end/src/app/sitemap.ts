@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { connection } from 'next/server';
 
 import { fetchWrapper } from '@/shared/api/client';
 
@@ -9,6 +10,8 @@ type Product = {
 };
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await connection();
+
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const domain = process.env.NEXT_PUBLIC_DOMAIN_URL;
 
@@ -20,14 +23,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })) as MetadataRoute.Sitemap;
 
   try {
-    console.log('baseUrl', baseUrl, domain);
-
     const [categories, products] = await Promise.all([
       fetchWrapper<{ data: any }>(`${baseUrl}/api/categories`),
       fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
     ]);
-
-    console.log('categories', categories, products);
 
     const categoryRoutes = categories.data
       .filter((name: string | null): name is string => Boolean(name))
@@ -44,8 +43,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
       changeFrequency: 'weekly',
     }));
-
-    console.log('categoryRoutes', categoryRoutes);
 
     return [...staticRoutes, ...categoryRoutes, ...productRoutes];
   } catch (e) {
