@@ -64,14 +64,14 @@ export default function Catalog({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showMenu]);
 
-  const selectCategory = async (name: string, subCategories?: { id: number; name: string }[]) => {
+  const selectCategory = async (name: string, subCategories?: { id: number; name: string; path: string }[]) => {
     try {
       setSelectedCategory(name);
       setSelectedSubCategory('');
       setCurrentPage(1);
 
       if (subCategories?.length) {
-        setSelectedSubCategory(subCategories[0].name);
+        setSelectedSubCategory(subCategories[0].path);
       }
 
       if (productState[name]?.length) return;
@@ -95,7 +95,7 @@ export default function Catalog({
   const filteredProducts =
     selectedCategory !== 'default' && Array.isArray(currentCategoryData) && currentCategoryData.length
       ? currentCategoryData.filter(product =>
-          selectedSubCategory ? product.subCategory?.name === selectedSubCategory : true,
+          selectedSubCategory ? product.subCategory?.path === selectedSubCategory : true,
         )
       : [];
 
@@ -160,7 +160,7 @@ export default function Catalog({
     const page = searchParams.get('gallerypage');
 
     if (category) {
-      const subCategory = categories.find(item => item.name === category)?.subCategories?.[0]?.name;
+      const subCategory = categories.find(item => item.name === category)?.subCategories?.[0]?.path;
 
       selectCategory(category);
 
@@ -348,10 +348,10 @@ export default function Catalog({
         <Stack gap='4' w='full'>
           <AccordionRoot variant='plain' collapsible value={openAccordion}>
             {categories.map(category => (
-              <AccordionItem key={category.name} value={category.name} w='full'>
+              <AccordionItem key={category.path} value={category.path} w='full'>
                 <AccordionItemTrigger
-                  bg={selectedCategory === category.name ? '#036753' : 'gray.100'}
-                  color={selectedCategory === category.name ? 'white' : 'gray.700'}
+                  bg={selectedCategory === category.path ? '#036753' : 'gray.100'}
+                  color={selectedCategory === category.path ? 'white' : 'gray.700'}
                   _hover={{ bg: '#045D45', color: 'white' }}
                   px={4}
                   py={3}
@@ -376,8 +376,8 @@ export default function Catalog({
                         clearParams.push('subcategory');
                       }
 
-                      setShadowParams('category', category.name, clearParams);
-                      setOpenAccordion([category.name]);
+                      setShadowParams('category', category.path, clearParams);
+                      setOpenAccordion([category.path]);
                     }
                   }}
                 >
@@ -392,21 +392,22 @@ export default function Catalog({
                 </AccordionItemTrigger>
                 <AccordionItemContent p={0}>
                   <VStack align='start' w='full'>
-                    {openAccordion?.includes(category.name) &&
+                    {openAccordion?.includes(category.path) &&
                       category.subCategories?.map(sub => (
                         <Button
-                          key={sub.name}
+                          key={sub.path}
                           variant='ghost'
-                          fontWeight={selectedSubCategory === sub.name ? 'bold' : 'normal'}
-                          color={selectedSubCategory === sub.name ? '#036753' : 'gray.700'}
+                          fontWeight={selectedSubCategory === sub.path ? 'bold' : 'normal'}
+                          color={selectedSubCategory === sub.path ? '#036753' : 'gray.700'}
                           justifyContent='flex-start'
                           w='250px'
                           _hover={{ bg: 'gray.200' }}
                           onClick={() => {
-                            setSelectedSubCategory(sub.name);
+                            console.warn('sub', sub.path);
+                            setSelectedSubCategory(sub.path);
                             setCurrentPage(1);
 
-                            setShadowParams('subcategory', sub.name, ['gallerypage']);
+                            setShadowParams('subcategory', sub.path, ['gallerypage']);
 
                             if (isMobile) {
                               setShowMenu(false);

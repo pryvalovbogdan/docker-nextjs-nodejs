@@ -29,7 +29,7 @@ export interface IProductResponse {
   brand?: string;
   country?: string;
   price?: number;
-  category: { id: number; name: string };
-  subCategory?: { id: number; name: string };
+  category: { id: number; name: string; path: string };
+  subCategory?: { id: number; name: string; path: string };
   error?: boolean;
 }
