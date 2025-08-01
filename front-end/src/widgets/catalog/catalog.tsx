@@ -361,7 +361,7 @@ export default function Catalog({
                   onClick={() => {
                     const clearParams = ['gallerypage', 'subcategory'];
 
-                    if (selectedCategory === category.name) {
+                    if (selectedCategory === category.path) {
                       clearParams.push('category', 'subcategory');
                       setShadowParams('', '', clearParams);
                       setCurrentPage(1);
@@ -370,7 +370,7 @@ export default function Catalog({
 
                       setOpenAccordion([]);
                     } else {
-                      selectCategory(category.name, category.subCategories);
+                      selectCategory(category.path, category.subCategories);
 
                       if (!category.subCategories?.length) {
                         clearParams.push('subcategory');
