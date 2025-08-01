@@ -11,6 +11,9 @@ export class SubCategory {
   @Column({ type: 'varchar', length: 255, unique: true })
   name: string;
 
+  @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
+  path: string;
+
   @ManyToOne(() => Category, category => category.subCategories, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'categoryid' })
   category: Category;

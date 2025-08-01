@@ -74,10 +74,9 @@ export async function fetchProductsOffSet(
   }
 }
 
-export async function fetchProductByCategoryUi(name: string): Promise<IProductResponse[]> {
+export async function fetchProductByCategoryUi(path: string): Promise<IProductResponse[]> {
   try {
-    const encodedName = encodeURIComponent(name);
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${encodedName}`);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${path}`);
 
     return data;
   } catch (error) {
@@ -88,11 +87,11 @@ export async function fetchProductByCategoryUi(name: string): Promise<IProductRe
 }
 
 export async function fetchProductByCategory(
-  name: string,
+  path: string,
   props?: { next: { revalidate: number } },
 ): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, props);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${path}`, props);
 
     return data;
   } catch (error) {
