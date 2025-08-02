@@ -11,8 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   const products = await fetchSearchProducts(query, true);
 
   const keys = products.map(product => product.title);
+  const decodedQuery = decodeURIComponent(query).replace(/\+/g, ' ');
 
-  return generateMetadataGeneral(lng, { keywordsKeys: keys, titleKey: query });
+  return generateMetadataGeneral(lng, { keywordsKeys: keys, titleKey: decodedQuery });
 }
 
 export default async function Page({ params }: { params: Promise<{ query: string; lng: string }> }) {

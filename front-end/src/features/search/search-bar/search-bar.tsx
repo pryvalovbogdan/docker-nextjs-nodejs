@@ -47,7 +47,7 @@ const SearchBar: React.FC<{ lng: string }> = ({ lng }) => {
     event.preventDefault();
 
     if (searchQuery.trim()) {
-      router.push(`/${lng}/find/${searchQuery.replace(' ', '+')}`);
+      router.push(`/${lng}/find/${encodeURIComponent(searchQuery).replace(/ /g, '+').replace(/%20/g, '+')}`);
     }
   };
 
