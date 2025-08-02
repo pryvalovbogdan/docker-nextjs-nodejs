@@ -72,7 +72,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
           <Breadcrumb.List>
             <Breadcrumb.Item>
               <Breadcrumb.Link
-                href={`/${lng}/category/${product.category?.name}`}
+                href={`/${lng}/category/${product.category?.path}`}
                 color='white'
                 _hover={{ color: '#F2F2F2' }}
               >
