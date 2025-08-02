@@ -58,7 +58,7 @@ const Footer = ({
           <Text fontWeight='bold'>{t('categories')}</Text>
           {categories.map(item => (
             <Text
-              key={item.name}
+              key={item.name + item.path}
               onClick={() => router.push(`/${lng}/category/${item.path}`)}
               color='gray.400'
               cursor='pointer'

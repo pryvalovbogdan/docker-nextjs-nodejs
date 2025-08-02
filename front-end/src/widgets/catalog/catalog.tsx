@@ -30,6 +30,8 @@ export default function Catalog({
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string>('default');
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>();
+  const [selectedCategoryName, setSelectedCategoryName] = useState<string>('default');
+  const [selectedSubCategoryName, setSelectedSubCategoryName] = useState<string>();
   const [productState, setProducts] = useState<{
     [key: string]: IProductResponse[] | { [key: string]: IProductResponse[] };
   }>({
@@ -64,14 +66,21 @@ export default function Catalog({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showMenu]);
 
-  const selectCategory = async (name: string, subCategories?: { id: number; name: string; path: string }[]) => {
+  const selectCategory = async (
+    name: string,
+    path?: string,
+    subCategories?: { id: number; name: string; path: string }[],
+  ) => {
     try {
       setSelectedCategory(name);
+      setSelectedCategoryName(path || '');
       setSelectedSubCategory('');
+      setSelectedSubCategoryName('');
       setCurrentPage(1);
 
       if (subCategories?.length) {
         setSelectedSubCategory(subCategories[0].path);
+        setSelectedSubCategoryName(subCategories[0].name);
       }
 
       if (productState[name]?.length) return;
@@ -160,19 +169,29 @@ export default function Catalog({
     const page = searchParams.get('gallerypage');
 
     if (category) {
-      const subCategory = categories.find(item => item.name === category)?.subCategories?.[0]?.path;
+      const selectedCategory = categories.find(item => item.path === category);
+      const subCategory = selectedCategory?.subCategories?.[0];
+      const subCategoryPath = subCategory?.path || '';
+      const subCategoryName = subCategory?.name || '';
 
-      selectCategory(category);
+      selectCategory(category, selectedCategory?.name);
 
       if (subCategory) {
-        setSelectedSubCategory(subCategory);
+        setSelectedSubCategory(subCategoryPath);
+        setSelectedSubCategoryName(subCategoryName);
       }
 
-      setOpenAccordion([category]);
+      setOpenAccordion([selectedCategory?.name || '']);
     }
 
     if (subcategory) {
+      const selectedCategoryForSub = categories.find(cat => cat.path === category);
+      const subCategoryName = selectedCategoryForSub?.subCategories
+        ? selectedCategoryForSub?.subCategories.find(sub => sub.path === subcategory)?.name
+        : '';
+
       setSelectedSubCategory(subcategory);
+      setSelectedSubCategoryName(subCategoryName);
     }
 
     if (page) {
@@ -348,7 +367,7 @@ export default function Catalog({
         <Stack gap='4' w='full'>
           <AccordionRoot variant='plain' collapsible value={openAccordion}>
             {categories.map(category => (
-              <AccordionItem key={category.path} value={category.path} w='full'>
+              <AccordionItem key={category.name} value={category.name} w='full'>
                 <AccordionItemTrigger
                   bg={selectedCategory === category.path ? '#036753' : 'gray.100'}
                   color={selectedCategory === category.path ? 'white' : 'gray.700'}
@@ -367,17 +386,19 @@ export default function Catalog({
                       setCurrentPage(1);
                       setSelectedCategory('default');
                       setSelectedSubCategory('');
+                      setSelectedCategoryName('');
+                      setSelectedSubCategoryName('');
 
                       setOpenAccordion([]);
                     } else {
-                      selectCategory(category.path, category.subCategories);
+                      selectCategory(category.path, category.name, category.subCategories);
 
                       if (!category.subCategories?.length) {
                         clearParams.push('subcategory');
                       }
 
                       setShadowParams('category', category.path, clearParams);
-                      setOpenAccordion([category.path]);
+                      setOpenAccordion([category.name]);
                     }
                   }}
                 >
@@ -392,10 +413,10 @@ export default function Catalog({
                 </AccordionItemTrigger>
                 <AccordionItemContent p={0}>
                   <VStack align='start' w='full'>
-                    {openAccordion?.includes(category.path) &&
+                    {openAccordion?.includes(category.name) &&
                       category.subCategories?.map(sub => (
                         <Button
-                          key={sub.path}
+                          key={sub.name}
                           variant='ghost'
                           fontWeight={selectedSubCategory === sub.path ? 'bold' : 'normal'}
                           color={selectedSubCategory === sub.path ? '#036753' : 'gray.700'}
@@ -403,8 +424,8 @@ export default function Catalog({
                           w='250px'
                           _hover={{ bg: 'gray.200' }}
                           onClick={() => {
-                            console.warn('sub', sub.path);
                             setSelectedSubCategory(sub.path);
+                            setSelectedSubCategoryName(sub.name);
                             setCurrentPage(1);
 
                             setShadowParams('subcategory', sub.path, ['gallerypage']);
@@ -451,11 +472,11 @@ export default function Catalog({
                 fontWeight='bold'
                 textAlign='center'
               >
-                <Text color='#036753'>{selectedCategory}</Text>
+                <Text color='#036753'>{selectedCategoryName}</Text>
                 {selectedSubCategory && (
                   <>
                     <Text color='black'>/</Text>
-                    <Text color='black'>{selectedSubCategory}</Text>
+                    <Text color='black'>{selectedSubCategoryName}</Text>
                   </>
                 )}
               </Flex>
