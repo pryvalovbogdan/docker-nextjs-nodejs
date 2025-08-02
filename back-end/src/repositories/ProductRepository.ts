@@ -110,16 +110,6 @@ class ProductRepository {
     });
   };
 
-  // getCategories = async (): Promise<string[]> => {
-  //   const categories = await this.productRepository
-  //     .createQueryBuilder('product')
-  //     .leftJoinAndSelect('product.category', 'category')
-  //     .select('DISTINCT category.name', 'category')
-  //     .getRawMany();
-  //
-  //   return categories.map(c => c.category);
-  // };
-
   getCategories = async (): Promise<{ name: string; path: string }[]> => {
     const categories = await this.productRepository
       .createQueryBuilder('product')
