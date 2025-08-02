@@ -291,9 +291,10 @@ class ProductController {
 
   searchProducts = async (req: Request, res: Response): Promise<void> => {
     const { query } = req.params;
+    const queryWithSpaces = query.replace('+', ' ');
 
     try {
-      const result = await this.service.searchProducts(query);
+      const result = await this.service.searchProducts(queryWithSpaces);
 
       if (result.errors.length) {
         responseHandler.sendFailResponse(res, result.errors.join(', '));

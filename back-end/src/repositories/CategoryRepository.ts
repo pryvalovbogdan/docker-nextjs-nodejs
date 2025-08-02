@@ -14,17 +14,18 @@ class CategoryRepository {
     const categories = await this.categoryRepository
       .createQueryBuilder('category')
       .leftJoin('category.subCategories', 'subCategory')
-      .select(['category.id', 'category.name'])
+      .select(['category.id', 'category.name', 'category.path'])
       .addSelect(
-        "COALESCE(json_agg(DISTINCT jsonb_build_object('id', subCategory.id, 'name', subCategory.name)) FILTER (WHERE subCategory.id IS NOT NULL), '[]')",
+        "COALESCE(json_agg(DISTINCT jsonb_build_object('id', subCategory.id, 'name', subCategory.name, 'path', subCategory.path)) FILTER (WHERE subCategory.id IS NOT NULL), '[]')",
         'subcategories',
       )
-      .groupBy('category.id, category.name')
+      .groupBy('category.id, category.name, category.path')
       .getRawMany();
 
     return categories.map(c => ({
       id: c.category_id,
       name: c.category_name,
+      path: c.category_path,
       subCategories: c.subcategories ? c.subcategories : [],
     }));
   };
@@ -62,6 +63,10 @@ class CategoryRepository {
   async deleteCategory(categoryId: number): Promise<void> {
     await this.categoryRepository.delete(categoryId);
   }
+
+  getCategoryByPath = async (path: string): Promise<Category | null> => {
+    return this.categoryRepository.findOne({ where: { path } });
+  };
 }
 
 export default CategoryRepository;

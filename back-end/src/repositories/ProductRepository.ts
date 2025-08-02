@@ -84,7 +84,7 @@ class ProductRepository {
       relations: ['category', 'subCategory'],
       where: {
         category: {
-          name: categoryName,
+          path: categoryName,
         },
       },
     });
@@ -110,14 +110,17 @@ class ProductRepository {
     });
   };
 
-  getCategories = async (): Promise<string[]> => {
+  getCategories = async (): Promise<{ name: string; path: string }[]> => {
     const categories = await this.productRepository
       .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
-      .select('DISTINCT category.name', 'category')
+      .leftJoin('product.category', 'category')
+      .select(['DISTINCT category.name AS name', 'category.path AS path'])
       .getRawMany();
 
-    return categories.map(c => c.category);
+    return categories.map(c => ({
+      name: c.name,
+      path: c.path,
+    }));
   };
 
   getSubCategories = async (): Promise<string[]> => {

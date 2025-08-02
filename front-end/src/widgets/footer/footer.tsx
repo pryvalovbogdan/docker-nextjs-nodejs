@@ -27,7 +27,9 @@ const Footer = ({
 
   useEffect(() => {
     fetchCategories(true)
-      .then(res => setCategories(res))
+      .then(res => {
+        setCategories(res);
+      })
       .catch(e => console.error(e));
   }, []);
 
@@ -55,8 +57,8 @@ const Footer = ({
           <Text fontWeight='bold'>{t('categories')}</Text>
           {categories.map(item => (
             <Text
-              key={item.name}
-              onClick={() => router.push(`/${lng}/category/${encodeURIComponent(item.name)}`)}
+              key={item.name + item.path}
+              onClick={() => router.push(`/${lng}/category/${item.path}`)}
               color='gray.400'
               cursor='pointer'
               transition='color 0.2s'

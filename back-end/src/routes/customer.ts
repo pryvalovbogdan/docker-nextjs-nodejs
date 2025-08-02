@@ -28,6 +28,7 @@ router.post('/order', orderLimiter, orderController.saveOrder);
 router.post('/contact', contactLimiter, orderController.contact);
 router.get('/subcategories', categoryController.getCategoriesWithSubcategories);
 router.get('/categories/:category(*)', productController.getProductsByCategory);
-router.get('/subcategories/:name', productController.getProductsBySubCategory);
+router.get('/subcategories/:name(*)', productController.getProductsBySubCategory);
+router.get('/category/:path(*)', categoryController.getCategoryByPath);
 
 export default router;

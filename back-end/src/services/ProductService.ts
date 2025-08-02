@@ -198,7 +198,7 @@ class ProductService {
     }
   }
 
-  async getCategories(): Promise<{ data?: string[]; errors: string[] }> {
+  async getCategories(): Promise<{ data?: { path: string; name: string }[]; errors: string[] }> {
     try {
       const categories = await this.repository.getCategories();
 

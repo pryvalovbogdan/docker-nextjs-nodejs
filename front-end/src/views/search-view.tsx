@@ -21,7 +21,7 @@ const SearchView: React.FC<{
   officeEmail: string;
 }> = ({ lng, query, products, officePhoneSecond, officeEmail, officePhone }) => {
   const { t } = useTranslation(lng);
-  const [searchQuery, setSearchQuery] = useState(decodeURIComponent(query));
+  const [searchQuery, setSearchQuery] = useState(decodeURIComponent(query).replace(/\+/g, ' '));
   const [results, setResults] = useState<IProductResponse[]>(products);
   const [loading, setLoading] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);

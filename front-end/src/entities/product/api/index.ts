@@ -1,4 +1,4 @@
-import { IProductResponse } from '@/entities/product/model/types';
+import { ICategoryResponse, IProductResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -74,10 +74,9 @@ export async function fetchProductsOffSet(
   }
 }
 
-export async function fetchProductByCategoryUi(name: string): Promise<IProductResponse[]> {
+export async function fetchProductByCategoryUi(path: string): Promise<IProductResponse[]> {
   try {
-    const encodedName = encodeURIComponent(name);
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${encodedName}`);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`/api/categories/${path}`);
 
     return data;
   } catch (error) {
@@ -88,11 +87,11 @@ export async function fetchProductByCategoryUi(name: string): Promise<IProductRe
 }
 
 export async function fetchProductByCategory(
-  name: string,
+  path: string,
   props?: { next: { revalidate: number } },
 ): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${name}`, props);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${path}`, props);
 
     return data;
   } catch (error) {
@@ -129,10 +128,14 @@ export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
 export async function fetchSearchProducts(query: string, isServerCall?: boolean): Promise<IProductResponse[]> {
   try {
     const prefixUrl = isServerCall ? baseURL : '';
+    const queryWithOutSpaces = query.replace(' ', '+');
 
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`, {
-      next: { revalidate: 60 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(
+      `${prefixUrl}/api/products/search/${queryWithOutSpaces}`,
+      {
+        next: { revalidate: 60 },
+      },
+    );
 
     return data;
   } catch (error) {
@@ -231,5 +234,20 @@ export async function updateProduct(
       data: {} as IProductResponse,
       success: false,
     };
+  }
+}
+
+export async function fetchCategoryByPath(
+  path: string,
+  props?: { next: { revalidate: number } },
+): Promise<ICategoryResponse> {
+  try {
+    const { data }: { data: ICategoryResponse } = await fetchWrapper(`${baseURL}/api/category/${path}`, props);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+
+    return {} as ICategoryResponse;
   }
 }
