@@ -28,7 +28,6 @@ const Footer = ({
   useEffect(() => {
     fetchCategories(true)
       .then(res => {
-        console.log('res', res);
         setCategories(res);
       })
       .catch(e => console.error(e));

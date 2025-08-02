@@ -128,10 +128,14 @@ export async function fetchLastAddedProducts(): Promise<IProductResponse[]> {
 export async function fetchSearchProducts(query: string, isServerCall?: boolean): Promise<IProductResponse[]> {
   try {
     const prefixUrl = isServerCall ? baseURL : '';
+    const queryWithOutSpaces = query.replace(' ', '+');
 
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${prefixUrl}/api/products/search/${query}`, {
-      next: { revalidate: 60 },
-    });
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(
+      `${prefixUrl}/api/products/search/${queryWithOutSpaces}`,
+      {
+        next: { revalidate: 60 },
+      },
+    );
 
     return data;
   } catch (error) {
