@@ -1,4 +1,4 @@
-import { IProductResponse } from '@/entities/product/model/types';
+import { ICategoryResponse, IProductResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -230,5 +230,20 @@ export async function updateProduct(
       data: {} as IProductResponse,
       success: false,
     };
+  }
+}
+
+export async function fetchCategoryByPath(
+  path: string,
+  props?: { next: { revalidate: number } },
+): Promise<ICategoryResponse> {
+  try {
+    const { data }: { data: ICategoryResponse } = await fetchWrapper(`${baseURL}/api/category/${path}`, props);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+
+    return {} as ICategoryResponse;
   }
 }

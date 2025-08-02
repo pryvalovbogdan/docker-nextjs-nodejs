@@ -63,6 +63,10 @@ class CategoryRepository {
   async deleteCategory(categoryId: number): Promise<void> {
     await this.categoryRepository.delete(categoryId);
   }
+
+  getCategoryByPath = async (path: string): Promise<Category | null> => {
+    return this.categoryRepository.findOne({ where: { path } });
+  };
 }
 
 export default CategoryRepository;

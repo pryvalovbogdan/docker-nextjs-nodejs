@@ -33,3 +33,9 @@ export interface IProductResponse {
   subCategory?: { id: number; name: string; path: string };
   error?: boolean;
 }
+
+export interface ICategoryResponse {
+  id: number;
+  name: string;
+  path: string;
+}

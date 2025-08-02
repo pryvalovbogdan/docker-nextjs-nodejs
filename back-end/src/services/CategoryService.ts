@@ -46,6 +46,18 @@ class CategoryService {
   async deleteCategory(categoryId: number): Promise<void> {
     await this.repository.deleteCategory(categoryId);
   }
+
+  async getCategoryByPath(path: string): Promise<{ data?: Category | null; errors: string[] }> {
+    try {
+      const category = await this.repository.getCategoryByPath(path);
+
+      return { data: category, errors: category ? [] : ['Category not found'] };
+    } catch (error) {
+      console.error('Error retrieving category:', error);
+
+      return { errors: ['Error retrieving category'] };
+    }
+  }
 }
 
 export default CategoryService;
