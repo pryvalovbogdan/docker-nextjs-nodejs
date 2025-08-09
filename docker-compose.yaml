@@ -6,9 +6,7 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - ./data:/var/lib/postgresql/data   # Persistent database storage
-    ports:
-      - "5433:5432"
+      - ./data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
       interval: 5s
@@ -24,8 +22,8 @@ services:
       NODE_ENV: ${NODE_ENV:-development}
     volumes:
       - ./back-end:/app
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       db:
         condition: service_healthy
@@ -44,8 +42,8 @@ services:
       - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
     volumes:
       - ./front-end:/app
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     restart: always
     depends_on:
       server:

@@ -25,12 +25,14 @@ const Footer = ({
   const [categories, setCategories] = useState<ICategoryResponse[]>([]);
   const router = useRouter();
 
+  const didFetch = React.useRef(false);
+
   useEffect(() => {
-    fetchCategories(true)
-      .then(res => {
-        setCategories(res);
-      })
-      .catch(e => console.error(e));
+    if (didFetch.current) return;
+
+    didFetch.current = true;
+
+    fetchCategories(true).then(setCategories).catch(console.error);
   }, []);
 
   return (

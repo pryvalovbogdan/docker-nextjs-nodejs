@@ -11,22 +11,28 @@ class CategoryRepository {
   getCategoriesWithSubcategories = async (): Promise<
     { id: number; name: string; subCategories: { id: number; name: string }[] }[]
   > => {
-    const categories = await this.categoryRepository
-      .createQueryBuilder('category')
-      .leftJoin('category.subCategories', 'subCategory')
-      .select(['category.id', 'category.name', 'category.path'])
-      .addSelect(
-        "COALESCE(json_agg(DISTINCT jsonb_build_object('id', subCategory.id, 'name', subCategory.name, 'path', subCategory.path)) FILTER (WHERE subCategory.id IS NOT NULL), '[]')",
-        'subcategories',
-      )
-      .groupBy('category.id, category.name, category.path')
-      .getRawMany();
+    const rows = await this.categoryRepository.query(`
+      SELECT
+        c.id,
+        c.name,
+        c.path,
+        COALESCE(sc.subcategories, '[]'::json) AS subcategories
+      FROM categories c
+      LEFT JOIN LATERAL (
+        SELECT json_agg(
+                 json_build_object('id', s.id, 'name', s.name, 'path', s.path)
+                 ORDER BY s.name
+               ) AS subcategories
+        FROM subcategories s
+        WHERE s.categoryid = c.id
+      ) sc ON TRUE;
+    `);
 
-    return categories.map(c => ({
-      id: c.category_id,
-      name: c.category_name,
-      path: c.category_path,
-      subCategories: c.subcategories ? c.subcategories : [],
+    return rows.map((r: any) => ({
+      id: r.id,
+      name: r.name,
+      path: r.path,
+      subCategories: r.subcategories ?? [],
     }));
   };
 
