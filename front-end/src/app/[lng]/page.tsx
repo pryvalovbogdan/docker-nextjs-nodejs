@@ -9,7 +9,8 @@ import { ContactButton, ContactForm } from '@features/contact';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
 
-export const getCategoriesCached = cache(fetchCategories);
+const getCategoriesCached = cache(fetchCategories);
+
 export async function generateMetadata({ params }: { params: Promise<{ lng: string }> }) {
   const { lng } = await params;
 
