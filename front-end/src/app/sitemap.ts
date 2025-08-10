@@ -33,21 +33,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${domain}/uk/categories/${encodeURIComponent(String(c.path))}`,
       lastModified: new Date().toISOString(),
       priority: 0.8,
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
     })) as MetadataRoute.Sitemap;
 
     const categoryRoutes = categories.data.flatMap((c: ICategoryResponse) => ({
       url: `${domain}/uk/category/${encodeURIComponent(String(c.path))}`,
       lastModified: new Date().toISOString(),
       priority: 0.8,
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
     })) as MetadataRoute.Sitemap;
 
     const productRoutes = products.data.map((product: { id: number }) => ({
       url: `${domain}/uk/product/${product.id}`,
       lastModified: new Date().toISOString(),
       priority: 0.8,
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
     })) as MetadataRoute.Sitemap;
 
     const subCategoryRoutes = categories.data.flatMap((c: ICategoryResponse) => {
@@ -61,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           url: `${base}/sub-category/${encodeURIComponent(String(s.path))}`,
           lastModified: new Date().toISOString(),
           priority: 0.7,
-          changeFrequency: 'monthly',
+          changeFrequency: 'monthly' as const,
         }));
     }) as MetadataRoute.Sitemap;
 
