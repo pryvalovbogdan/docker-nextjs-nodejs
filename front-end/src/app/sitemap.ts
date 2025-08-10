@@ -34,21 +34,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date().toISOString(),
       priority: 0.8,
       changeFrequency: 'monthly',
-    }));
+    })) as MetadataRoute.Sitemap;
 
     const categoryRoutes = categories.data.flatMap((c: ICategoryResponse) => ({
       url: `${domain}/uk/category/${encodeURIComponent(String(c.path))}`,
       lastModified: new Date().toISOString(),
       priority: 0.8,
       changeFrequency: 'monthly',
-    }));
+    })) as MetadataRoute.Sitemap;
 
     const productRoutes = products.data.map((product: { id: number }) => ({
       url: `${domain}/uk/product/${product.id}`,
       lastModified: new Date().toISOString(),
       priority: 0.8,
       changeFrequency: 'weekly',
-    }));
+    })) as MetadataRoute.Sitemap;
 
     const subCategoryRoutes = categories.data.flatMap((c: ICategoryResponse) => {
       if (!c?.path) return [];
@@ -63,7 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           priority: 0.7,
           changeFrequency: 'monthly',
         }));
-    });
+    }) as MetadataRoute.Sitemap;
 
     return [...staticRoutes, ...categoriesRoutes, ...subCategoryRoutes, ...categoryRoutes, ...productRoutes];
   } catch (e) {
