@@ -503,7 +503,7 @@ export default function CatalogServer({
               setShadowParams('gallerypage', page.toString());
             }}
             currentPage={currentPage}
-            totalPages={products.totalPages}
+            totalPages={products.totalPages || 0}
             isMobile={isMobile}
           />
         )}
