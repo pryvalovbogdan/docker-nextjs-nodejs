@@ -29,25 +29,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
     ]);
 
-    const categoriesRoutes: MetadataRoute.Sitemap = categories.data.flatMap(
-      (c: ICategoryResponse) =>
-        ({
-          url: `${domain}/uk/categories/${encodeURIComponent(String(c.path))}`,
-          lastModified: new Date().toISOString(),
-          priority: 0.8,
-          changeFrequency: 'monthly',
-        }) as MetadataRoute.Sitemap,
-    );
+    const categoriesRoutes = categories.data.flatMap((c: ICategoryResponse) => ({
+      url: `${domain}/uk/categories/${encodeURIComponent(String(c.path))}`,
+      lastModified: new Date().toISOString(),
+      priority: 0.8,
+      changeFrequency: 'monthly',
+    }));
 
-    const categoryRoutes: MetadataRoute.Sitemap = categories.data.flatMap(
-      (c: ICategoryResponse) =>
-        ({
-          url: `${domain}/uk/category/${encodeURIComponent(String(c.path))}`,
-          lastModified: new Date().toISOString(),
-          priority: 0.8,
-          changeFrequency: 'monthly',
-        }) as MetadataRoute.Sitemap,
-    );
+    const categoryRoutes = categories.data.flatMap((c: ICategoryResponse) => ({
+      url: `${domain}/uk/category/${encodeURIComponent(String(c.path))}`,
+      lastModified: new Date().toISOString(),
+      priority: 0.8,
+      changeFrequency: 'monthly',
+    }));
 
     const productRoutes = products.data.map((product: { id: number }) => ({
       url: `${domain}/uk/product/${product.id}`,
@@ -56,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
     }));
 
-    const subCategoryRoutes: MetadataRoute.Sitemap = categories.data.flatMap((c: ICategoryResponse) => {
+    const subCategoryRoutes = categories.data.flatMap((c: ICategoryResponse) => {
       if (!c?.path) return [];
 
       const base = `${domain}/uk/categories/${encodeURIComponent(String(c.path))}`;
