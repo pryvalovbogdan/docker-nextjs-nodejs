@@ -6,12 +6,12 @@ import React, { useEffect, useState } from 'react';
 import { Box, Image } from '@chakra-ui/react';
 
 const images = [
-  '2025-03-14 17.02.18.jpg',
-  'GE HealthCare Image (2).webp',
-  'olympus-europa_press-release_easysuite_or_img_1200.png',
-  'main3.jpeg',
-  'cardiovit-at-180-resting-ecg-in-practice.jpg',
-  '2025-03-20 09.09.15.jpg',
+  '/images/2025-03-14 17.02.18.jpg',
+  '/images/GE HealthCare Image (2).webp',
+  '/images/olympus-europa_press-release_easysuite_or_img_1200.png',
+  '/images/main3.jpeg',
+  '/images/cardiovit-at-180-resting-ecg-in-practice.jpg',
+  '/images/2025-03-20 09.09.15.jpg',
 ];
 
 interface GalleryImagesProps {
