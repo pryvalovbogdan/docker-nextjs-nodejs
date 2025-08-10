@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { connection } from 'next/server';
 
+import { ICategoryResponse } from '@/entities/category/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 
 type Product = {
@@ -24,18 +25,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const [categories, products] = await Promise.all([
-      fetchWrapper<{ data: any }>(`${baseUrl}/api/categories`),
+      fetchWrapper<{ data: ICategoryResponse[] }>(`${baseUrl}/api/subcategories`),
       fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
     ]);
 
-    const categoryRoutes = categories.data
-      .filter((name: string | null): name is string => Boolean(name))
-      .map((category: string) => ({
-        url: `${domain}/uk/category/${encodeURIComponent(category)}`,
-        lastModified: new Date().toISOString(),
-        priority: 0.8,
-        changeFrequency: 'monthly',
-      }));
+    const categoriesRoutes: MetadataRoute.Sitemap = categories.data.flatMap(
+      (c: ICategoryResponse) =>
+        ({
+          url: `${domain}/uk/categories/${encodeURIComponent(String(c.path))}`,
+          lastModified: new Date().toISOString(),
+          priority: 0.8,
+          changeFrequency: 'monthly',
+        }) as MetadataRoute.Sitemap,
+    );
+
+    const categoryRoutes: MetadataRoute.Sitemap = categories.data.flatMap(
+      (c: ICategoryResponse) =>
+        ({
+          url: `${domain}/uk/category/${encodeURIComponent(String(c.path))}`,
+          lastModified: new Date().toISOString(),
+          priority: 0.8,
+          changeFrequency: 'monthly',
+        }) as MetadataRoute.Sitemap,
+    );
 
     const productRoutes = products.data.map((product: { id: number }) => ({
       url: `${domain}/uk/product/${product.id}`,
@@ -44,7 +56,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
     }));
 
-    return [...staticRoutes, ...categoryRoutes, ...productRoutes];
+    const subCategoryRoutes: MetadataRoute.Sitemap = categories.data.flatMap((c: ICategoryResponse) => {
+      if (!c?.path) return [];
+
+      const base = `${domain}/uk/categories/${encodeURIComponent(String(c.path))}`;
+
+      return (c.subCategories || [])
+        .filter(s => !!s?.path)
+        .map(s => ({
+          url: `${base}/sub-category/${encodeURIComponent(String(s.path))}`,
+          lastModified: new Date().toISOString(),
+          priority: 0.7,
+          changeFrequency: 'monthly',
+        }));
+    });
+
+    return [...staticRoutes, ...categoriesRoutes, ...subCategoryRoutes, ...categoryRoutes, ...productRoutes];
   } catch (e) {
     console.error('Error generating sitemap:', e);
 

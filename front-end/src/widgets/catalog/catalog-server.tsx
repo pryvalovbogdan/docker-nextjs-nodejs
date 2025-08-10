@@ -16,17 +16,21 @@ import { useTranslation } from '@i18n/client';
 const ITEMS_PER_PAGE_DESKTOP = 12;
 const ITEMS_PER_PAGE_MOBILE = 4;
 
-export default function Catalog({
+export default function CatalogServer({
   products,
   categories,
   lng,
+  category,
+  subcategory,
 }: {
   products: {
     data: IProductResponse[];
-    totalPages: number;
+    totalPages?: number;
   };
   categories: ICategoryResponse[];
   lng: string;
+  category?: string;
+  subcategory?: string;
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string>('default');
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>();
@@ -164,8 +168,6 @@ export default function Catalog({
   };
 
   useEffect(() => {
-    const category = searchParams.get('category');
-    const subcategory = searchParams.get('subcategory');
     const page = searchParams.get('gallerypage');
 
     if (category) {
@@ -202,6 +204,12 @@ export default function Catalog({
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (selectedCategory !== 'default') {
+      scrollToSection('categories');
+    }
+  }, [selectedCategory]);
 
   const renderProducts = () => {
     if (paginatedProducts.length > 0) {
@@ -378,28 +386,7 @@ export default function Catalog({
                   fontWeight='bold'
                   my={2}
                   onClick={() => {
-                    const clearParams = ['gallerypage', 'subcategory'];
-
-                    if (selectedCategory === category.path) {
-                      clearParams.push('category', 'subcategory');
-                      setShadowParams('', '', clearParams);
-                      setCurrentPage(1);
-                      setSelectedCategory('default');
-                      setSelectedSubCategory('');
-                      setSelectedCategoryName('');
-                      setSelectedSubCategoryName('');
-
-                      setOpenAccordion([]);
-                    } else {
-                      selectCategory(category.path, category.name, category.subCategories);
-
-                      if (!category.subCategories?.length) {
-                        clearParams.push('subcategory');
-                      }
-
-                      setShadowParams('category', category.path, clearParams);
-                      setOpenAccordion([category.name]);
-                    }
+                    router.push(`/${lng}/categories/${category.path}`, { scroll: false });
                   }}
                 >
                   <Flex justifyContent='space-between' w='100%' alignItems='baseline'>
@@ -424,11 +411,9 @@ export default function Catalog({
                           w='250px'
                           _hover={{ bg: 'gray.200' }}
                           onClick={() => {
-                            setSelectedSubCategory(sub.path);
-                            setSelectedSubCategoryName(sub.name);
-                            setCurrentPage(1);
-
-                            setShadowParams('subcategory', sub.path, ['gallerypage']);
+                            router.push(`/${lng}/categories/${category.path}/sub-category/${sub.path}`, {
+                              scroll: false,
+                            });
 
                             if (isMobile) {
                               setShowMenu(false);

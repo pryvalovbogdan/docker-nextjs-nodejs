@@ -15,20 +15,22 @@ const Footer = ({
   officePhone,
   officePhoneSecond,
   officeEmail,
+  categoriesProp,
 }: {
   lng: string;
   officePhoneSecond?: string;
   officePhone?: string;
   officeEmail?: string;
+  categoriesProp?: ICategoryResponse[];
 }) => {
   const { t } = useTranslation(lng);
-  const [categories, setCategories] = useState<ICategoryResponse[]>([]);
+  const [categories, setCategories] = useState<ICategoryResponse[]>(categoriesProp || []);
   const router = useRouter();
 
   const didFetch = React.useRef(false);
 
   useEffect(() => {
-    if (didFetch.current) return;
+    if (didFetch.current || categoriesProp?.length) return;
 
     didFetch.current = true;
 
