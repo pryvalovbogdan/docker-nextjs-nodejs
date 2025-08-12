@@ -136,7 +136,7 @@ export default function LastAddedProducts({ products, lng }: { products: IProduc
             marginCard={marginCard}
             defaultActivePage={1}
             cards={products.map(card => ({ ...card, key: card.id + card.title }))}
-            noCardsText='No cards selected'
+            noCardsText={t('noProductsInThisList')}
             CustomArrowBtn={<CustomArrowsPreview />}
           >
             <Card lng={lng} />
