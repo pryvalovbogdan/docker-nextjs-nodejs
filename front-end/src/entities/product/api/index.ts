@@ -44,7 +44,7 @@ export async function fetchProductByIdCache(id: string): Promise<IProductRespons
   }
 }
 
-interface IFetchOffsetResp {
+export interface IFetchOffsetResp {
   products: IProductResponse[];
   totalPages?: number;
   success?: boolean;

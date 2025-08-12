@@ -30,13 +30,17 @@ const MainView = ({
       categories={categories}
     >
       <GalleryImages lng={lng} />
-      <Catalog
-        lng={lng}
-        products={{ data: products, totalPages }}
-        categories={categories}
-        category={category}
-        subcategory={subcategory}
-      />
+      <div>
+        {!!categories.length && (
+          <Catalog
+            lng={lng}
+            products={{ data: products, totalPages }}
+            categories={categories}
+            category={category}
+            subcategory={subcategory}
+          />
+        )}
+      </div>
       <BrandsCarousel lng={lng} />
       <LastAddedProducts products={lastAddedProducts} lng={lng} />
       <WhyUs lng={lng} withHeading />

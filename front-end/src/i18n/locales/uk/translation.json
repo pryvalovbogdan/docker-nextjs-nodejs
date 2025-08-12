@@ -195,5 +195,6 @@
   "addError": "Не вдалось додати",
   "searchPlaceholder": "Введіть назву продукту",
   "searchProduct": "Знайти товар",
-  "update": "Оновити"
+  "update": "Оновити",
+  "noProductsInThisList": "Нема товарів в цій категорії"
 }

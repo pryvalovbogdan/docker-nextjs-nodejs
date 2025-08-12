@@ -199,5 +199,6 @@
   "addError": "Failed to add",
   "searchPlaceholder": "Enter product name",
   "searchProduct": "Find product",
-  "update": "Update"
+  "update": "Update",
+  "noProductsInThisList": "No products in this list"
 }

@@ -29,6 +29,8 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   const products = await fetchProductsOffSet('', 1, 12, true);
   const lastAddedProducts = await fetchLastAddedProducts();
 
+  console.log('data', categories, products, lastAddedProducts);
+
   return (
     <MainView
       lng={lng}
