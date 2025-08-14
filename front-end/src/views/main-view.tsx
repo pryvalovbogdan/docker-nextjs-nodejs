@@ -32,7 +32,11 @@ const MainView = ({
       origin={process.env.NEXT_PUBLIC_DOMAIN_URL}
     >
       <GalleryImages lng={lng} />
-      <ItemListJsonLd lng={lng} products={products.map(p => ({ id: p.id }))} />
+      <ItemListJsonLd
+        lng={lng}
+        products={products.map(p => ({ id: p.id }))}
+        origin={process.env.NEXT_PUBLIC_DOMAIN_URL}
+      />
       <div>
         {!!categories.length && (
           <Catalog
