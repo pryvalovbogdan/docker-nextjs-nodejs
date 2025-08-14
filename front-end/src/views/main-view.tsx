@@ -28,6 +28,7 @@ const MainView = ({
       officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE!}
       officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL!}
       categories={categories}
+      origin={process.env.NEXT_PUBLIC_DOMAIN_URL}
     >
       <GalleryImages lng={lng} />
       <div>

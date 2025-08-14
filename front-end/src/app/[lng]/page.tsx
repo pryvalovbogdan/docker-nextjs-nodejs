@@ -38,6 +38,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
       categories={categories}
       lastAddedProducts={lastAddedProducts}
       totalPages={products.totalPages}
+
     />
   );
 }

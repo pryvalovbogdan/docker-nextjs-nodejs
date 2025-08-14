@@ -13,11 +13,13 @@ const BrandsPage = ({
   officePhone,
   officePhoneSecond,
   officeEmail,
+  origin,
 }: {
   lng: string;
   officePhone: string;
   officePhoneSecond: string;
   officeEmail: string;
+  origin?: string;
 }) => {
   const router = useRouter();
   const { t } = useTranslation(lng);
@@ -26,7 +28,13 @@ const BrandsPage = ({
   };
 
   return (
-    <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
+    <Layout
+      lng={lng}
+      officePhone={officePhone}
+      officePhoneSecond={officePhoneSecond}
+      officeEmail={officeEmail}
+      origin={origin}
+    >
       <Container
         maxW='container.xl'
         py={10}
