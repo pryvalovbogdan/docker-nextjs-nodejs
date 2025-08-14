@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 import { IProductResponse } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
-import { Pagination } from '@/shared/ui';
+import { ItemListJsonLd, Pagination } from '@/shared/ui';
 import { getInnerText } from '@/shared/utils';
 import { Box, Flex, Grid, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { ContactButton } from '@features/contact';
@@ -21,7 +21,8 @@ const CategoryView: React.FC<{
   officePhoneSecond: string;
   officePhone: string;
   officeEmail: string;
-}> = ({ lng, products, query, officePhoneSecond, officePhone, officeEmail }) => {
+  origin?: string;
+}> = ({ lng, products, query, officePhoneSecond, officePhone, officeEmail, origin }) => {
   const { t } = useTranslation(lng);
   const router = useRouter();
 
@@ -33,7 +34,20 @@ const CategoryView: React.FC<{
   const displayedProducts = products.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   return (
-    <Layout lng={lng} officePhoneSecond={officePhoneSecond} officePhone={officePhone} officeEmail={officeEmail}>
+    <Layout
+      lng={lng}
+      officePhoneSecond={officePhoneSecond}
+      officePhone={officePhone}
+      officeEmail={officeEmail}
+      origin={origin}
+    >
+      <ItemListJsonLd
+        lng={lng}
+        products={displayedProducts.map(p => ({ id: p.id }))}
+        page={currentPage}
+        pageSize={ITEMS_PER_PAGE}
+        origin={origin}
+      />
       <Box maxW='6xl' mx='auto' py={8} px={6}>
         <Flex align='center' justifyContent='center' w='100%'>
           <Heading

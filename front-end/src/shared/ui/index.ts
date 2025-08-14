@@ -8,3 +8,4 @@ export { default as LogoWrapper } from './logo-wrapper';
 export { default as Pagination } from './pagination';
 export { default as SkeletonTable } from './skeleton-table';
 export { default as GlobalStructuredData } from './global-structure-data';
+export { default as ItemListJsonLd } from './item-list-json-ld';
