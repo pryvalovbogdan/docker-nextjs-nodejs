@@ -19,7 +19,8 @@ const SearchView: React.FC<{
   officePhoneSecond: string;
   officePhone: string;
   officeEmail: string;
-}> = ({ lng, query, products, officePhoneSecond, officeEmail, officePhone }) => {
+  origin?: string;
+}> = ({ lng, query, products, officePhoneSecond, officeEmail, officePhone, origin }) => {
   const { t } = useTranslation(lng);
   const [searchQuery, setSearchQuery] = useState(decodeURIComponent(query).replace(/\+/g, ' '));
   const [results, setResults] = useState<IProductResponse[]>(products);
@@ -54,7 +55,13 @@ const SearchView: React.FC<{
   }, [debouncedQuery]);
 
   return (
-    <Layout lng={lng} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail} officePhone={officePhone}>
+    <Layout
+      lng={lng}
+      officePhoneSecond={officePhoneSecond}
+      officeEmail={officeEmail}
+      officePhone={officePhone}
+      origin={origin}
+    >
       <Box maxW='container.md' mx='auto' my={8} px={4}>
         <Text fontSize='2xl' fontWeight='bold' textAlign='center' color='gray.800'>
           {t('search.resultsFor')}{' '}

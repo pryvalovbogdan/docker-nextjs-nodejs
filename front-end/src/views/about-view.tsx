@@ -13,13 +13,20 @@ interface AboutViewProps {
   officePhoneSecond?: string;
   officePhone?: string;
   officeEmail?: string;
+  origin?: string;
 }
 
-const AboutView = ({ lng, officePhoneSecond, officePhone, officeEmail }: AboutViewProps) => {
+const AboutView = ({ lng, officePhoneSecond, officePhone, officeEmail, origin }: AboutViewProps) => {
   const { t } = useTranslation(lng);
 
   return (
-    <Layout lng={lng} officePhoneSecond={officePhoneSecond} officePhone={officePhone} officeEmail={officeEmail}>
+    <Layout
+      lng={lng}
+      officePhoneSecond={officePhoneSecond}
+      officePhone={officePhone}
+      officeEmail={officeEmail}
+      origin={origin}
+    >
       <Container maxW='container.xl' py={16}>
         <Flex
           direction={{ base: 'column', md: 'row' }}

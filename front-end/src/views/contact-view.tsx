@@ -28,6 +28,7 @@ interface ContactViewProps {
   officePhone: string;
   officePhoneSecond: string;
   officeEmail: string;
+  origin?: string;
 }
 
 const containerStyle = {
@@ -37,7 +38,7 @@ const containerStyle = {
 
 const center = { lat: 50.44027, lng: 30.47491 };
 
-const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEmail }: ContactViewProps) => {
+const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEmail, origin }: ContactViewProps) => {
   const { t } = useTranslation(lng);
 
   const { isLoaded } = useJsApiLoader({
@@ -58,7 +59,13 @@ const ContactView = ({ lng, googleKey, officePhone, officePhoneSecond, officeEma
   };
 
   return (
-    <Layout lng={lng} officeEmail={officeEmail} officePhone={officePhone} officePhoneSecond={officePhoneSecond}>
+    <Layout
+      lng={lng}
+      officeEmail={officeEmail}
+      officePhone={officePhone}
+      officePhoneSecond={officePhoneSecond}
+      origin={origin}
+    >
       <Container maxW='container.xl' py={10}>
         <Flex direction={{ base: 'column', md: 'row' }} justify='space-between' align='flex-start' gap={10} mb={10}>
           <Flex flexDirection='column' justifyContent='space-between' h='full' flex='1'>

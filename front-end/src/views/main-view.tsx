@@ -1,6 +1,7 @@
 import { ICategoryResponse } from '@/entities/category/model/types';
 import { IProductResponse } from '@/entities/product/model/types';
 import LastAddedProducts from '@/entities/product/ui/last-added-products';
+import { ItemListJsonLd } from '@/shared/ui';
 import { BrandsCarousel, Catalog, GalleryImages, Layout, WhyUs } from '@/widgets';
 import { ContactButton, ContactForm } from '@features/contact';
 
@@ -28,8 +29,10 @@ const MainView = ({
       officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE!}
       officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL!}
       categories={categories}
+      origin={process.env.NEXT_PUBLIC_DOMAIN_URL}
     >
       <GalleryImages lng={lng} />
+      <ItemListJsonLd lng={lng} products={products.map(p => ({ id: p.id }))} />
       <div>
         {!!categories.length && (
           <Catalog

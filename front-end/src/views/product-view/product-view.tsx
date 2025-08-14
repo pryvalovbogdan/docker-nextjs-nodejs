@@ -18,9 +18,10 @@ interface ProductProps {
   officePhone: string;
   officePhoneSecond: string;
   officeEmail: string;
+  origin?: string;
 }
 
-const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, officePhoneSecond, officeEmail }) => {
+const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, officePhoneSecond, officeEmail, origin }) => {
   const { t } = useTranslation(lng);
   const [showMore, setShowMore] = useState(true);
   const [selectedImage, setSelectedImage] = useState(product.images?.[0] || '/placeholder.webp');
@@ -58,7 +59,13 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
   const isShownDescription = hasValidContent(product.description) && getIsShownDescription(product.description || '');
 
   return (
-    <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
+    <Layout
+      lng={lng}
+      officePhone={officePhone}
+      officePhoneSecond={officePhoneSecond}
+      officeEmail={officeEmail}
+      origin={origin}
+    >
       <Flex mt={10}>
         <Breadcrumb.Root
           bg='rgba(3, 103, 83, 0.7)'

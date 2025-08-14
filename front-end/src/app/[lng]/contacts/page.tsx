@@ -23,6 +23,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
       officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
       officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
       officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}
+      origin={process.env.NEXT_PUBLIC_DOMAIN_URL}
     />
   );
 }

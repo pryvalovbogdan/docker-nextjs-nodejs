@@ -34,8 +34,6 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
   const products = await getProductsCached(path);
   const lastAddedProducts = await fetchLastAddedProducts();
 
-  console.log('products2', products);
-
   return (
     <MainView
       lng={lng}
@@ -43,7 +41,6 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
       categories={categories}
       lastAddedProducts={lastAddedProducts}
       category={path}
-      // subcategory={products[0]?.subCategory?.path}
     />
   );
 }
