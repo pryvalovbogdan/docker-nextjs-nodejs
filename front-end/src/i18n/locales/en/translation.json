@@ -1,5 +1,6 @@
 {
   "titleMain": "Buy medical equipment in Ukraine - Medix",
+  "titleMainLower": "buy medical equipment in Ukraine - Medix",
   "descriptionMain": "Buy medical equipment in Ukraine - Medix. Order professional medical equipment from an online store. High-quality service. Best conditions. Delivery. Warranty. Quality.",
   "buyTech": "Buy medical equipment in Ukraine - Medix",
   "medTech": "Medical equipment - Medix",
@@ -200,5 +201,8 @@
   "searchPlaceholder": "Enter product name",
   "searchProduct": "Find product",
   "update": "Update",
-  "noProductsInThisList": "No products in this list"
+  "noProductsInThisList": "No products in this list",
+  "item": "item",
+  "items": "items",
+  "itemsLeft": "items"
 }

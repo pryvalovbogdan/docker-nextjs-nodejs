@@ -21,7 +21,9 @@ export async function generateMetadataGeneral(
   const { t } = await useTranslation(lng);
 
   return {
-    title: t((metaConfig?.titleKey as TranslationKeys) || 'titleMain'),
+    title: metaConfig?.titleKey
+      ? `${t(metaConfig?.titleKey as TranslationKeys)} ${t('titleMainLower')}`
+      : t('titleMain'),
     description: t((metaConfig?.descriptionKey as TranslationKeys) || 'descriptionMain'),
     keywords: metaConfig?.keywordsKeys
       ? metaConfig.keywordsKeys.map(key => t(key as TranslationKeys))

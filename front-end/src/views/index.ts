@@ -8,3 +8,4 @@ export { default as ContactView } from './contact-view';
 export { default as CategoryView } from './category-view';
 export { default as DashboardView } from './dashboard-view';
 export { default as MainView } from './main-view';
+export { default as CategoriesView } from './categories-view';

@@ -205,12 +205,6 @@ export default function CatalogServer({
     }
   }, []);
 
-  useEffect(() => {
-    if (selectedCategory !== 'default') {
-      scrollToSection('categories');
-    }
-  }, [selectedCategory]);
-
   const renderProducts = () => {
     if (paginatedProducts.length > 0) {
       return paginatedProducts.map(product => (
