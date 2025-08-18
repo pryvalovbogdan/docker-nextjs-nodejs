@@ -1,14 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-
 function Custom404() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push('/uk');
-  }, [router]);
+  return <div>Not found</div>;
 }
 
 export default Custom404;
