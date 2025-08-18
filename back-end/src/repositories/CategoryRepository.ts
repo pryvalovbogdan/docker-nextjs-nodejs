@@ -16,6 +16,7 @@ class CategoryRepository {
       title: string | null;
       heading: string | null;
       description: string | null;
+      keywords: string | null;
       subCategories: {
         id: number;
         name: string;
@@ -23,6 +24,7 @@ class CategoryRepository {
         title: string | null;
         heading: string | null;
         description: string | null;
+        keywords: string | null;
       }[];
     }[]
   > => {
@@ -34,6 +36,7 @@ class CategoryRepository {
       c.title,
       c.heading,
       c.description,
+      c.keywords,
       COALESCE(sc.subcategories, '[]'::json) AS subcategories
     FROM categories c
     LEFT JOIN LATERAL (
@@ -44,7 +47,8 @@ class CategoryRepository {
                  'path', s.path,
                  'title', s.title,
                  'heading', s.heading,
-                 'description', s.description
+                 'description', s.description,
+                 'keywords', s.keywords
                )
                ORDER BY s.position ASC, s.id ASC
              ) AS subcategories
@@ -61,6 +65,7 @@ class CategoryRepository {
       title: r.title,
       heading: r.heading,
       description: r.description,
+      keywords: r.keywords,
       subCategories: r.subcategories ?? [],
     }));
   };

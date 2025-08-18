@@ -14,9 +14,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
 
   // Request cached with force cache - https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#reusing-data-across-multiple-functions
   const products = await getProductsCached(path);
+  const category = products.length ? products[0].category : null;
+  const keywords = category?.keywords
+    ? Array.from(
+        new Set(
+          category.keywords
+            .split(/\r?\n|,/)
+            .map(s => s.trim())
+            .filter(Boolean),
+        ),
+      )
+    : products.slice(0, 30).map(p => p.title);
 
   return generateMetadataGeneral(lng, {
-    keywordsKeys: products.slice(0, 30).map(item => item.title),
+    keywordsKeys: keywords,
     titleKey: products[0]?.category?.title,
   });
 }

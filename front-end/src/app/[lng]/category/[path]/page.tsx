@@ -9,10 +9,21 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   const { path, lng } = await params;
 
   const products = await fetchProductByCategory(path);
+  const category = products.length ? products[0].category : null;
+  const keywords = category?.keywords
+    ? Array.from(
+        new Set(
+          category.keywords
+            .split(/\r?\n|,/)
+            .map(s => s.trim())
+            .filter(Boolean),
+        ),
+      )
+    : products.map(p => p.title);
 
   return generateMetadataGeneral(lng, {
     titleKey: products.length ? products[0].category.name : '',
-    keywordsKeys: products.map(item => item.title),
+    keywordsKeys: keywords,
   });
 }
 

@@ -21,8 +21,20 @@ export async function generateMetadata({
 
   const productsByCategory = products.filter(item => item.subCategory?.path === subpath);
 
+  const category = productsByCategory.length ? productsByCategory[0]?.subCategory : null;
+  const keywords = category?.keywords
+    ? Array.from(
+        new Set(
+          category.keywords
+            .split(/\r?\n|,/)
+            .map(s => s.trim())
+            .filter(Boolean),
+        ),
+      )
+    : productsByCategory.slice(0, 30).map(p => p.title);
+
   return generateMetadataGeneral(lng, {
-    keywordsKeys: productsByCategory.map(item => item.title),
+    keywordsKeys: keywords,
     titleKey: productsByCategory[0]?.subCategory?.title,
   });
 }

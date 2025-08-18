@@ -5,19 +5,21 @@ export class AddSubCategoryColumn1755370994442 implements MigrationInterface {
     // Categories: new meta + position
     await queryRunner.query(`
       ALTER TABLE "categories"
---         ADD COLUMN "title" varchar(255),
---         ADD COLUMN "description" text,
---         ADD COLUMN "heading" varchar(255),
+        ADD COLUMN "title" varchar(255),
+        ADD COLUMN "description" text,
+        ADD COLUMN "heading" varchar(255),
         ADD COLUMN "position" integer NOT NULL DEFAULT 10000
+        ADD COLUMN IF NOT EXISTS "keywords" text
     `);
 
     // Subcategories: new meta + position
     await queryRunner.query(`
       ALTER TABLE "subcategories"
---         ADD COLUMN "title" varchar(255),
---         ADD COLUMN "description" text,
---         ADD COLUMN "heading" varchar(255),
+        ADD COLUMN "title" varchar(255),
+        ADD COLUMN "description" text,
+        ADD COLUMN "heading" varchar(255),
         ADD COLUMN "position" integer NOT NULL DEFAULT 10000
+        ADD COLUMN IF NOT EXISTS "keywords" text
     `);
 
     // Seed SEO fields if empty
@@ -265,6 +267,45 @@ export class AddSubCategoryColumn1755370994442 implements MigrationInterface {
         ELSE 10000
       END
       WHERE "categoryid" = 17;
+    `);
+
+    // Generic keywords from the name (only if empty)
+    await queryRunner.query(`
+      UPDATE "categories" c
+      SET "keywords" = (
+        SELECT string_agg(k, E'\\n')
+        FROM (
+               SELECT lower(c."name")                             AS k UNION ALL
+               SELECT 'купити ' || lower(c."name")               UNION ALL
+               SELECT lower(c."name") || ' купити'               UNION ALL
+               SELECT 'ціна ' || lower(c."name")                 UNION ALL
+               SELECT lower(c."name") || ' ціна'                 UNION ALL
+               SELECT 'вартість ' || lower(c."name")             UNION ALL
+               SELECT lower(c."name") || ' вартість'             UNION ALL
+               SELECT lower(c."name") || ' обладнання'           UNION ALL
+               SELECT 'обладнання ' || lower(c."name")
+             ) q
+      )
+      WHERE (c."keywords" IS NULL OR c."keywords" = '');
+    `);
+
+    await queryRunner.query(`
+      UPDATE "subcategories" s
+      SET "keywords" = (
+        SELECT string_agg(k, E'\\n')
+        FROM (
+          SELECT lower(s."name")                             AS k UNION ALL
+          SELECT 'купити ' || lower(s."name")               UNION ALL
+          SELECT lower(s."name") || ' купити'               UNION ALL
+          SELECT 'ціна ' || lower(s."name")                 UNION ALL
+          SELECT lower(s."name") || ' ціна'                 UNION ALL
+          SELECT 'вартість ' || lower(s."name")             UNION ALL
+          SELECT lower(s."name") || ' вартість'             UNION ALL
+          SELECT lower(s."name") || ' обладнання'           UNION ALL
+          SELECT 'обладнання ' || lower(s."name")
+        ) q
+      )
+      WHERE (s."keywords" IS NULL OR s."keywords" = '');
     `);
 
     // Optional: keep your long SEO description for "Хірургія"

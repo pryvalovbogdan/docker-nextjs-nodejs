@@ -1,4 +1,3 @@
-// emeraldHtmlStyles.ts
 export const emeraldHtmlStyles = `
 .emerald-html {
   --eh-emerald: #036753;
@@ -25,7 +24,6 @@ export const emeraldHtmlStyles = `
   line-height: 1.8;
 }
 
-/* Headings (neutral text color, no emerald text) */
 .emerald-html h1,
 .emerald-html h2,
 .emerald-html h3,
@@ -199,12 +197,28 @@ export const emeraldHtmlStyles = `
   overflow: hidden;
 }
 
-/* Responsive tweaks */
 @media (max-width: 768px) {
   .emerald-html .eh-body { padding: 16px; font-size: 15px; }
   .emerald-html h1 { font-size: 24px; }
   .emerald-html h2 { font-size: 20px; }
   .emerald-html h3 { font-size: 18px; }
   .emerald-html iframe { height: 240px; }
+  
+  
+  .emerald-html table {
+    display: block;                  
+    overflow-x: auto;               
+    -webkit-overflow-scrolling: touch;
+  }
+  .emerald-html th,
+  .emerald-html td {
+    padding: 10px 8px;          
+    font-size: 14px;
+  }
+  
+  @media (max-width: 420px) {
+   .emerald-html th:nth-child(1),
+   .emerald-html td:nth-child(1) { min-width: 140px; }
+  }
 }
 `;
