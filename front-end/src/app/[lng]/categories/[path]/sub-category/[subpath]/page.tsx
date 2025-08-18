@@ -23,7 +23,7 @@ export async function generateMetadata({
 
   return generateMetadataGeneral(lng, {
     keywordsKeys: productsByCategory.map(item => item.title),
-    titleKey: productsByCategory[0]?.subCategory?.name,
+    titleKey: productsByCategory[0]?.subCategory?.title,
   });
 }
 

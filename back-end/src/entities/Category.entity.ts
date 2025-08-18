@@ -12,7 +12,13 @@ export class Category {
   name: string;
 
   @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
-  path: string;
+  path: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  title: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  description: string | null;
 
   @OneToMany(() => SubCategory, subCategory => subCategory.category, { nullable: true })
   subCategories?: SubCategory[];

@@ -44,9 +44,9 @@ const SubCategoryGrid = ({
     ? categories.reduce((acc, item) => {
         const sub = item.subCategories && item.subCategories?.find(s => s?.path === subcategory);
 
-        return sub ? sub.name : acc;
+        return sub ? sub.heading : acc;
       }, '')
-    : categoryData?.name;
+    : categoryData?.heading;
 
   const subcategoryPreviews =
     !subcategory && categoryData?.subCategories

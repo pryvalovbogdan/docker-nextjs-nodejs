@@ -5,12 +5,18 @@ export interface ISubCategoryResponse {
   name: string;
   categoryId: number;
   path: string;
+  description: string | null;
+  title: string;
+  heading: string;
 }
 
 export interface ICategoryResponse {
   id: number;
   name: string;
   path: string;
+  description: string | null;
+  title: string;
+  heading: string;
   subCategories?: ISubCategoryResponse[];
   products?: IProductResponse[];
 }

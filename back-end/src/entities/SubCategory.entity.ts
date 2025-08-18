@@ -1,3 +1,4 @@
+// SubCategory.entity.ts
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { Category } from './Category.entity';
@@ -12,7 +13,13 @@ export class SubCategory {
   name: string;
 
   @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
-  path: string;
+  path: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  title: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  description: string | null;
 
   @ManyToOne(() => Category, category => category.subCategories, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'categoryid' })

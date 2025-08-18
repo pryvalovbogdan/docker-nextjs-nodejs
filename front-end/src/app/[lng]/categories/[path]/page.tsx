@@ -15,11 +15,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   // Request cached with force cache - https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#reusing-data-across-multiple-functions
   const products = await getProductsCached(path);
 
-  console.log('products', products);
-
   return generateMetadataGeneral(lng, {
     keywordsKeys: products.slice(0, 30).map(item => item.title),
-    titleKey: products[0]?.category?.name,
+    titleKey: products[0]?.category?.title,
   });
 }
 
