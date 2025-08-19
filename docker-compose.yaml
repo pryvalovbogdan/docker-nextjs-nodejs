@@ -58,5 +58,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/cloudflare-ips.conf:/etc/nginx/conf.d/cloudflare-ips.conf
       - ./front-end/build:/usr/share/nginx/html
     restart: always
