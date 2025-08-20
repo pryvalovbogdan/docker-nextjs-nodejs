@@ -52,15 +52,26 @@ class ProductController {
   updateProduct = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
-    const category = JSON.parse(req.body.category);
-    const subCategory = req.body.subCategory ? JSON.parse(req.body.subCategory) : null;
+    const parseMaybeJSON = (v: any) => {
+      if (typeof v !== 'string') {
+        return v;
+      }
 
-    const files = req.files as File[];
+      try {
+        return JSON.parse(v);
+      } catch {
+        return v;
+      }
+    };
 
+    const category = parseMaybeJSON(req.body.category);
+    const subCategory = req.body.subCategory ? parseMaybeJSON(req.body.subCategory) : null;
+
+    const files = req.files as File[] | undefined;
     const imageKeys: string[] = [];
 
     if (files?.length) {
-      for (let file of files) {
+      for (const file of files) {
         const imageKey = randomImageName();
 
         await this.s3Service.uploadFileS3(imageKey, file.buffer, file.mimetype);
@@ -68,6 +79,19 @@ class ProductController {
       }
 
       req.body.images = imageKeys;
+    } else if (req.body.images !== undefined) {
+      if (typeof req.body.images === 'string') {
+        try {
+          const parsed = JSON.parse(req.body.images);
+
+          req.body.images = Array.isArray(parsed) ? parsed : [req.body.images];
+        } catch {
+          req.body.images = req.body.images
+            .split('|')
+            .map((s: string) => s.trim())
+            .filter(Boolean);
+        }
+      }
     }
 
     const product = {

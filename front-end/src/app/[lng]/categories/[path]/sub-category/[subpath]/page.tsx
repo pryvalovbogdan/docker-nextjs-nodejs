@@ -2,8 +2,8 @@ import { connection } from 'next/server';
 import { cache } from 'react';
 
 import { fetchCategories } from '@/entities/category/api';
-import { fetchLastAddedProducts, fetchProductByCategory } from '@/entities/product/api';
-import { MainView } from '@/views';
+import { fetchProductByCategory } from '@/entities/product/api';
+import { CategoriesView } from '@/views';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral } from '@i18n/utils';
 
@@ -21,9 +21,21 @@ export async function generateMetadata({
 
   const productsByCategory = products.filter(item => item.subCategory?.path === subpath);
 
+  const category = productsByCategory.length ? productsByCategory[0]?.subCategory : null;
+  const keywords = category?.keywords
+    ? Array.from(
+        new Set(
+          category.keywords
+            .split(/\r?\n|,/)
+            .map(s => s.trim())
+            .filter(Boolean),
+        ),
+      )
+    : productsByCategory.slice(0, 30).map(p => p.title);
+
   return generateMetadataGeneral(lng, {
-    keywordsKeys: productsByCategory.map(item => item.title),
-    titleKey: productsByCategory[0]?.subCategory?.name,
+    keywordsKeys: keywords,
+    titleKey: productsByCategory[0]?.subCategory?.title,
   });
 }
 
@@ -36,16 +48,6 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
   const categories = await fetchCategories();
 
   const products = await getProductsCached(path);
-  const lastAddedProducts = await fetchLastAddedProducts();
 
-  return (
-    <MainView
-      lng={lng}
-      products={products}
-      categories={categories}
-      lastAddedProducts={lastAddedProducts}
-      category={path}
-      subcategory={subpath}
-    />
-  );
+  return <CategoriesView lng={lng} products={products} categories={categories} category={path} subcategory={subpath} />;
 }

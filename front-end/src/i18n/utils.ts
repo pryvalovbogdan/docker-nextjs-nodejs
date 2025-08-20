@@ -21,11 +21,12 @@ export async function generateMetadataGeneral(
   const { t } = await useTranslation(lng);
 
   return {
-    title: t((metaConfig?.titleKey as TranslationKeys) || 'titleMain'),
+    title: metaConfig?.titleKey ? `${t(metaConfig?.titleKey as TranslationKeys)}` : t('titleMain'),
     description: t((metaConfig?.descriptionKey as TranslationKeys) || 'descriptionMain'),
-    keywords: metaConfig?.keywordsKeys
-      ? metaConfig.keywordsKeys.map(key => t(key as TranslationKeys))
-      : [t('buyTech'), t('medTech')],
+    keywords:
+      metaConfig?.keywordsKeys && metaConfig?.keywordsKeys.length
+        ? metaConfig.keywordsKeys.map(key => t(key as TranslationKeys))
+        : [t('buyTech'), t('medTech')],
     icons: {
       icon: metaConfig?.iconPath || '/favicon.png',
     },

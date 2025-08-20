@@ -9,29 +9,68 @@ class CategoryRepository {
   private subCategoryRepository: Repository<SubCategory> = AppDataSource.manager.getRepository(SubCategory);
 
   getCategoriesWithSubcategories = async (): Promise<
-    { id: number; name: string; subCategories: { id: number; name: string }[] }[]
+    {
+      id: number;
+      name: string;
+      path: string | null;
+      title: string | null;
+      heading: string | null;
+      description: string | null;
+      keywords: string | null;
+      position: number;
+      subCategories: {
+        id: number;
+        name: string;
+        path: string | null;
+        title: string | null;
+        heading: string | null;
+        description: string | null;
+        keywords: string | null;
+        position: number;
+      }[];
+    }[]
   > => {
     const rows = await this.categoryRepository.query(`
-      SELECT
-        c.id,
-        c.name,
-        c.path,
-        COALESCE(sc.subcategories, '[]'::json) AS subcategories
-      FROM categories c
-      LEFT JOIN LATERAL (
-        SELECT json_agg(
-                 json_build_object('id', s.id, 'name', s.name, 'path', s.path)
-                 ORDER BY s.name
-               ) AS subcategories
-        FROM subcategories s
-        WHERE s.categoryid = c.id
-      ) sc ON TRUE;
-    `);
+    SELECT
+      c.id,
+      c.name,
+      c.path,
+      c.title,
+      c.heading,
+      c.description,
+      c.keywords,
+      c.position,
+      COALESCE(sc.subcategories, '[]'::json) AS subcategories
+    FROM categories c
+    LEFT JOIN LATERAL (
+      SELECT json_agg(
+               json_build_object(
+                 'id', s.id,
+                 'name', s.name,
+                 'path', s.path,
+                 'title', s.title,
+                 'heading', s.heading,
+                 'description', s.description,
+                 'keywords', s.keywords,
+                 'position', s.position
+               )
+               ORDER BY s.position ASC, s.id ASC
+             ) AS subcategories
+      FROM subcategories s
+      WHERE s.categoryid = c.id
+    ) sc ON TRUE
+    ORDER BY c.position ASC, c.id ASC;
+  `);
 
     return rows.map((r: any) => ({
       id: r.id,
       name: r.name,
       path: r.path,
+      title: r.title,
+      heading: r.heading,
+      description: r.description,
+      keywords: r.keywords,
+      position: r.position,
       subCategories: r.subcategories ?? [],
     }));
   };
@@ -44,7 +83,7 @@ class CategoryRepository {
     let category = await this.getCategoryByName(categoryData.name!);
 
     if (!category) {
-      category = this.categoryRepository.create({ name: categoryData.name! });
+      category = this.categoryRepository.create(categoryData);
       category = await this.categoryRepository.save(category);
     }
 
@@ -72,6 +111,24 @@ class CategoryRepository {
 
   getCategoryByPath = async (path: string): Promise<Category | null> => {
     return this.categoryRepository.findOne({ where: { path } });
+  };
+
+  getById = async (id: number): Promise<Category | null> => {
+    return this.categoryRepository.findOne({ where: { id } });
+  };
+
+  updateCategory = async (id: number, patch: Partial<Category>): Promise<Category> => {
+    const entity = await this.getById(id);
+
+    if (!entity) {
+      throw new Error('Category not found');
+    }
+
+    this.categoryRepository.merge(entity, patch);
+
+    const saved = await this.categoryRepository.save(entity);
+
+    return saved;
   };
 }
 

@@ -1,17 +1,20 @@
 import { Order, OrdersApiResponse } from '@/entities/order/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 
-export async function createOrder(orderData: {
-  name: string;
-  email: string;
-  productId: number;
-  phone: string;
-}): Promise<{ success: boolean; message: string; data?: Order }> {
+export async function createOrder(
+  orderData: {
+    name: string;
+    email: string;
+    productId: number;
+    phone: string;
+  },
+  token: string,
+): Promise<{ success: boolean; message: string; data?: Order }> {
   try {
     const response: { message: string; data: Order } = await fetchWrapper('/api/order', {
       method: 'POST',
       body: JSON.stringify({ ...orderData, status: 'active' }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', Authorization: token },
     });
 
     return { success: true, message: response.message, data: response.data };

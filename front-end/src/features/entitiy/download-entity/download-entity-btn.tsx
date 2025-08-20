@@ -5,15 +5,14 @@ import { exportOrders } from '@/entities/order/api';
 import { exportProducts } from '@/entities/product/api';
 import { toaster } from '@/shared/ui/toaster';
 import { Button } from '@chakra-ui/react';
-import { TabKey } from '@features/entitiy/utils/types';
 
-const exportCSvFunctions: Record<TabKey, (token: string) => Promise<any>> = {
+const exportCSvFunctions: Record<'orders' | 'products', (token: string) => Promise<any>> = {
   orders: exportOrders,
   products: exportProducts,
 };
 
 interface IDownloadEntityBtn {
-  selectedTab: TabKey;
+  selectedTab: 'orders' | 'products';
   t: TFunction;
 }
 const DownloadEntityBtn = ({ selectedTab, t }: IDownloadEntityBtn) => {

@@ -57,7 +57,7 @@ const OrderDialog: React.FC<OrderDialogProps> = ({ product, lng }) => {
 
     setIsSubmitting(true);
 
-    const result = await createOrder({ ...orderData, productId: product.id });
+    const result = await createOrder({ ...orderData, productId: product.id }, '');
 
     if (result.success) {
       toaster.create({ type: 'success', title: t('orderSuccess') });

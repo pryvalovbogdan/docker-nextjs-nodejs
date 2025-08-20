@@ -15,10 +15,26 @@ export const dashBoardColumns = {
     { columnName: 'country', translateKey: 'columns.country' },
     { columnName: 'subCategory', translateKey: 'columns.subcategory' },
   ],
+  categories: [
+    { columnName: 'name', translateKey: 'columns.name' },
+    { columnName: 'id', translateKey: 'columns.id' },
+    { columnName: 'title', translateKey: 'columns.titleMeta' },
+    { columnName: 'heading', translateKey: 'columns.heading' },
+    { columnName: 'path', translateKey: 'columns.path' },
+    { columnName: 'description', translateKey: 'columns.description' },
+  ],
+  subcategories: [
+    { columnName: 'name', translateKey: 'columns.name' },
+    { columnName: 'title', translateKey: 'columns.titleMeta' },
+    { columnName: 'heading', translateKey: 'columns.heading' },
+    { columnName: 'path', translateKey: 'columns.path' },
+    { columnName: 'category', translateKey: 'columns.category' },
+    { columnName: 'description', translateKey: 'columns.description' },
+  ],
 };
 
 export const addEntityDashboardFields: Record<
-  'orders' | 'products' | 'admins',
+  'orders' | 'products' | 'admins' | 'categories' | 'subcategories',
   { name: string; type?: string; required?: boolean; translateKey?: any }[]
 > = {
   orders: [
@@ -40,5 +56,23 @@ export const addEntityDashboardFields: Record<
   admins: [
     { name: 'columns.username', required: true },
     { name: 'columns.password', type: 'password', required: true },
+  ],
+  categories: [
+    { name: 'name', required: true, translateKey: 'columns.name' },
+    { name: 'title', translateKey: 'columns.titleMeta' },
+    { name: 'description', type: 'textarea', translateKey: 'columns.description' },
+    { name: 'heading', translateKey: 'columns.heading' },
+    { name: 'path', required: true, translateKey: 'columns.path' },
+    { name: 'position', translateKey: 'columns.position' },
+    { name: 'keywords', translateKey: 'columns.keywords' },
+  ],
+  subcategories: [
+    { name: 'name', required: true, translateKey: 'columns.name' },
+    { name: 'title', translateKey: 'columns.titleMeta' },
+    { name: 'description', type: 'textarea', translateKey: 'columns.description' },
+    { name: 'heading', translateKey: 'columns.heading' },
+    { name: 'path', translateKey: 'columns.path' },
+    { name: 'keywords', translateKey: 'columns.keywords' },
+    { name: 'categoryId', required: true, translateKey: 'columns.category' },
   ],
 };
