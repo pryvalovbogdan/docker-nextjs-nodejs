@@ -131,7 +131,6 @@ const SubCategoryGrid = ({
                     maxW='100%'
                     w='auto'
                     h='auto'
-                    fallbackSrc='/placeholder.webp'
                   />
                 </Box>
                 <VStack
