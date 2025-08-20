@@ -4,19 +4,62 @@ import SubCategoryRepository from '../repositories/SubCategoryRepository';
 class SubCategoryService {
   private repository: SubCategoryRepository = new SubCategoryRepository();
 
-  async createSubCategory(name: string, categoryId: number): Promise<{ data?: SubCategory | null; errors: string[] }> {
+  async createSubCategoryFull(data: {
+    name: string;
+    categoryId: number;
+    path?: string | null;
+    title?: string | null;
+    heading?: string | null;
+    description?: string | null;
+    keywords?: string | null;
+    position?: number;
+  }): Promise<{ data?: SubCategory | null; errors: string[] }> {
+    try {
+      const created = await this.repository.createSubCategoryFull(data);
+
+      return created;
+    } catch (e) {
+      console.error('Error creating subcategory (full):', e);
+
+      return { errors: ['Failed to create subcategory'] };
+    }
+  }
+
+  async updateSubCategory(
+    id: number,
+    patch: Partial<SubCategory> & { categoryId?: number },
+  ): Promise<{ data?: SubCategory; errors: string[] }> {
+    try {
+      const exists = await this.repository.getById(id);
+
+      if (!exists) {
+        return { errors: ['Subcategory not found'] };
+      }
+
+      const updated = await this.repository.updateSubCategory(id, patch);
+
+      return { data: updated, errors: [] };
+    } catch (e) {
+      console.error('Error updating subcategory:', e);
+
+      return { errors: ['Error updating subcategory'] };
+    }
+  }
+
+  // existing methods...
+  async createSubCategory(name: string, categoryId: number) {
     return this.repository.createSubCategory(name, categoryId);
   }
 
-  async getSubCategory(name: string): Promise<{ data?: SubCategory | null; errors: string[] }> {
+  async getSubCategory(name: string) {
     return this.repository.getSubCategory(name);
   }
 
-  async getAllSubCategories(): Promise<{ data?: SubCategory[]; errors: string[] }> {
+  async getAllSubCategories() {
     return this.repository.getAllSubCategories();
   }
 
-  async deleteSubCategory(subCategoryId: number): Promise<void> {
+  async deleteSubCategory(subCategoryId: number) {
     await this.repository.deleteSubCategory(subCategoryId);
   }
 }

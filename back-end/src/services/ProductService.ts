@@ -21,7 +21,7 @@ class ProductService {
       let category = (await this.categoryService.getCategory(productData.category.name)).data;
 
       if (!category) {
-        const createCategoryResult = await this.categoryService.createCategory(productData.category.name);
+        const createCategoryResult = await this.categoryService.createCategory({ name: productData.category.name });
 
         if (createCategoryResult.errors.length) {
           return { errors: createCategoryResult.errors };

@@ -65,7 +65,9 @@
     "orders": "Замовлення",
     "admins": "Адміністратори",
     "products": "Продукти",
-    "news": "Новини"
+    "news": "Новини",
+    "categories": "Категорії",
+    "subcategories": "Підкатегорії"
   },
   "actions": {
     "edit": "Редагувати",
@@ -77,7 +79,6 @@
     "role": "Роль",
     "adminIp": "IP адміністратора",
     "createdAt": "Дата створення",
-    "title": "Заголовок",
     "description": "Опис",
     "date": "Дата",
     "name": "Ім'я",
@@ -90,7 +91,14 @@
     "country": "Країна",
     "password": "Пароль",
     "subcategory": "Під категорія",
-    "characteristics": "Характеристики"
+    "characteristics": "Характеристики",
+    "keywords": "Ключові слова",
+    "path": "Url",
+    "position": "Позиція",
+    "categoryId": "Категорія",
+    "title": "Заголовок",
+    "heading": "Заголовок сторінки",
+    "titleMeta": "Мета-заголовок"
   },
   "pagination": {
     "page": "Сторінка"

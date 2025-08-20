@@ -38,6 +38,93 @@ class CategoryController {
 
     responseHandler.sendSuccessResponse(res, 'Orders retrieved successfully', result.data);
   };
+
+  createCategory = async (req: Request, res: Response): Promise<void> => {
+    const { name, path, title, heading, description, keywords, position } = req.body;
+
+    try {
+      if (!name) {
+        responseHandler.sendFailResponse(res, 'Category name is required');
+
+        return;
+      }
+
+      const categoryData = {
+        name,
+        path,
+        title,
+        heading,
+        description,
+        keywords,
+        position: position ?? 10000,
+      };
+
+      const result = await this.service.createCategory(categoryData);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+      } else {
+        responseHandler.sendSuccessResponse(res, 'Category created successfully', result.data);
+      }
+    } catch (error) {
+      console.error('Error creating category:', error);
+      responseHandler.sendCatchResponse(res, 'Server error');
+    }
+  };
+
+  updateCategory = async (req: Request, res: Response): Promise<void> => {
+    const id = Number(req.params.id);
+
+    if (!Number.isFinite(id)) {
+      responseHandler.sendFailResponse(res, 'Invalid category id');
+
+      return;
+    }
+
+    console.log('ididididididid', id, req.body);
+    // Allow only known fields; ignore everything else
+    const ALLOWED: Array<
+      keyof {
+        name: string;
+        path: string | null;
+        title: string | null;
+        heading: string | null;
+        description: string | null;
+        keywords: string | null;
+        position: number;
+      }
+    > = ['name', 'path', 'title', 'heading', 'description', 'keywords', 'position'];
+
+    // Build a "patch" with only provided (non-undefined) fields
+    const patch: Record<string, any> = {};
+
+    for (const key of ALLOWED) {
+      if (key in req.body && req.body[key] !== undefined) {
+        patch[key] = req.body[key];
+      }
+    }
+
+    if (Object.keys(patch).length === 0) {
+      responseHandler.sendFailResponse(res, 'No fields to update');
+
+      return;
+    }
+
+    try {
+      const result = await this.service.updateCategory(id, patch);
+
+      if (result.errors.length) {
+        responseHandler.sendFailResponse(res, result.errors.join(', '));
+
+        return;
+      }
+
+      responseHandler.sendSuccessResponse(res, 'Category updated successfully', result.data);
+    } catch (error) {
+      console.error('Error updating category:', error);
+      responseHandler.sendCatchResponse(res, 'Server error');
+    }
+  };
 }
 
 export default CategoryController;

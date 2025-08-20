@@ -4,6 +4,7 @@ import { TFunction } from 'i18next';
 import React, { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
+import { createCategory, createSubCategory } from '@/entities/category/api';
 import { createOrder } from '@/entities/order/api';
 import { createProduct } from '@/entities/product/api';
 import {
@@ -23,7 +24,7 @@ interface IAddEntityDialogProps {
   isOpen: boolean;
   onClose: () => void;
   selectedTab: TabKey;
-  tab: 'orders' | 'products' | 'admins';
+  tab: 'orders' | 'products' | 'admins' | 'categories' | 'subcategories';
   t: TFunction;
   setData: React.Dispatch<React.SetStateAction<Record<TabKey, PaginatedData>>>;
   currentPage: number;
@@ -35,6 +36,8 @@ type CreateFunction = (formData: any, token?: string) => Promise<any>;
 const createFunctions: Record<TabKey, CreateFunction> = {
   orders: createOrder,
   products: (formData, token = '') => createProduct(formData, token),
+  categories: createCategory,
+  subcategories: createSubCategory,
 };
 
 const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({
@@ -59,6 +62,8 @@ const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({
 
     try {
       const response = await createFunctions[selectedTab](formData, token);
+
+      console.log('response', response);
 
       if (response.success) {
         toaster.create({ type: 'success', title: `${t(`tabs.${selectedTab}`)} ${t('addSuccess')}` });

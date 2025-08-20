@@ -65,7 +65,9 @@
     "orders": "Orders",
     "admins": "Admins",
     "products": "Products",
-    "news": "News"
+    "news": "News",
+    "categories": "Categories",
+    "subcategories": "Subcategories"
   },
   "actions": {
     "edit": "Edit",
@@ -90,7 +92,12 @@
     "country": "Country",
     "password": "Password",
     "subcategory": "Sub category",
-    "characteristics": "Characteristics"
+    "characteristics": "Characteristics",
+    "keywords": "Keywords",
+    "heading": "Heading",
+    "path": "Url",
+    "categoryId": "Category",
+    "titleMeta": "Meta-title"
   },
   "pagination": {
     "page": "Page"

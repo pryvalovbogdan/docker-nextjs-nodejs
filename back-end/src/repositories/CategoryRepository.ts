@@ -17,6 +17,7 @@ class CategoryRepository {
       heading: string | null;
       description: string | null;
       keywords: string | null;
+      position: number;
       subCategories: {
         id: number;
         name: string;
@@ -25,6 +26,7 @@ class CategoryRepository {
         heading: string | null;
         description: string | null;
         keywords: string | null;
+        position: number;
       }[];
     }[]
   > => {
@@ -37,6 +39,7 @@ class CategoryRepository {
       c.heading,
       c.description,
       c.keywords,
+      c.position,
       COALESCE(sc.subcategories, '[]'::json) AS subcategories
     FROM categories c
     LEFT JOIN LATERAL (
@@ -48,7 +51,8 @@ class CategoryRepository {
                  'title', s.title,
                  'heading', s.heading,
                  'description', s.description,
-                 'keywords', s.keywords
+                 'keywords', s.keywords,
+                 'position', s.position
                )
                ORDER BY s.position ASC, s.id ASC
              ) AS subcategories
@@ -66,6 +70,7 @@ class CategoryRepository {
       heading: r.heading,
       description: r.description,
       keywords: r.keywords,
+      position: r.position,
       subCategories: r.subcategories ?? [],
     }));
   };
@@ -78,7 +83,7 @@ class CategoryRepository {
     let category = await this.getCategoryByName(categoryData.name!);
 
     if (!category) {
-      category = this.categoryRepository.create({ name: categoryData.name! });
+      category = this.categoryRepository.create(categoryData);
       category = await this.categoryRepository.save(category);
     }
 
@@ -106,6 +111,24 @@ class CategoryRepository {
 
   getCategoryByPath = async (path: string): Promise<Category | null> => {
     return this.categoryRepository.findOne({ where: { path } });
+  };
+
+  getById = async (id: number): Promise<Category | null> => {
+    return this.categoryRepository.findOne({ where: { id } });
+  };
+
+  updateCategory = async (id: number, patch: Partial<Category>): Promise<Category> => {
+    const entity = await this.getById(id);
+
+    if (!entity) {
+      throw new Error('Category not found');
+    }
+
+    this.categoryRepository.merge(entity, patch);
+
+    const saved = await this.categoryRepository.save(entity);
+
+    return saved;
   };
 }
 

@@ -3,8 +3,15 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import {
+  IFetchCategoryResp,
+  IFetchSubCategoryResp,
+  fetchCategoriesDashboard,
+  fetchSubCategoriesDashboard,
+} from '@/entities/category/api';
 import { fetchOrders } from '@/entities/order/api';
-import { fetchProductsOffSet, fetchSearchProducts } from '@/entities/product/api';
+import { Order } from '@/entities/order/model/types';
+import { IFetchOffsetResp, fetchProductsOffSet, fetchSearchProducts } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import { Pagination, SkeletonTable, Toaster } from '@/shared/ui';
 import { Box, Button, Flex, HStack, Input, Skeleton, Text, VStack } from '@chakra-ui/react';
@@ -22,11 +29,28 @@ import { Layout } from '@widgets/layout';
 
 const PAGE_SIZE = 10;
 
-type FetchFunction = (token: string, page: number, pageSize: number) => Promise<any>;
-
-const fetchDataFunctions: Record<TabKey, FetchFunction> = {
+const fetchDataFunctions: {
+  orders: (
+    token: string,
+    page?: number,
+    limit?: number,
+  ) => Promise<
+    | {
+        success: boolean;
+        totalPages: number;
+        orders: Order[];
+        message: string;
+      }
+    | { success: boolean; message: string }
+  >;
+  categories: (isClient?: boolean) => Promise<IFetchCategoryResp>;
+  subcategories: (isClient?: boolean) => Promise<IFetchSubCategoryResp>;
+  products: (token: string, page: number, limit: number, isServerCall?: boolean) => Promise<IFetchOffsetResp>;
+} = {
   orders: fetchOrders,
   products: fetchProductsOffSet,
+  categories: fetchCategoriesDashboard,
+  subcategories: fetchSubCategoriesDashboard,
 };
 
 export default function Dashboard({ lng }: { lng: string }) {
@@ -34,6 +58,8 @@ export default function Dashboard({ lng }: { lng: string }) {
   const [data, setData] = useState<Record<TabKey, PaginatedData>>({
     orders: { pages: {}, totalPages: 1 },
     products: { pages: {}, totalPages: 1 },
+    categories: { pages: {}, totalPages: 1 },
+    subcategories: { pages: {}, totalPages: 1 },
   });
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -66,6 +92,8 @@ export default function Dashboard({ lng }: { lng: string }) {
 
     try {
       const response = await fetchDataFunctions[tab](token, page, PAGE_SIZE);
+
+      console.log('response', response, token, page, PAGE_SIZE, tab, response[tab]);
 
       if (response.success) {
         setData(prev => ({
@@ -105,6 +133,8 @@ export default function Dashboard({ lng }: { lng: string }) {
 
     if (Object.keys(data[tab].pages).length === 0) fetchData(tab);
   };
+
+  console.log('data', data);
 
   const handleSearch = async () => {
     try {
@@ -176,9 +206,12 @@ export default function Dashboard({ lng }: { lng: string }) {
                   <Button onClick={handleSearch}>{t('searchProduct')}</Button>
                 </HStack>
               )}
-              <Flex justifyContent='flex-end'>
-                <DownloadEntityBtn t={t} selectedTab={selectedTab} />
-              </Flex>
+              {selectedTab === 'orders' ||
+                (selectedTab === 'products' && (
+                  <Flex justifyContent='flex-end'>
+                    <DownloadEntityBtn t={t} selectedTab={selectedTab} />
+                  </Flex>
+                ))}
               <Button colorScheme='green' onClick={() => setIsDialogOpen(true)}>
                 {t('add')} {t(`tabs.${selectedTab}`)}
               </Button>
@@ -217,7 +250,7 @@ export default function Dashboard({ lng }: { lng: string }) {
                     {renderCellValue(row, column.columnName)}
                   </Text>
                 ))}
-                {selectedTab === 'products' && (
+                {(selectedTab === 'products' || selectedTab === 'categories' || selectedTab === 'subcategories') && (
                   <HStack>
                     <Button
                       variant='outline'
@@ -255,9 +288,10 @@ export default function Dashboard({ lng }: { lng: string }) {
             setIsDialogOpen={setIsUpdateDialogOpen}
             t={t}
             isOpen={isUpdateDialogOpen}
-            data={data.products.pages[currentPage].find(item => item.id === selectedId)}
+            data={data[selectedTab].pages[currentPage].find(item => item.id === selectedId)}
             setData={setData}
             currentPage={currentPage}
+            selectedTab={selectedTab}
           />
         )}
       </Box>

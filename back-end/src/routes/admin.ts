@@ -1,7 +1,14 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import { AdminController, NewsController, OrderController, ProductController } from '../controllers';
+import {
+  AdminController,
+  NewsController,
+  OrderController,
+  ProductController,
+  SubCategoryController,
+} from '../controllers';
+import CategoryController from '../controllers/CategoryController';
 import { validateAdminJWT } from '../middleware/jwtMiddleWare';
 import { validateProps } from '../utils/validation';
 
@@ -15,6 +22,8 @@ const adminController = new AdminController();
 const newsController = new NewsController();
 const orderController = new OrderController();
 const productController = new ProductController();
+const categoryController = new CategoryController();
+const subCategoryController = new SubCategoryController();
 
 // Route to authenticate admin user
 router.post('/login', validateProps('login'), adminController.login);
@@ -22,6 +31,10 @@ router.post('/login', validateProps('login'), adminController.login);
 // Protect all admin routes
 router.use(validateAdminJWT);
 
+router.post('/categories', categoryController.createCategory);
+router.post('/categories/:id', upload.array('image', 3), categoryController.updateCategory);
+router.post('/subcategories', subCategoryController.createSubCategory);
+router.post('/subcategories/:id', upload.array('image', 3), subCategoryController.updateSubCategory);
 router.get('/orders', orderController.getOrders);
 router.post('/register', validateProps('register'), adminController.register);
 router.get('/products/export', productController.exportProductsCSV);

@@ -4,6 +4,7 @@ import { TFunction } from 'i18next';
 import React, { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
+import { updateCategory, updateSubCategory } from '@/entities/category/api';
 import { updateProduct } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import {
@@ -27,7 +28,16 @@ interface IUpdateProductDialogProps {
   data: IProductResponse;
   setData: React.Dispatch<React.SetStateAction<Record<TabKey, PaginatedData>>>;
   currentPage: number;
+  selectedTab: string;
 }
+
+type UpdateFunction = (formData: any, token?: string, id?: number) => Promise<any>;
+
+const updateFunctions: Record<'products' | 'categories' | 'subcategories', UpdateFunction> = {
+  products: (formData, token, id) => updateProduct(formData, token || '', id || 1),
+  categories: updateCategory,
+  subcategories: updateSubCategory,
+};
 
 const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   isOpen,
@@ -37,12 +47,16 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   data,
   setData,
   currentPage,
+  selectedTab,
 }) => {
-  const mappedData: Record<string, any> = {
-    ...data,
-    category: data.category.name,
-    subCategory: data.subCategory?.name || null,
-  };
+  const mappedData: Record<string, any> =
+    selectedTab === 'product'
+      ? {
+          ...data,
+          category: data.category.name,
+          subCategory: data.subCategory?.name || null,
+        }
+      : data;
 
   const [formData, setFormData] = useState<Record<string, any>>(mappedData);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -55,7 +69,9 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
     if (!token) return;
 
     try {
-      const response = await updateProduct(formData, token, data?.id || 1);
+      const response = await updateFunctions[selectedTab](formData, token, data?.id || 1);
+
+      console.log('responseresponse', response);
 
       if (response.success) {
         toaster.create({ type: 'success', title: `${t(`tabs.products`)} ${t('addSuccess')}` });
@@ -63,11 +79,13 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
         setData(prev => {
           return {
             ...prev,
-            products: {
-              ...prev.products,
+            [selectedTab]: {
+              ...prev[selectedTab],
               pages: {
-                ...prev.products.pages,
-                [currentPage]: prev.products.pages[currentPage].map(item => {
+                ...prev[selectedTab].pages,
+                [currentPage]: prev[selectedTab].pages[currentPage].map(item => {
+                  console.log('item', item, response.data);
+
                   if (item.id === response.data?.id) {
                     return response.data;
                   }
@@ -99,11 +117,15 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   };
 
   const handleSubmit = async () => {
-    const requiredFields = addEntityDashboardFields.products.filter(field => field.required).map(field => field.name);
+    const requiredFields = addEntityDashboardFields[selectedTab]
+      .filter(field => field.required)
+      .map(field => field.name);
     const newErrors: Record<string, string> = {};
 
     requiredFields.forEach(field => {
-      if (!formData[field]?.trim()) {
+      console.log('formData[field]', formData[field]);
+
+      if (typeof formData[field] === 'string' && !formData[field]?.trim()) {
         newErrors[field] = t('fieldRequired');
       }
     });
@@ -151,6 +173,8 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
     setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
 
+  console.log('data', data);
+
   return (
     <DialogRoot open={isOpen} onOpenChange={e => !e.open && handleClose()}>
       <DialogContent bg='white' borderRadius='lg' boxShadow='xl' p={6}>
@@ -162,7 +186,7 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
 
         <DialogBody>
           <VStack align='stretch'>
-            {addEntityDashboardFields.products.map(({ name, type, required, translateKey }) => {
+            {addEntityDashboardFields[selectedTab].map(({ name, type, required, translateKey }) => {
               return (
                 <Box key={name}>
                   <Text fontSize='sm' fontWeight='bold' color='gray.800'>
@@ -198,36 +222,38 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
               );
             })}
           </VStack>
-          <Box>
-            <Text fontSize='sm' fontWeight='bold' color='gray.800'>
-              {t('images')}
-            </Text>
-            <Input type='file' multiple accept='image/*' onChange={handleImageUpload} />
-            {errors.images && (
-              <Text color='red.500' fontSize='sm'>
-                {errors.images}
+          {selectedTab === 'products' && (
+            <Box>
+              <Text fontSize='sm' fontWeight='bold' color='gray.800'>
+                {t('images')}
               </Text>
-            )}
-            <Flex mt={2} gap={2} flexWrap='wrap'>
-              {selectedImages.map((file, index) => (
-                <Box key={index} position='relative' border='1px solid gray' borderRadius='md' p={1}>
-                  <Image src={URL.createObjectURL(file)} alt='preview' boxSize='80px' objectFit='cover' />
-                  <IconButton
-                    size='xs'
-                    aria-label='Remove image'
-                    color='white'
-                    bg='emerald.800'
-                    position='absolute'
-                    top='-6px'
-                    right='-6px'
-                    onClick={() => handleRemoveImage(index)}
-                  >
-                    <AiOutlineCloseCircle />
-                  </IconButton>
-                </Box>
-              ))}
-            </Flex>
-          </Box>
+              <Input type='file' multiple accept='image/*' onChange={handleImageUpload} />
+              {errors.images && (
+                <Text color='red.500' fontSize='sm'>
+                  {errors.images}
+                </Text>
+              )}
+              <Flex mt={2} gap={2} flexWrap='wrap'>
+                {selectedImages.map((file, index) => (
+                  <Box key={index} position='relative' border='1px solid gray' borderRadius='md' p={1}>
+                    <Image src={URL.createObjectURL(file)} alt='preview' boxSize='80px' objectFit='cover' />
+                    <IconButton
+                      size='xs'
+                      aria-label='Remove image'
+                      color='white'
+                      bg='emerald.800'
+                      position='absolute'
+                      top='-6px'
+                      right='-6px'
+                      onClick={() => handleRemoveImage(index)}
+                    >
+                      <AiOutlineCloseCircle />
+                    </IconButton>
+                  </Box>
+                ))}
+              </Flex>
+            </Box>
+          )}
         </DialogBody>
         <DialogFooter>
           <Flex justify='flex-end' w='100%'>

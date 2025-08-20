@@ -7,7 +7,7 @@ import { toaster } from '@/shared/ui/toaster';
 import { Button } from '@chakra-ui/react';
 import { TabKey } from '@features/entitiy/utils/types';
 
-const exportCSvFunctions: Record<TabKey, (token: string) => Promise<any>> = {
+const exportCSvFunctions: Record<'orders' | 'products', (token: string) => Promise<any>> = {
   orders: exportOrders,
   products: exportProducts,
 };

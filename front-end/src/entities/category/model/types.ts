@@ -20,3 +20,16 @@ export interface ICategoryResponse {
   subCategories?: ISubCategoryResponse[];
   products?: IProductResponse[];
 }
+
+export interface ISubCategoryResponseReturn {
+  success: boolean;
+  data: {
+    id: number;
+    name: string;
+    categoryId: number;
+    path: string;
+    description: string | null;
+    title: string;
+    heading: string;
+  };
+}

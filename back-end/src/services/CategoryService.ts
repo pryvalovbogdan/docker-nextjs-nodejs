@@ -16,9 +16,13 @@ class CategoryService {
     }
   }
 
-  async createCategory(name: string, subCategory?: string): Promise<{ data?: Category; errors: string[] }> {
+  async createCategory(data: Partial<Category>): Promise<{ data?: Category; errors: string[] }> {
     try {
-      const category = await this.repository.saveCategory({ name }, subCategory);
+      if (!data.name) {
+        return { errors: ['Name is required'] };
+      }
+
+      const category = await this.repository.saveCategory(data);
 
       return { data: category, errors: [] };
     } catch (error) {
@@ -56,6 +60,24 @@ class CategoryService {
       console.error('Error retrieving category:', error);
 
       return { errors: ['Error retrieving category'] };
+    }
+  }
+
+  async updateCategory(id: number, data: Partial<Category>): Promise<{ data?: Category; errors: string[] }> {
+    try {
+      const exists = await this.repository.getById(id);
+
+      if (!exists) {
+        return { errors: ['Category not found'] };
+      }
+
+      const updated = await this.repository.updateCategory(id, data);
+
+      return { data: updated, errors: [] };
+    } catch (error) {
+      console.error('Error updating category:', error);
+
+      return { errors: ['Error updating category'] };
     }
   }
 }
