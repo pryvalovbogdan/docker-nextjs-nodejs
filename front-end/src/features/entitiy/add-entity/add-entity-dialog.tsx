@@ -34,10 +34,10 @@ interface IAddEntityDialogProps {
 type CreateFunction = (formData: any, token?: string) => Promise<any>;
 
 const createFunctions: Record<TabKey, CreateFunction> = {
-  orders: createOrder,
+  orders: (formData, token = '') => createOrder(formData, token),
   products: (formData, token = '') => createProduct(formData, token),
-  categories: createCategory,
-  subcategories: createSubCategory,
+  categories: (body, token = '') => createCategory(body, token),
+  subcategories: (body, token = '') => createSubCategory(body, token),
 };
 
 const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({

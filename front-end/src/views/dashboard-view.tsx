@@ -3,15 +3,9 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import {
-  IFetchCategoryResp,
-  IFetchSubCategoryResp,
-  fetchCategoriesDashboard,
-  fetchSubCategoriesDashboard,
-} from '@/entities/category/api';
+import { fetchCategoriesDashboard, fetchSubCategoriesDashboard } from '@/entities/category/api';
 import { fetchOrders } from '@/entities/order/api';
-import { Order } from '@/entities/order/model/types';
-import { IFetchOffsetResp, fetchProductsOffSet, fetchSearchProducts } from '@/entities/product/api';
+import { fetchProductsOffSet, fetchSearchProducts } from '@/entities/product/api';
 import { IProductResponse } from '@/entities/product/model/types';
 import { Pagination, SkeletonTable, Toaster } from '@/shared/ui';
 import { Box, Button, Flex, HStack, Input, Skeleton, Text, VStack } from '@chakra-ui/react';
@@ -29,29 +23,12 @@ import { Layout } from '@widgets/layout';
 
 const PAGE_SIZE = 10;
 
-const fetchDataFunctions: {
-  orders: (
-    token: string,
-    page?: number,
-    limit?: number,
-  ) => Promise<
-    | {
-        success: boolean;
-        totalPages: number;
-        orders: Order[];
-        message: string;
-      }
-    | { success: boolean; message: string }
-  >;
-  categories: (isClient?: boolean) => Promise<IFetchCategoryResp>;
-  subcategories: (isClient?: boolean) => Promise<IFetchSubCategoryResp>;
-  products: (token: string, page: number, limit: number, isServerCall?: boolean) => Promise<IFetchOffsetResp>;
-} = {
+const fetchDataFunctions = {
   orders: fetchOrders,
   products: fetchProductsOffSet,
   categories: fetchCategoriesDashboard,
   subcategories: fetchSubCategoriesDashboard,
-};
+} as const;
 
 export default function Dashboard({ lng }: { lng: string }) {
   const [selectedTab, setSelectedTab] = useState<TabKey>('orders');
@@ -91,7 +68,7 @@ export default function Dashboard({ lng }: { lng: string }) {
     setIsLoading(true);
 
     try {
-      const response: any = await fetchDataFunctions[tab](token, page, PAGE_SIZE);
+      const response: any = await fetchDataFunctions[tab](token as never, page, PAGE_SIZE);
 
       if (response.success) {
         setData(prev => ({
@@ -131,8 +108,6 @@ export default function Dashboard({ lng }: { lng: string }) {
 
     if (Object.keys(data[tab].pages).length === 0) fetchData(tab);
   };
-
-  console.log('data', data);
 
   const handleSearch = async () => {
     try {
@@ -289,7 +264,7 @@ export default function Dashboard({ lng }: { lng: string }) {
             data={data[selectedTab].pages[currentPage].find(item => item.id === selectedId)}
             setData={setData}
             currentPage={currentPage}
-            selectedTab={selectedTab}
+            selectedTab={selectedTab as 'products' | 'categories' | 'subcategories'}
           />
         )}
       </Box>

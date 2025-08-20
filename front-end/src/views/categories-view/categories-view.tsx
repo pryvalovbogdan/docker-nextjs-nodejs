@@ -3,7 +3,6 @@ import CategoryDescription from '@/entities/category/ui/category-description';
 import SubCategoryGrid from '@/entities/category/ui/sub-category-grid';
 import { IProductResponse } from '@/entities/product/model/types';
 import { ItemListJsonLd } from '@/shared/ui';
-import { sanitizeHTML } from '@/shared/utils';
 import { Catalog, Layout, WhyUs } from '@/widgets';
 import { ContactButton } from '@features/contact';
 
@@ -24,7 +23,7 @@ const CategoriesView = ({
 }) => {
   const description = subcategory
     ? categories.reduce((acc, item) => {
-        const sub = item.subCategories?.find(sub => sub.path === subcategory);
+        const sub = (item.subCategories as any)?.find((sub: any) => sub.path === subcategory);
 
         if (sub) {
           return sub.description;
@@ -68,7 +67,7 @@ const CategoriesView = ({
         )}
       </div>
 
-      {description && <CategoryDescription html={description} variant='full' sanitize={sanitizeHTML} mt={3} />}
+      {description && <CategoryDescription html={description} variant='full' mt={3} />}
       <WhyUs lng={lng} withHeading />
       <ContactButton lng={lng} />
     </Layout>

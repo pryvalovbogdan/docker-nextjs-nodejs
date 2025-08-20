@@ -28,15 +28,15 @@ interface IUpdateProductDialogProps {
   data: IProductResponse;
   setData: React.Dispatch<React.SetStateAction<Record<TabKey, PaginatedData>>>;
   currentPage: number;
-  selectedTab: string;
+  selectedTab: 'products' | 'categories' | 'subcategories';
 }
 
 type UpdateFunction = (formData: any, token?: string, id?: number) => Promise<any>;
 
 const updateFunctions: Record<'products' | 'categories' | 'subcategories', UpdateFunction> = {
   products: (formData, token, id) => updateProduct(formData, token || '', id || 1),
-  categories: updateCategory,
-  subcategories: updateSubCategory,
+  categories: (formData, token, id) => updateCategory(formData, token || '', id || 1),
+  subcategories: (formData, token, id) => updateSubCategory(formData, token || '', id || 1),
 };
 
 const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
@@ -50,7 +50,7 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   selectedTab,
 }) => {
   const mappedData: Record<string, any> =
-    selectedTab === 'product'
+    selectedTab === 'products'
       ? {
           ...data,
           category: data.category.name,
@@ -170,8 +170,6 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
   const handleRemoveImage = (index: number) => {
     setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-
-  console.log('data', data);
 
   return (
     <DialogRoot open={isOpen} onOpenChange={e => !e.open && handleClose()}>
