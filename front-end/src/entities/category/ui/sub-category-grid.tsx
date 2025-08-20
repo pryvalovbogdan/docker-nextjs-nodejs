@@ -142,7 +142,6 @@ const SubCategoryGrid = ({
                       color='black'
                       _groupHover={{ color: '#036753' }}
                       transition='color 0.2s ease'
-                      noOfLines={2}
                     >
                       {sub.name}
                     </Text>
