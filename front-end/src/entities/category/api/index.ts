@@ -1,4 +1,9 @@
-import { ICategoryResponse, ISubCategoryResponse, ISubCategoryResponseReturn } from '@/entities/category/model/types';
+import {
+  ICategoryResponse,
+  ISubCategoryResponse,
+  ISubCategoryResponseReturn,
+  ISubcategoryDashboardRow,
+} from '@/entities/category/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -40,7 +45,7 @@ export async function fetchCategoriesDashboard(isClient?: boolean): Promise<IFet
 }
 
 export interface IFetchSubCategoryResp {
-  subcategories: ICategoryResponse[];
+  subcategories: ISubcategoryDashboardRow[];
   totalPages?: number;
   success?: boolean;
   message?: string;
@@ -51,8 +56,14 @@ export async function fetchSubCategoriesDashboard(isClient?: boolean): Promise<I
     const prefix = !isClient ? baseURL : '';
     const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${prefix}/api/subcategories/`);
 
-    const sub = data.reduce((acc, item) => {
-      item.subCategories?.forEach(sub => acc.push({ ...sub, category: item.name, categoryId: item.id }));
+    const sub = data.reduce<ISubcategoryDashboardRow[]>((acc, item) => {
+      item.subCategories?.forEach(sc => {
+        acc.push({
+          ...sc,
+          category: item.name,
+          categoryId: item.id,
+        } as ISubcategoryDashboardRow);
+      });
 
       return acc;
     }, []);

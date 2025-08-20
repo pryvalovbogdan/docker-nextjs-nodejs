@@ -34,3 +34,7 @@ export interface ISubCategoryResponseReturn {
     category: string;
   };
 }
+
+export interface ISubcategoryDashboardRow extends ISubCategoryResponse {
+  category: string;
+}

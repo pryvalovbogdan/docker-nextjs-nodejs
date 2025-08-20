@@ -91,9 +91,7 @@ export default function Dashboard({ lng }: { lng: string }) {
     setIsLoading(true);
 
     try {
-      const response = await fetchDataFunctions[tab](token, page, PAGE_SIZE);
-
-      console.log('response', response, token, page, PAGE_SIZE, tab, response[tab]);
+      const response: any = await fetchDataFunctions[tab](token, page, PAGE_SIZE);
 
       if (response.success) {
         setData(prev => ({
