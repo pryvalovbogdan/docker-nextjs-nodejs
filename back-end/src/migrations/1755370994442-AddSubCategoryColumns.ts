@@ -1,25 +1,25 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddSubCategoryColumn1755370994442 implements MigrationInterface {
+export class AddSubCategoryColumn1755370994443 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Categories: new meta + position
     await queryRunner.query(`
       ALTER TABLE "categories"
-        ADD COLUMN "title" varchar(255),
-        ADD COLUMN "description" text,
-        ADD COLUMN "heading" varchar(255),
-        ADD COLUMN "position" integer NOT NULL DEFAULT 10000
-        ADD COLUMN IF NOT EXISTS "keywords" text
+        ADD COLUMN IF NOT EXISTS "title" varchar(255),
+        ADD COLUMN IF NOT EXISTS "description" text,
+        ADD COLUMN IF NOT EXISTS "heading" varchar(255),
+        ADD COLUMN IF NOT EXISTS "position" integer NOT NULL DEFAULT 10000,
+        ADD COLUMN IF NOT EXISTS "keywords" text;
     `);
 
     // Subcategories: new meta + position
     await queryRunner.query(`
       ALTER TABLE "subcategories"
-        ADD COLUMN "title" varchar(255),
-        ADD COLUMN "description" text,
-        ADD COLUMN "heading" varchar(255),
-        ADD COLUMN "position" integer NOT NULL DEFAULT 10000
-        ADD COLUMN IF NOT EXISTS "keywords" text
+        ADD COLUMN IF NOT EXISTS "title" varchar(255),
+        ADD COLUMN IF NOT EXISTS "description" text,
+        ADD COLUMN IF NOT EXISTS "heading" varchar(255),
+        ADD COLUMN IF NOT EXISTS "position" integer NOT NULL DEFAULT 10000,
+        ADD COLUMN IF NOT EXISTS "keywords" text;
     `);
 
     // Seed SEO fields if empty
@@ -312,18 +312,20 @@ export class AddSubCategoryColumn1755370994442 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE "subcategories"
-        DROP COLUMN "position",
-        DROP COLUMN "heading",
-        DROP COLUMN "description",
-        DROP COLUMN "title"
+        DROP COLUMN IF EXISTS "keywords",
+        DROP COLUMN IF EXISTS "position",
+        DROP COLUMN IF EXISTS "heading",
+        DROP COLUMN IF EXISTS "description",
+        DROP COLUMN IF EXISTS "title";
     `);
 
     await queryRunner.query(`
       ALTER TABLE "categories"
-        DROP COLUMN "position",
-        DROP COLUMN "heading",
-        DROP COLUMN "description",
-        DROP COLUMN "title"
+        DROP COLUMN IF EXISTS "keywords",
+        DROP COLUMN IF EXISTS "position",
+        DROP COLUMN IF EXISTS "heading",
+        DROP COLUMN IF EXISTS "description",
+        DROP COLUMN IF EXISTS "title";
     `);
   }
 }
