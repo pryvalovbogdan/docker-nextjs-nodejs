@@ -133,13 +133,7 @@ const SubCategoryGrid = ({
                     h='auto'
                   />
                 </Box>
-                <VStack
-                  align='start'
-                  spacing={{ base: 1, md: 2 }}
-                  p={{ base: 3, md: 4 }}
-                  flex='1'
-                  justify='space-between'
-                >
+                <VStack align='start' p={{ base: 3, md: 4 }} flex='1' justify='space-between'>
                   <Box w='100%'>
                     <Text
                       as='span'
