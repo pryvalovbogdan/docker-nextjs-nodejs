@@ -125,6 +125,24 @@ class CategoryController {
       responseHandler.sendCatchResponse(res, 'Server error');
     }
   };
+
+  deleteCategory = async (req: Request, res: Response): Promise<void> => {
+    const id = Number(req.params.id);
+
+    if (!Number.isFinite(id)) {
+      responseHandler.sendFailResponse(res, 'Invalid category id');
+
+      return;
+    }
+
+    try {
+      await this.service.deleteCategory(id);
+      responseHandler.sendSuccessResponse(res, 'Category deleted successfully', { id });
+    } catch (error) {
+      console.error('Error deleting category:', error);
+      responseHandler.sendCatchResponse(res, 'Server error');
+    }
+  };
 }
 
 export default CategoryController;

@@ -9,7 +9,6 @@ class SubCategoryController {
   createSubCategory = async (req: Request, res: Response): Promise<void> => {
     const { name, categoryId, path, title, heading, description, keywords, position } = req.body;
 
-    console.log('req.body;', req.body);
     try {
       if (!name) {
         responseHandler.sendFailResponse(res, 'Subcategory name is required');
@@ -95,6 +94,24 @@ class SubCategoryController {
       responseHandler.sendSuccessResponse(res, 'Subcategory updated successfully', result.data);
     } catch (error) {
       console.error('Error updating subcategory:', error);
+      responseHandler.sendCatchResponse(res, 'Server error');
+    }
+  };
+
+  deleteSubCategory = async (req: Request, res: Response): Promise<void> => {
+    const id = Number(req.params.id);
+
+    if (!Number.isFinite(id)) {
+      responseHandler.sendFailResponse(res, 'Invalid subcategory id');
+
+      return;
+    }
+
+    try {
+      await this.service.deleteSubCategory(id);
+      responseHandler.sendSuccessResponse(res, 'Subcategory deleted successfully', { id });
+    } catch (error) {
+      console.error('Error deleting subcategory:', error);
       responseHandler.sendCatchResponse(res, 'Server error');
     }
   };

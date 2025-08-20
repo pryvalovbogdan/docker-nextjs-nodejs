@@ -31,5 +31,6 @@ export interface ISubCategoryResponseReturn {
     description: string | null;
     title: string;
     heading: string;
+    category: string;
   };
 }

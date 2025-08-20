@@ -33,8 +33,10 @@ router.use(validateAdminJWT);
 
 router.post('/categories', categoryController.createCategory);
 router.post('/categories/:id', upload.array('image', 3), categoryController.updateCategory);
+router.delete('/categories/:id', categoryController.deleteCategory);
 router.post('/subcategories', subCategoryController.createSubCategory);
 router.post('/subcategories/:id', upload.array('image', 3), subCategoryController.updateSubCategory);
+router.delete('/subcategories/:id', subCategoryController.deleteSubCategory);
 router.get('/orders', orderController.getOrders);
 router.post('/register', validateProps('register'), adminController.register);
 router.get('/products/export', productController.exportProductsCSV);

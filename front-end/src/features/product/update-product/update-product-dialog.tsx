@@ -71,8 +71,6 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
     try {
       const response = await updateFunctions[selectedTab](formData, token, data?.id || 1);
 
-      console.log('responseresponse', response);
-
       if (response.success) {
         toaster.create({ type: 'success', title: `${t(`tabs.products`)} ${t('addSuccess')}` });
 

@@ -134,7 +134,6 @@ export async function createSubCategory(
   token: string,
 ): Promise<ISubCategoryResponseReturn> {
   try {
-    console.log('body', body);
     const { data }: { data: ISubCategoryResponse } = await fetchWrapper('/api/admin/subcategories', {
       method: 'POST',
       headers: {
@@ -144,7 +143,7 @@ export async function createSubCategory(
       body: JSON.stringify(body),
     });
 
-    return { success: true, data: { ...data, categoryId: (data as any).category.id } };
+    return { success: true, data: { ...data, categoryId: (data as any).category.id, category: '' } };
   } catch (error) {
     console.error('Error creating category:', error);
 
@@ -160,10 +159,43 @@ export async function updateSubCategory(formData: any, token: string, id: number
       body: formData,
     });
 
-    return { success: true, data: { ...data, categoryId: (data as any).category.id } };
+    return { success: true, data: { ...data, categoryId: (data as any).category.id, category: '' } };
   } catch (error) {
     console.error('Error updating category:', error);
 
     return { success: false, data: {} } as ISubCategoryResponseReturn;
+  }
+}
+
+export async function deleteCategory(token: string, id: string): Promise<{ success: boolean; data: any }> {
+  try {
+    const data = await fetchWrapper(`/api/admin/categories/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: token },
+    });
+
+    return {
+      data,
+      success: true,
+    };
+  } catch (e) {
+    console.error('Error deleting subcategory:', e);
+
+    return { success: false, data: {} };
+  }
+}
+
+export async function deleteSubCategory(token: string, id: string): Promise<{ success: boolean; data: any }> {
+  try {
+    const data = await fetchWrapper(`/api/admin/subcategories/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: token },
+    });
+
+    return { success: true, data };
+  } catch (e) {
+    console.error('Error deleting subcategory:', e);
+
+    return { success: false, data: {} };
   }
 }

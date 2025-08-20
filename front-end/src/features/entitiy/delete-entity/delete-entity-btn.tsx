@@ -1,6 +1,7 @@
 import { TFunction } from 'i18next';
 import React from 'react';
 
+import { deleteCategory, deleteSubCategory } from '@/entities/category/api';
 import { deleteOrder } from '@/entities/order/api';
 import { deleteProduct } from '@/entities/product/api';
 import { toaster } from '@/shared/ui/toaster';
@@ -18,6 +19,8 @@ const DeleteEntityBtn = ({ t, selectedTab, setData, currentPage, id }: IDeleteEn
   const deleteFunctions: Record<TabKey, (token: string, id: string) => Promise<any>> = {
     orders: deleteOrder,
     products: deleteProduct,
+    categories: deleteCategory,
+    subcategories: deleteSubCategory,
   };
 
   const handleDelete = async (id: string) => {
