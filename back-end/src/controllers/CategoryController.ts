@@ -81,8 +81,6 @@ class CategoryController {
       return;
     }
 
-    console.log('ididididididid', id, req.body);
-    // Allow only known fields; ignore everything else
     const ALLOWED: Array<
       keyof {
         name: string;
@@ -95,7 +93,6 @@ class CategoryController {
       }
     > = ['name', 'path', 'title', 'heading', 'description', 'keywords', 'position'];
 
-    // Build a "patch" with only provided (non-undefined) fields
     const patch: Record<string, any> = {};
 
     for (const key of ALLOWED) {

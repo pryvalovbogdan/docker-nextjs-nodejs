@@ -28,10 +28,6 @@ services:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-frontend:latest
     env_file: .env
     restart: always
-    environment:
-      BACKEND_URL: http://server:8080
-      NEXT_PUBLIC_BACKEND_URL: ""           # keep empty to use relative URLs in browser, or set to https://medix.com.ua
-      NEXT_PUBLIC_DOMAIN_URL: https://medix.com.ua
     expose:
       - "3000"
     depends_on:
