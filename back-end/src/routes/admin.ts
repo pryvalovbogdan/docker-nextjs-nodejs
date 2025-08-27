@@ -40,6 +40,7 @@ router.delete('/subcategories/:id', subCategoryController.deleteSubCategory);
 router.get('/orders', orderController.getOrders);
 router.post('/register', validateProps('register'), adminController.register);
 router.get('/products/export', productController.exportProductsCSV);
+router.get('/products/export-json', productController.exportProductsJSON);
 router.post('/products', validateProps('product'), upload.array('image', 3), productController.addProduct);
 router.post('/products/:id', validateProps('productId'), upload.array('image', 3), productController.updateProduct);
 router.delete('/products/:id', validateProps('productId'), productController.deleteProduct);

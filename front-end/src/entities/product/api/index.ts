@@ -1,4 +1,4 @@
-import { ICategoryResponse, IProductResponse } from '@/entities/product/model/types';
+import { ICategoryResponse, IExportJsonResponse, IProductResponse } from '@/entities/product/model/types';
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
@@ -249,5 +249,19 @@ export async function fetchCategoryByPath(
     console.error('Error fetching products by category:', error);
 
     return {} as ICategoryResponse;
+  }
+}
+
+export async function exportProductsJson(token: string): Promise<IExportJsonResponse> {
+  try {
+    const response = await fetchWrapper('/api/admin/products/export-json', {
+      headers: { Authorization: token },
+    });
+
+    return { success: true, data: JSON.stringify(response, null, 2) };
+  } catch (error) {
+    console.error('Product JSON export error:', error);
+
+    return { success: false, message: 'Product JSON export failed' };
   }
 }

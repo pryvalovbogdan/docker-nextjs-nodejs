@@ -345,6 +345,19 @@ class ProductController {
       responseHandler.sendCatchResponse(res, 'Failed to export products');
     }
   };
+
+  exportProductsJSON = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { data, filename } = await this.service.exportProductsToJSON();
+
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      res.send(data);
+    } catch (error) {
+      console.error('Error exporting products (JSON):', error);
+      responseHandler.sendCatchResponse(res, 'Failed to export products (JSON)');
+    }
+  };
 }
 
 export default ProductController;

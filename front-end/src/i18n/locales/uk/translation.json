@@ -208,5 +208,6 @@
   "noProductsInThisList": "Нема товарів в цій категорії",
   "item": "товар",
   "items": "товари",
-  "itemsLeft": "товарів"
+  "itemsLeft": "товарів",
+  "downloadJson": "Завантажити json"
 }

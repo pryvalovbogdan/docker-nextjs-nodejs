@@ -17,6 +17,7 @@ import {
   TabKey,
   dashBoardColumns,
 } from '@features/entitiy';
+import DownloadEntityJsonBtn from '@features/entitiy/download-entity/download-json';
 import { UpdateProductDialog } from '@features/product';
 import { useTranslation } from '@i18n/client';
 import { Layout } from '@widgets/layout';
@@ -179,12 +180,12 @@ export default function Dashboard({ lng }: { lng: string }) {
                   <Button onClick={handleSearch}>{t('searchProduct')}</Button>
                 </HStack>
               )}
-              {selectedTab === 'orders' ||
-                (selectedTab === 'products' && (
-                  <Flex justifyContent='flex-end'>
-                    <DownloadEntityBtn t={t} selectedTab={selectedTab} />
-                  </Flex>
-                ))}
+              {(selectedTab === 'orders' || selectedTab === 'products') && (
+                <Flex justifyContent='flex-end'>
+                  <DownloadEntityBtn t={t} selectedTab={selectedTab} />
+                </Flex>
+              )}
+              {selectedTab === 'products' && <DownloadEntityJsonBtn t={t} />}
               <Button colorScheme='green' onClick={() => setIsDialogOpen(true)}>
                 {t('add')} {t(`tabs.${selectedTab}`)}
               </Button>

@@ -211,5 +211,6 @@
   "noProductsInThisList": "No products in this list",
   "item": "item",
   "items": "items",
-  "itemsLeft": "items"
+  "itemsLeft": "items",
+  "downloadJson": "Download json"
 }

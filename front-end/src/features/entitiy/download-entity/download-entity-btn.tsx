@@ -25,10 +25,8 @@ const DownloadEntityBtn = ({ selectedTab, t }: IDownloadEntityBtn) => {
       const response = await exportCSvFunctions[selectedTab](token);
 
       if (response.success && response.data) {
-        // Convert CSV string to a Blob
         const csvBlob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
 
-        // Create a URL for the Blob and trigger download
         const url = window.URL.createObjectURL(csvBlob);
         const link = document.createElement('a');
 
@@ -37,7 +35,6 @@ const DownloadEntityBtn = ({ selectedTab, t }: IDownloadEntityBtn) => {
         document.body.appendChild(link);
         link.click();
 
-        // Cleanup
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
 
