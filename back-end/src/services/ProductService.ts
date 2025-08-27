@@ -311,6 +311,37 @@ class ProductService {
       throw new Error('Failed to generate CSV for products.');
     }
   }
+
+  async exportProductsToJSON(): Promise<{ data: Buffer; filename: string }> {
+    try {
+      const products = await this.repository.getProducts();
+
+      if (!products || products.length === 0) {
+        throw new Error('No products available for export.');
+      }
+
+      const plain = products.map(product => ({
+        id: product.id,
+        title: product.title,
+        description: product.description || '',
+        characteristics: product.characteristics || '',
+        brand: product.brand || '',
+        country: product.country || '',
+        price: product.price ?? '',
+        images: product.images ?? [],
+      }));
+
+      const jsonString = JSON.stringify(plain, null, 2);
+
+      return {
+        data: Buffer.from(jsonString, 'utf-8'),
+        filename: `products_export_${Date.now()}.json`,
+      };
+    } catch (error) {
+      console.error('Error exporting products (JSON):', error);
+      throw new Error('Failed to generate JSON for products.');
+    }
+  }
 }
 
 export default ProductService;

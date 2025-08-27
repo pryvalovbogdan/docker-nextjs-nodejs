@@ -55,3 +55,9 @@ export interface ICategoryResponse {
   name: string;
   path: string;
 }
+
+export interface IExportJsonResponse {
+  success: boolean;
+  data?: string;
+  message?: string;
+}
