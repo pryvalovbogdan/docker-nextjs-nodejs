@@ -6,7 +6,7 @@ export async function tOpenAI(htmlOrText: string, from: string, to: string) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini', // cost-effective; choose your model
+      model: 'gpt-4o-mini',
       input: [
         {
           role: 'system',
@@ -18,8 +18,8 @@ export async function tOpenAI(htmlOrText: string, from: string, to: string) {
     }),
   });
   const j = await r.json();
-  // Pull the text from the first output item (Responses API)
-  const text = j?.output?.[0]?.content?.[0]?.text ?? j?.choices?.[0]?.message?.content; // fallback if shape differs
+
+  const text = j?.output?.[0]?.content?.[0]?.text ?? j?.choices?.[0]?.message?.content;
 
   return text || htmlOrText;
 }

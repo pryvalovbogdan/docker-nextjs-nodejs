@@ -16,9 +16,9 @@ export async function fetchBrandProducts(name: string): Promise<IProductResponse
   }
 }
 
-export async function fetchProductById(id: string): Promise<IProductResponse> {
+export async function fetchProductById(id: string, lng: string): Promise<IProductResponse> {
   try {
-    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}?lng=${lng}`, {
       next: { revalidate: 60 },
     });
 
@@ -30,9 +30,9 @@ export async function fetchProductById(id: string): Promise<IProductResponse> {
   }
 }
 
-export async function fetchProductByIdCache(id: string): Promise<IProductResponse> {
+export async function fetchProductByIdCache(id: string, lng: string): Promise<IProductResponse> {
   try {
-    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}?lng=${lng}`, {
       cache: 'force-cache',
     });
 

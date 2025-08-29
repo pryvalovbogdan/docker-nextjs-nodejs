@@ -8,7 +8,11 @@ class CategoryController {
 
   getCategoriesWithSubcategories = async (req: Request, res: Response): Promise<void> => {
     try {
-      const result = await this.service.getCategoriesWithSubcategories();
+      const lngRaw = req.query?.lng as string | string[] | undefined;
+
+      const lng = Array.isArray(lngRaw) ? lngRaw[0] : lngRaw;
+
+      const result = await this.service.getCategoriesWithSubcategories(lng as 'uk' | 'ru');
 
       if (result.errors.length) {
         responseHandler.sendFailResponse(res, result.errors.join(', '));

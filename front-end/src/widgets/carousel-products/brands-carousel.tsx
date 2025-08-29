@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Carousel, CarouselContextProvider, useCarouselContext } from 'react-carousel-cards-npm';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
@@ -16,13 +16,17 @@ interface IBrandCard {
   alt?: string;
   lng: string;
   description?: string;
+  descriptionRu?: string;
 }
-const BrandCard = ({ style, name, src, alt, lng, description }: IBrandCard) => {
+const BrandCard = ({ style, name, src, alt, lng, description, descriptionRu }: IBrandCard) => {
   const router = useRouter();
 
   const handleRedirect = () => {
     router.push(`/${lng}/brand/${name}`);
   };
+
+  console.log('descr', lng);
+  const descr = lng === 'uk' ? description : descriptionRu;
 
   return (
     <Flex
@@ -80,7 +84,7 @@ const BrandCard = ({ style, name, src, alt, lng, description }: IBrandCard) => {
                  }
                </style>
                <div class="brand-description-container">
-                 ${description?.slice(0, 250)}
+                 ${descr?.slice(0, 250)}
                </div>
              `,
           }}
@@ -211,6 +215,12 @@ const CustomPaginationBtn = () => {
 const BrandsCarousel = ({ lng }: { lng: string }) => {
   const { t } = useTranslation(lng);
 
+  const cards = useMemo(() => {
+    return brandData.map(brand => ({ ...brand, key: brand.name }));
+  }, []);
+
+  console.log('cards', cards);
+
   return (
     <Box as='section' id='brands' py={20} bg='white'>
       <Heading as='h3' fontSize='36px' textAlign='center' mb={10}>
@@ -226,7 +236,7 @@ const BrandsCarousel = ({ lng }: { lng: string }) => {
               cardWidth={300}
               marginCard={16}
               defaultActivePage={1}
-              cards={brandData.map(brand => ({ ...brand, key: brand.name }))}
+              cards={cards}
               noCardsText='No brands available'
               CustomArrowBtn={<CustomArrows />}
               variant={['withoutPagination']}

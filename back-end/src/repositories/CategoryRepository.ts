@@ -2,43 +2,42 @@ import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
 import { Category, SubCategory } from '../entities';
+import { FieldsMap, ISebCategoryResponse } from '../utils/types';
 
 class CategoryRepository {
   private categoryRepository: Repository<Category> = AppDataSource.manager.getRepository(Category);
 
   private subCategoryRepository: Repository<SubCategory> = AppDataSource.manager.getRepository(SubCategory);
 
-  getCategoriesWithSubcategories = async (): Promise<
-    {
-      id: number;
-      name: string;
-      path: string | null;
-      title: string | null;
-      heading: string | null;
-      description: string | null;
-      keywords: string | null;
-      position: number;
-      subCategories: {
-        id: number;
-        name: string;
-        path: string | null;
-        title: string | null;
-        heading: string | null;
-        description: string | null;
-        keywords: string | null;
-        position: number;
-      }[];
-    }[]
-  > => {
+  getCategoriesWithSubcategories = async (lng: 'uk' | 'ru' = 'uk'): Promise<ISebCategoryResponse[]> => {
+    const fields: FieldsMap = {
+      ru: {
+        name: 'name_ru',
+        title: 'title_ru',
+        heading: 'heading_ru',
+        description: 'description_ru',
+        keywords: 'keywords',
+      },
+      uk: {
+        name: 'name',
+        title: 'title',
+        heading: 'heading',
+        description: 'description',
+        keywords: 'keywords',
+      },
+    };
+
+    const fieldsWithTranslates = fields[lng];
+
     const rows = await this.categoryRepository.query(`
     SELECT
       c.id,
-      c.name,
+      c.${fieldsWithTranslates.name} AS name,
       c.path,
-      c.title,
-      c.heading,
-      c.description,
-      c.keywords,
+      c.${fieldsWithTranslates.title} AS title,
+      c.${fieldsWithTranslates.heading} AS heading,
+      c.${fieldsWithTranslates.description} AS description,
+      c.${fieldsWithTranslates.keywords} AS keywords,
       c.position,
       COALESCE(sc.subcategories, '[]'::json) AS subcategories
     FROM categories c
@@ -46,18 +45,18 @@ class CategoryRepository {
       SELECT json_agg(
                json_build_object(
                  'id', s.id,
-                 'name', s.name,
+                 'name', s.${fieldsWithTranslates.name},
                  'path', s.path,
-                 'title', s.title,
-                 'heading', s.heading,
-                 'description', s.description,
-                 'keywords', s.keywords,
+                 'title', s.${fieldsWithTranslates.title},
+                 'heading', s.${fieldsWithTranslates.heading},
+                 'description', s.${fieldsWithTranslates.description},
+                 'keywords', s.${fieldsWithTranslates.keywords},
                  'position', s.position
                )
                ORDER BY s.position ASC, s.id ASC
              ) AS subcategories
       FROM subcategories s
-      WHERE s.categoryid = c.id
+      WHERE s.categoryId = c.id
     ) sc ON TRUE
     ORDER BY c.position ASC, c.id ASC;
   `);

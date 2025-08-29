@@ -32,12 +32,12 @@ class CategoryService {
     }
   }
 
-  async getCategoriesWithSubcategories(): Promise<{
+  async getCategoriesWithSubcategories(lng: 'uk' | 'ru'): Promise<{
     data?: { name: string; subCategories: { id: number; name: string }[] }[];
     errors: string[];
   }> {
     try {
-      const categories = await this.repository.getCategoriesWithSubcategories();
+      const categories = await this.repository.getCategoriesWithSubcategories(lng);
 
       return categories.length > 0 ? { data: categories, errors: [] } : { errors: ['No categories found'] };
     } catch (error) {

@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
   if (!languages.includes(lng)) lng = fallbackLng;
 
   await connection();
-  const categories = await fetchCategories();
+  const categories = await fetchCategories(lng);
 
   const products = await getProductsCached(path);
 

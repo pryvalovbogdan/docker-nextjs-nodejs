@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   const { id, lng } = await params;
 
   // Request cached with force cache - https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#reusing-data-across-multiple-functions
-  const product = await fetchProductByIdCache(id);
+  const product = await fetchProductByIdCache(id, lng);
 
   return generateMetadataGeneral(lng, {
     titleKey: product.title,
@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
 
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
-  const product = await fetchProductById(id);
+  const product = await fetchProductById(id, lng);
 
   if (product.error) {
     redirect(`/${lng}`);

@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { ProductService } from '../services';
 import S3Service from '../services/S3Service';
 import responseHandler from '../utils/responseHandler';
+import { tOpenAI } from '../utils/tOpenAi';
 import { File } from '../utils/types';
 import { randomImageName } from '../utils/utils';
 
@@ -189,6 +190,10 @@ class ProductController {
 
   getProductsById = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
+    const lngRaw = req.query?.lng as string | string[] | undefined;
+    const lng = Array.isArray(lngRaw) ? lngRaw[0] : lngRaw;
+
+    console.log('getProductsById params/query:', req.params, req.query);
 
     try {
       const productId = parseInt(id, 10);
@@ -201,7 +206,28 @@ class ProductController {
       }
 
       if (result.data) {
-        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+        let data = result.data;
+
+        if (lng !== 'uk') {
+          const [titleTr, descriptionTr, characteristicsTr, countryTr] = await Promise.all([
+            tOpenAI(data.title, 'uk', lng || ''),
+            tOpenAI(data.description, 'uk', lng || ''),
+            tOpenAI(data.characteristics, 'uk', lng || ''),
+            tOpenAI(data.country, 'uk', lng || ''),
+          ]);
+
+          console.log('uououou', titleTr, descriptionTr, characteristicsTr, countryTr);
+
+          data = {
+            ...data,
+            title: titleTr,
+            description: descriptionTr,
+            characteristics: characteristicsTr,
+            country: countryTr,
+          };
+        }
+
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', data);
       }
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
