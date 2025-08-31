@@ -25,7 +25,6 @@ const BrandCard = ({ style, name, src, alt, lng, description, descriptionRu }: I
     router.push(`/${lng}/brand/${name}`);
   };
 
-  console.log('descr', lng);
   const descr = lng === 'uk' ? description : descriptionRu;
 
   return (

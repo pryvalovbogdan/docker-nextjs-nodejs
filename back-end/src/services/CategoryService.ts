@@ -4,6 +4,12 @@ import CategoryRepository from '../repositories/CategoryRepository';
 class CategoryService {
   private repository: CategoryRepository = new CategoryRepository();
 
+  private normalizeLng(lng?: string): 'uk' | 'ru' {
+    const s = String(lng || 'uk').toLowerCase();
+
+    return s.startsWith('ru') ? 'ru' : 'uk';
+  }
+
   async getCategory(name: string): Promise<{ data?: Category | null; errors: string[] }> {
     try {
       const category = await this.repository.getCategoryByName(name);
@@ -32,12 +38,13 @@ class CategoryService {
     }
   }
 
-  async getCategoriesWithSubcategories(lng: 'uk' | 'ru'): Promise<{
+  async getCategoriesWithSubcategories(lng?: string): Promise<{
     data?: { name: string; subCategories: { id: number; name: string }[] }[];
     errors: string[];
   }> {
     try {
-      const categories = await this.repository.getCategoriesWithSubcategories(lng);
+      const key = this.normalizeLng(lng);
+      const categories = await this.repository.getCategoriesWithSubcategories(key);
 
       return categories.length > 0 ? { data: categories, errors: [] } : { errors: ['No categories found'] };
     } catch (error) {
