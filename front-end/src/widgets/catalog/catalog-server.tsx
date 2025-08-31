@@ -138,7 +138,7 @@ export default function CatalogServer({
       }
 
       setLoading(true);
-      const response = await fetchProductsOffSet(token, page, itemsPerScreen);
+      const response = await fetchProductsOffSet(token, page, itemsPerScreen, lng);
 
       if (response.success) {
         setProducts(prev => ({
@@ -241,9 +241,9 @@ export default function CatalogServer({
             />
           )}
           <Heading size='sm' color='gray.700' textAlign='center'>
-            {product.title}
+            {lng === 'ru' ? product.title_ru : product.title}
           </Heading>
-          {product.description && (
+          {lng !== 'ru' && product.description && (
             <Text
               fontSize='sm'
               mt={2}
@@ -300,9 +300,9 @@ export default function CatalogServer({
             />
           )}
           <Heading size='sm' color='gray.700' textAlign='center'>
-            {product.title}
+            {lng === 'ru' ? product.title_ru : product.title}
           </Heading>
-          {product.description && (
+          {lng !== 'ru' && product.description && (
             <Text
               fontSize='sm'
               mt={2}

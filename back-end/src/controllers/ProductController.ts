@@ -165,9 +165,10 @@ class ProductController {
   };
 
   getProductsOffset = async (req: Request, res: Response): Promise<void> => {
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 10, lng = 'uk' } = req.query;
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
+    const lngStr = Array.isArray(lng) ? lng[0] : String(lng || 'uk');
 
     try {
       const result = await this.service.getProductsOffset(limitNumber, pageNumber);
@@ -178,9 +179,53 @@ class ProductController {
         return;
       }
 
+      let products = result.data?.products ?? [];
+      const totalPages = result.data?.totalPages ?? 0;
+
+      if (lngStr === 'ru' && products.length) {
+        // pick items needing ru title
+        const needRu = products.filter(p => isEmpty(p.title_ru) && !isEmpty(p.title));
+
+        console.log('needRu', needRu);
+
+        if (needRu.length) {
+          try {
+            // translate all needed titles
+            const translated = await Promise.all(needRu.map(p => tOpenAI(String(p.title), 'uk', 'ru').catch(() => '')));
+
+            console.log('translated', translated);
+            // id -> translated title_ru
+            const ruById = new Map<number, string>();
+
+            translated.forEach((val, i) => {
+              if (!isEmpty(val)) {
+                ruById.set(Number(needRu[i].id), val);
+              }
+            });
+
+            // persist to DB
+            await Promise.all(
+              Array.from(ruById.entries()).map(([id, title_ru]) => this.service.updateProduct(id, { title_ru } as any)),
+            );
+
+            // rebuild products array with fresh ru titles
+            products = products.map(p => {
+              const ru = ruById.get(Number(p.id));
+
+              return ru ? { ...p, title_ru: ru } : p;
+            });
+
+            console.log('productsproducts', products);
+          } catch (e) {
+            console.error('RU title translation/persist failed for page', pageNumber, e);
+            // still return whatever we have
+          }
+        }
+      }
+
       responseHandler.sendSuccessResponse(res, 'Products retrieved successfully', {
-        products: result.data?.products,
-        totalPages: result.data?.totalPages,
+        products,
+        totalPages,
       });
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
@@ -261,6 +306,8 @@ class ProductController {
 
   getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
     let { category } = req.params;
+    const lngRaw = req.query?.lng as string | string[] | undefined;
+    const lng = Array.isArray(lngRaw) ? lngRaw[0] : String(lngRaw || 'uk');
 
     try {
       category = decodeURIComponent(category);
@@ -273,8 +320,46 @@ class ProductController {
         return;
       }
 
-      if (result.data) {
-        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+      let products = result.data ?? [];
+
+      if (lng === 'ru' && products.length) {
+        // pick items needing ru title
+        const needRu = products.filter(p => isEmpty(p.title_ru) && !isEmpty(p.title));
+
+        if (needRu.length) {
+          try {
+            // translate all needed titles
+            const translated = await Promise.all(needRu.map(p => tOpenAI(String(p.title), 'uk', 'ru').catch(() => '')));
+
+            // id -> translated title_ru
+            const ruById = new Map<number, string>();
+
+            translated.forEach((val, i) => {
+              if (!isEmpty(val)) {
+                ruById.set(Number(needRu[i].id), val);
+              }
+            });
+
+            // persist to DB
+            await Promise.all(
+              Array.from(ruById.entries()).map(([id, title_ru]) => this.service.updateProduct(id, { title_ru } as any)),
+            );
+
+            // rebuild products array with fresh ru titles
+            products = products.map(p => {
+              const ru = ruById.get(Number(p.id));
+
+              return ru ? { ...p, title_ru: ru } : p;
+            });
+          } catch (e) {
+            console.error('RU title translation/persist failed for category', category, e);
+            // continue with whatever we have
+          }
+        }
+      }
+
+      if (products.length) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', products);
       } else {
         responseHandler.sendFailResponse(res, 'No products found for this category');
       }
@@ -286,9 +371,12 @@ class ProductController {
 
   getProductsBySubCategory = async (req: Request, res: Response): Promise<void> => {
     let { category } = req.params;
+    const lngRaw = req.query?.lng as string | string[] | undefined;
+    const lng = Array.isArray(lngRaw) ? lngRaw[0] : String(lngRaw || 'uk');
 
     try {
       category = decodeURIComponent(category);
+
       const result = await this.service.getProductsBySubCategory(category);
 
       if (result.errors.length) {
@@ -297,12 +385,52 @@ class ProductController {
         return;
       }
 
-      if (result.data) {
-        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', result.data);
+      let products = result.data ?? [];
+
+      if (lng === 'ru' && products.length) {
+        // Items that need RU title and have a base title to translate
+        const needRu = products.filter(p => isEmpty(p.title_ru) && !isEmpty(p.title));
+
+        if (needRu.length) {
+          try {
+            // Translate titles in parallel
+            const translated = await Promise.all(needRu.map(p => tOpenAI(String(p.title), 'uk', 'ru').catch(() => '')));
+
+            // Map: id -> translated title_ru
+            const ruById = new Map<number, string>();
+
+            translated.forEach((val, i) => {
+              if (!isEmpty(val)) {
+                ruById.set(Number(needRu[i].id), val);
+              }
+            });
+
+            // Persist to DB
+            await Promise.all(
+              Array.from(ruById.entries()).map(([id, title_ru]) => this.service.updateProduct(id, { title_ru } as any)),
+            );
+
+            // Rebuild array with fresh RU titles for the response
+            products = products.map(p => {
+              const ru = ruById.get(Number(p.id));
+
+              return ru ? { ...p, title_ru: ru } : p;
+            });
+          } catch (e) {
+            console.error('RU title translation/persist failed for subcategory', category, e);
+            // Continue and return whatever we have
+          }
+        }
+      }
+
+      if (products.length) {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', products);
+      } else {
+        responseHandler.sendFailResponse(res, 'No products found for this subcategory');
       }
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
-      responseHandler.sendCatchResponse(res, 'Error retrieving products by category');
+      responseHandler.sendCatchResponse(res, 'Error retrieving products by subcategory');
     }
   };
 

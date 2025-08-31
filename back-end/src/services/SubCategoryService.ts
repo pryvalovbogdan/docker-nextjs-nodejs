@@ -46,7 +46,6 @@ class SubCategoryService {
     }
   }
 
-  // existing methods...
   async createSubCategory(name: string, categoryId: number) {
     return this.repository.createSubCategory(name, categoryId);
   }

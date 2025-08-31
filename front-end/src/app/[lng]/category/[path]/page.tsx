@@ -8,7 +8,7 @@ export { generateStaticParams };
 export async function generateMetadata({ params }: { params: Promise<{ lng: string; path: string }> }) {
   const { path, lng } = await params;
 
-  const products = await fetchProductByCategory(path);
+  const products = await fetchProductByCategory(path, lng);
   const category = products.length ? products[0].category : null;
   const keywords = category?.keywords
     ? Array.from(
@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
 
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
-  const products = await fetchProductByCategory(path, {
+  const products = await fetchProductByCategory(path, lng, {
     next: { revalidate: 60 },
   });
 

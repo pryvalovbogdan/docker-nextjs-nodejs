@@ -131,7 +131,7 @@ const SearchView: React.FC<{
                 />
                 <Box>
                   <Text fontSize='lg' fontWeight='bold' color='gray.800'>
-                    {product.title}
+                    {lng === 'ru' && product.title_ru ? product.title_ru : product.title}
                   </Text>
                   {product.price && (
                     <Text fontSize='md' fontWeight='semibold' color='#036753'>

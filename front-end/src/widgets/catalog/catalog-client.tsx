@@ -134,7 +134,7 @@ export default function CatalogClient({
       }
 
       setLoading(true);
-      const response = await fetchProductsOffSet(token, page, itemsPerScreen);
+      const response = await fetchProductsOffSet(token, page, itemsPerScreen, lng);
 
       if (response.success) {
         setProducts(prev => ({

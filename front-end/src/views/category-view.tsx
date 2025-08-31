@@ -130,21 +130,23 @@ const CategoryView: React.FC<{
                       textOverflow='ellipsis'
                       maxWidth='100%'
                     >
-                      {product.title}
+                      {lng === 'ru' ? product.title_ru : product.title}
                     </Heading>
 
-                    <Text
-                      fontSize='sm'
-                      color='gray.600'
-                      overflow='hidden'
-                      textOverflow='ellipsis'
-                      display='-webkit-box'
-                      WebkitLineClamp={3}
-                      lineHeight='1.4'
-                      maxHeight='2.5em'
-                    >
-                      {getInnerText(product.description || '') || product.characteristics}
-                    </Text>
+                    {lng !== 'ru' && (
+                      <Text
+                        fontSize='sm'
+                        color='gray.600'
+                        overflow='hidden'
+                        textOverflow='ellipsis'
+                        display='-webkit-box'
+                        WebkitLineClamp={3}
+                        lineHeight='1.4'
+                        maxHeight='2.5em'
+                      >
+                        {getInnerText(product.description || '') || product.characteristics}
+                      </Text>
+                    )}
 
                     {product.price && (
                       <Text fontSize='md' fontWeight='bold' color='emerald.600'>
