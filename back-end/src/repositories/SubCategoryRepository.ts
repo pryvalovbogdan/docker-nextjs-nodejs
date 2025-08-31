@@ -93,23 +93,11 @@ class SubCategoryRepository {
     }
   }
 
-  async getSubCategory(name: string) {
-    try {
-      const subCategory = await this.subCategoryRepository.findOne({
-        where: { name },
-        relations: ['category'],
-      });
-
-      if (subCategory) {
-        return { data: subCategory, errors: [] };
-      }
-
-      return { errors: ['Subcategory not found'] };
-    } catch (error) {
-      console.error('Error retrieving subcategory:', error);
-
-      return { errors: ['Error retrieving subcategory'] };
-    }
+  async getSubCategory(name: string): Promise<SubCategory | null> {
+    return await this.subCategoryRepository.findOne({
+      where: { name },
+      relations: ['category'],
+    });
   }
 
   async getAllSubCategories() {

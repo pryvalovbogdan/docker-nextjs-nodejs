@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
     <CategoryView
       products={products}
       lng={lng}
-      query={category.name}
+      query={lng === 'ru' ? category.name_ru : category.name}
       officePhoneSecond={process.env.NEXT_PUBLIC_OFFICE_PHONE_SECOND || ''}
       officePhone={process.env.NEXT_PUBLIC_OFFICE_PHONE || ''}
       officeEmail={process.env.NEXT_PUBLIC_OFFICE_EMAIL || ''}

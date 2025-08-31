@@ -11,7 +11,7 @@ export async function tOpenAI(htmlOrText: string, from: string, to: string) {
         {
           role: 'system',
           content:
-            "You are a translator. Preserve HTML tags, class names, inline styles, brand names, model numbers, and units. Output only translated text and don't add comments",
+            "You are a translator. Preserve HTML tags, class names, inline styles, brand names, model numbers, and units. Output only translated text and don't add comments such as '```html'",
         },
         { role: 'user', content: `Translate from ${from} to ${to}:\n${htmlOrText}` },
       ],

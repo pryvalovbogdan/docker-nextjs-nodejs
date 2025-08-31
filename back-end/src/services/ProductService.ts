@@ -1,6 +1,6 @@
 import { stringify } from 'csv-stringify/sync';
 
-import { Category, Product, SubCategory } from '../entities';
+import { Product } from '../entities';
 import { ProductRepository } from '../repositories';
 import CategoryService from './CategoryService';
 import SubCategoryService from './SubCategoryService';
@@ -67,26 +67,27 @@ class ProductService {
 
   async updateProduct(productId: number, data: Partial<Product>): Promise<{ data?: Product | null; errors: string[] }> {
     try {
-      let category = null;
-      let subCategory = null;
+      let productData = data;
 
       if (data.category?.name) {
-        category = (await this.categoryService.getCategory(data.category.name)).data;
+        const category = (await this.categoryService.getCategory(data.category.name)).data;
 
         if (!category) {
           return { errors: [`There no such category: ${data.category?.name}`] };
         }
+
+        data.category = category;
       }
 
       if (data.subCategory?.name) {
-        subCategory = (await this.subCategoryService.getSubCategory(data.subCategory.name)).data;
+        const subCategory = (await this.subCategoryService.getSubCategory(data.subCategory.name)).data;
+
+        if (subCategory) {
+          productData.subCategory = subCategory;
+        }
       }
 
-      const updatedProduct = await this.repository.updateProduct(productId, {
-        ...data,
-        category: category as Category,
-        subCategory: subCategory as SubCategory,
-      });
+      const updatedProduct = await this.repository.updateProduct(productId, productData);
 
       return { data: updatedProduct, errors: [] };
     } catch (error) {

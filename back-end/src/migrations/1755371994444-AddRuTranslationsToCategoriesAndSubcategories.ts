@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CombinedRuTranslations1755374994448 implements MigrationInterface {
+export class CombinedRuTranslations1755374994447 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE "categories"

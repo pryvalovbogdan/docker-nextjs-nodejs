@@ -5,7 +5,7 @@ import S3Service from '../services/S3Service';
 import responseHandler from '../utils/responseHandler';
 import { tOpenAI } from '../utils/tOpenAi';
 import { File } from '../utils/types';
-import { randomImageName } from '../utils/utils';
+import { isEmpty, randomImageName } from '../utils/utils';
 
 class ProductController {
   private service: ProductService = new ProductService();
@@ -193,42 +193,66 @@ class ProductController {
     const lngRaw = req.query?.lng as string | string[] | undefined;
     const lng = Array.isArray(lngRaw) ? lngRaw[0] : lngRaw;
 
-    console.log('getProductsById params/query:', req.params, req.query);
-
     try {
       const productId = parseInt(id, 10);
       const result = await this.service.getProductById(productId);
 
-      if (result.errors.length) {
-        responseHandler.sendFailResponse(res, result.errors.join(', '));
+      if (result.errors.length || !result.data) {
+        responseHandler.sendFailResponse(res, result.errors.join(', ') || 'Product not found');
 
         return;
       }
 
-      if (result.data) {
-        let data = result.data;
+      let data = result.data;
 
-        if (lng !== 'uk') {
-          const [titleTr, descriptionTr, characteristicsTr, countryTr] = await Promise.all([
-            tOpenAI(data.title, 'uk', lng || ''),
-            tOpenAI(data.description, 'uk', lng || ''),
-            tOpenAI(data.characteristics, 'uk', lng || ''),
-            tOpenAI(data.country, 'uk', lng || ''),
-          ]);
+      if (lng !== 'ru') {
+        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', data);
 
-          console.log('uououou', titleTr, descriptionTr, characteristicsTr, countryTr);
+        return;
+      }
 
-          data = {
-            ...data,
-            title: titleTr,
-            description: descriptionTr,
-            characteristics: characteristicsTr,
-            country: countryTr,
-          };
+      type RuKey = 'title_ru' | 'country_ru' | 'description_ru' | 'characteristics_ru';
+      type BaseKey = 'title' | 'country' | 'description' | 'characteristics';
+
+      const SPECS: Array<{
+        base: BaseKey;
+        ru: RuKey;
+        fn: (text: string, from: string, to: string) => Promise<string>;
+      }> = [
+        { base: 'title', ru: 'title_ru', fn: tOpenAI },
+        { base: 'country', ru: 'country_ru', fn: tOpenAI },
+        { base: 'description', ru: 'description_ru', fn: tOpenAI },
+        { base: 'characteristics', ru: 'characteristics_ru', fn: tOpenAI },
+      ];
+
+      const requestToTranslate = SPECS.filter(item => isEmpty(data[item.ru]) && !isEmpty(data[item.base]));
+      const mapToRequest = requestToTranslate.map(item => {
+        return item.fn.apply(null, [data[item.base] || '', 'uk', 'ru']);
+      });
+
+      const results = await Promise.all(mapToRequest);
+
+      const updates: Partial<typeof data> = {};
+
+      results.forEach((item, i) => {
+        updates[requestToTranslate[i].ru] = item;
+      });
+
+      if (Object.keys(updates).length > 0) {
+        const saveRes = await this.service.updateProduct(productId, updates as any);
+
+        if (saveRes.errors.length) {
+          console.error('Failed to persist RU translations:', saveRes.errors.join(', '));
         }
 
-        responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', data);
+        data = {
+          ...data,
+          ...updates,
+        };
       }
+
+      console.log('data11122', result.data, data);
+      responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', data);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);
       responseHandler.sendCatchResponse(res, 'Database error');

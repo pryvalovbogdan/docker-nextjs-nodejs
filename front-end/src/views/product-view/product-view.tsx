@@ -58,6 +58,10 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
 
   const isShownDescription = hasValidContent(product.description) && getIsShownDescription(product.description || '');
 
+  const langDescr = lng === 'ru' ? product.description_ru : product.description;
+  const langChar = lng === 'ru' ? product.characteristics_ru : product.characteristics;
+  const langTitle = lng === 'ru' ? product.title_ru : product.title;
+
   return (
     <Layout
       lng={lng}
@@ -83,7 +87,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                 color='white'
                 _hover={{ color: '#F2F2F2' }}
               >
-                {product.category?.name}
+                {lng === 'ru' ? product.category?.name_ru : product.category?.name}
               </Breadcrumb.Link>
             </Breadcrumb.Item>
             <Breadcrumb.Separator />
@@ -92,7 +96,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
               <>
                 <Breadcrumb.Item>
                   <Breadcrumb.Link href='#' color='white' _hover={{ color: '#F2F2F2' }}>
-                    {product.subCategory.name}
+                    {lng === 'ru' ? product.subCategory.name_ru : product.subCategory.name}
                   </Breadcrumb.Link>
                 </Breadcrumb.Item>
                 <Breadcrumb.Separator />
@@ -100,7 +104,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
             )}
             <Breadcrumb.Item>
               <Breadcrumb.CurrentLink color='white' fontWeight='bold'>
-                {product.title}
+                {langTitle}
               </Breadcrumb.CurrentLink>
             </Breadcrumb.Item>
           </Breadcrumb.List>
@@ -156,7 +160,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
 
           <Box flex='1'>
             <Heading size='lg' color='gray.800'>
-              {product.title}
+              {langTitle}
             </Heading>
             <Text fontSize='md' color='gray.600' mt={2}>
               {product.brand && (
@@ -189,7 +193,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                     </style>     
                     <div class="description-container">
                        <div class="short-description">
-                          ${sanitizeHTML(processDescriptionGeo(product.description || '') || product.characteristics || '')}
+                          ${sanitizeHTML(processDescriptionGeo(langDescr || langChar || ''))}
                        </div>
                     </div>
                   `,
@@ -235,7 +239,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                       __html: `
                           <div class="description-container">
                              <div class="full-description">
-                              ${product.description || ''}
+                              ${langDescr || ''}
                              </div>
                           </div>
                       `,
@@ -255,7 +259,7 @@ const ProductView: React.FC<ProductProps> = ({ product, lng, officePhone, office
                       __html: `
                           <div class="description-container">
                              <div class="full-characteristic">
-                               ${product.characteristics || ''}
+                               ${langChar || ''}
                              </div>
                           </div>
                       `,
