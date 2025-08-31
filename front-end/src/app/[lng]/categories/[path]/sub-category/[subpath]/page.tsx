@@ -35,7 +35,7 @@ export async function generateMetadata({
 
   return generateMetadataGeneral(lng, {
     keywordsKeys: keywords,
-    titleKey: productsByCategory[0]?.subCategory?.title,
+    titleKey: lng === 'ru' ? productsByCategory[0]?.subCategory?.title_ru : productsByCategory[0]?.subCategory?.title,
   });
 }
 

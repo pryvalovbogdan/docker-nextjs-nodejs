@@ -63,8 +63,6 @@ const AddEntityDialog: React.FC<IAddEntityDialogProps> = ({
     try {
       const response = await createFunctions[selectedTab](formData, token);
 
-      console.log('response', response);
-
       if (response.success) {
         toaster.create({ type: 'success', title: `${t(`tabs.${selectedTab}`)} ${t('addSuccess')}` });
 

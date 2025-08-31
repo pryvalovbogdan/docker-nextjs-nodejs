@@ -10,8 +10,6 @@ interface ProductListProps {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
-  console.log('products', products);
-
   return (
     <Box py={8} px={4}>
       <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>

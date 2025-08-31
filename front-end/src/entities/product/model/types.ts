@@ -41,6 +41,7 @@ export interface IProductResponse {
     heading: string;
     keywords: string;
     name_ru: string;
+    title_ru: string;
   };
   subCategory?: {
     id: number;
@@ -51,6 +52,7 @@ export interface IProductResponse {
     heading: string;
     keywords: string;
     name_ru: string;
+    title_ru: string;
   };
   error?: boolean;
 }
