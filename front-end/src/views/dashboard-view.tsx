@@ -69,7 +69,7 @@ export default function Dashboard({ lng }: { lng: string }) {
     setIsLoading(true);
 
     try {
-      const response: any = await fetchDataFunctions[tab](token as never, page, PAGE_SIZE);
+      const response: any = await fetchDataFunctions[tab](token as never, page, PAGE_SIZE, lng);
 
       if (response.success) {
         setData(prev => ({
