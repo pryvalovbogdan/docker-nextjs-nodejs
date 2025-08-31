@@ -7,10 +7,10 @@ import {
 import { fetchWrapper } from '@/shared/api/client';
 import { baseURL } from '@/shared/api/consts';
 
-export async function fetchCategories(isClient?: boolean): Promise<ICategoryResponse[]> {
+export async function fetchCategories(lng: string, isClient?: boolean): Promise<ICategoryResponse[]> {
   try {
     const prefix = !isClient ? baseURL : '';
-    const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${prefix}/api/subcategories/`);
+    const { data }: { data: ICategoryResponse[] } = await fetchWrapper(`${prefix}/api/subcategories/?lng=${lng}`);
 
     return data;
   } catch (error) {

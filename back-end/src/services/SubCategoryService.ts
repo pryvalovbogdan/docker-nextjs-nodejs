@@ -13,6 +13,10 @@ class SubCategoryService {
     description?: string | null;
     keywords?: string | null;
     position?: number;
+    name_ru?: string | null;
+    title_ru?: string | null;
+    heading_ru?: string | null;
+    description_ru?: string | null;
   }): Promise<{ data?: SubCategory | null; errors: string[] }> {
     try {
       const created = await this.repository.createSubCategoryFull(data);
@@ -46,13 +50,20 @@ class SubCategoryService {
     }
   }
 
-  // existing methods...
   async createSubCategory(name: string, categoryId: number) {
     return this.repository.createSubCategory(name, categoryId);
   }
 
-  async getSubCategory(name: string) {
-    return this.repository.getSubCategory(name);
+  async getSubCategory(name: string): Promise<{ data?: SubCategory | null; errors: string[] }> {
+    try {
+      const subCategory: SubCategory | null = await this.repository.getSubCategory(name);
+
+      return { data: subCategory, errors: subCategory ? [] : ['Category not found'] };
+    } catch (error) {
+      console.error('Error retrieving category:', error);
+
+      return { errors: ['Error retrieving category'] };
+    }
   }
 
   async getAllSubCategories() {

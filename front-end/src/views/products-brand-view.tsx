@@ -44,7 +44,9 @@ const ProductsBrandView = ({
   const normalizedBrandName = decodeURIComponent(brandName).trim().toLowerCase();
   const brandDescription = brandData.find(item => {
     return item.name.toLowerCase() === normalizedBrandName;
-  })?.description;
+  });
+
+  const desc = lng === 'ru' ? brandDescription?.descriptionRu : brandDescription?.description;
 
   return (
     <Layout lng={lng} officePhone={officePhone} officePhoneSecond={officePhoneSecond} officeEmail={officeEmail}>
@@ -77,7 +79,7 @@ const ProductsBrandView = ({
                             }
                           </style>
                           <div class="brand-description-container">
-                            ${brandDescription}
+                            ${desc}
                           </div>
                         `,
               }}

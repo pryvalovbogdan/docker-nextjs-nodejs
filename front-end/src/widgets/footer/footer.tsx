@@ -34,7 +34,7 @@ const Footer = ({
 
     didFetch.current = true;
 
-    fetchCategories(true).then(setCategories).catch(console.error);
+    fetchCategories(lng, true).then(setCategories).catch(console.error);
   }, []);
 
   return (

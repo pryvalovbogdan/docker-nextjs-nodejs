@@ -22,3 +22,30 @@ export interface File {
   path: string;
   buffer: Buffer;
 }
+
+export interface ISebCategoryResponse {
+  id: number;
+  name: string;
+  path: string;
+  title: string | null;
+  heading: string | null;
+  description: string | null;
+  keywords: string | null;
+  position: number;
+  subCategories: {
+    id: number;
+    name: string;
+    path: string | null;
+    title: string | null;
+    heading: string | null;
+    description: string | null;
+    keywords: string | null;
+    position: number;
+  }[];
+}
+
+type Lang = 'uk' | 'ru';
+
+type FieldKeys = 'name' | 'title' | 'heading' | 'description' | 'keywords';
+
+export type FieldsMap = Record<Lang, Record<FieldKeys, string>>;

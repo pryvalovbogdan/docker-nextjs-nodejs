@@ -29,6 +29,9 @@ export interface IProductResponse {
   brand?: string;
   country?: string;
   price?: number;
+  title_ru?: string;
+  description_ru?: string;
+  characteristics_ru?: string;
   category: {
     id: number;
     name: string;
@@ -37,6 +40,7 @@ export interface IProductResponse {
     title: string;
     heading: string;
     keywords: string;
+    name_ru: string;
   };
   subCategory?: {
     id: number;
@@ -46,6 +50,7 @@ export interface IProductResponse {
     title: string;
     heading: string;
     keywords: string;
+    name_ru: string;
   };
   error?: boolean;
 }
@@ -54,6 +59,7 @@ export interface ICategoryResponse {
   id: number;
   name: string;
   path: string;
+  name_ru: string;
 }
 
 export interface IExportJsonResponse {

@@ -30,6 +30,18 @@ export class Product {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   price: number;
 
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'title_ru' })
+  title_ru?: string;
+
+  @Column({ type: 'text', nullable: true, name: 'description_ru' })
+  description_ru?: string;
+
+  @Column({ type: 'text', nullable: true, name: 'characteristics_ru' })
+  characteristics_ru?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true, name: 'country_ru' })
+  country_ru?: string;
+
   @ManyToOne(() => Category, category => category.products, { nullable: true })
   @JoinColumn({ name: 'categoryid' })
   category: Category | null;

@@ -2,62 +2,77 @@ import { Repository } from 'typeorm';
 
 import { AppDataSource } from '../data-source';
 import { Category, SubCategory } from '../entities';
+import { FieldsMap, ISebCategoryResponse } from '../utils/types';
 
 class CategoryRepository {
   private categoryRepository: Repository<Category> = AppDataSource.manager.getRepository(Category);
 
   private subCategoryRepository: Repository<SubCategory> = AppDataSource.manager.getRepository(SubCategory);
 
-  getCategoriesWithSubcategories = async (): Promise<
-    {
-      id: number;
-      name: string;
-      path: string | null;
-      title: string | null;
-      heading: string | null;
-      description: string | null;
-      keywords: string | null;
-      position: number;
-      subCategories: {
-        id: number;
-        name: string;
-        path: string | null;
-        title: string | null;
-        heading: string | null;
-        description: string | null;
-        keywords: string | null;
-        position: number;
-      }[];
-    }[]
-  > => {
+  private normalizeLng(lng?: string): 'uk' | 'ru' {
+    const s = String(lng || 'uk').toLowerCase();
+
+    return s.startsWith('ru') ? 'ru' : 'uk';
+  }
+
+  getCategoriesWithSubcategories = async (lng?: string): Promise<ISebCategoryResponse[]> => {
+    const fields: FieldsMap = {
+      ru: {
+        name: 'name_ru',
+        title: 'title_ru',
+        heading: 'heading_ru',
+        description: 'description_ru',
+        keywords: 'keywords',
+      },
+      uk: {
+        name: 'name',
+        title: 'title',
+        heading: 'heading',
+        description: 'description',
+        keywords: 'keywords',
+      },
+    };
+
+    const key = this.normalizeLng(lng);
+    const f = fields[key];
+
     const rows = await this.categoryRepository.query(`
     SELECT
       c.id,
-      c.name,
+      c.${f.name}         AS name,
       c.path,
-      c.title,
-      c.heading,
-      c.description,
-      c.keywords,
+      c.${f.title}        AS title,
+      c.${f.heading}      AS heading,
+      c.${f.description}  AS description,
+      c.${f.keywords}     AS keywords,
       c.position,
+      c.name_ru           AS name_ru,
+      c.title_ru          AS title_ru,
+      c.heading_ru        AS heading_ru,
+      c.description_ru    AS description_ru,
+
       COALESCE(sc.subcategories, '[]'::json) AS subcategories
     FROM categories c
     LEFT JOIN LATERAL (
       SELECT json_agg(
                json_build_object(
                  'id', s.id,
-                 'name', s.name,
+                 'name', s.${f.name},
+                 'name_ru', s.name_ru,
                  'path', s.path,
-                 'title', s.title,
-                 'heading', s.heading,
-                 'description', s.description,
-                 'keywords', s.keywords,
+                 'title', s.${f.title},
+                 'title_ru', s.title_ru,
+                 'heading', s.${f.heading},
+                 'heading_ru', s.heading_ru,
+                 'description', s.${f.description},
+                 'description_ru', s.description_ru,
+                 'keywords', s.${f.keywords},
                  'position', s.position
                )
                ORDER BY s.position ASC, s.id ASC
              ) AS subcategories
       FROM subcategories s
-      WHERE s.categoryid = c.id
+      WHERE s.categoryId = c.id
     ) sc ON TRUE
     ORDER BY c.position ASC, c.id ASC;
   `);
@@ -65,10 +80,14 @@ class CategoryRepository {
     return rows.map((r: any) => ({
       id: r.id,
       name: r.name,
+      name_ru: r.name_ru,
       path: r.path,
       title: r.title,
+      title_ru: r.title_ru,
       heading: r.heading,
+      heading_ru: r.heading_ru,
       description: r.description,
+      description_ru: r.description_ru,
       keywords: r.keywords,
       position: r.position,
       subCategories: r.subcategories ?? [],

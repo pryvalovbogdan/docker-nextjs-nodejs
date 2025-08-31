@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   const { lng } = await params;
 
   // Request cached with force cache - https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#reusing-data-across-multiple-functions
-  const categories = await getCategoriesCached();
+  const categories = await getCategoriesCached(lng);
 
   return generateMetadataGeneral(lng, { keywordsKeys: categories.map(item => item.name) });
 }
@@ -24,9 +24,9 @@ export default async function Page({ params }: { params: Promise<{ lng: string }
   if (!languages.includes(lng)) lng = fallbackLng;
 
   await connection();
-  const categories = await getCategoriesCached();
+  const categories = await getCategoriesCached(lng);
 
-  const products = await fetchProductsOffSet('', 1, 12, true);
+  const products = await fetchProductsOffSet('', 1, 12, lng, true);
   const lastAddedProducts = await fetchLastAddedProducts();
 
   return (

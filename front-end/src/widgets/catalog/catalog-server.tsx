@@ -138,7 +138,7 @@ export default function CatalogServer({
       }
 
       setLoading(true);
-      const response = await fetchProductsOffSet(token, page, itemsPerScreen);
+      const response = await fetchProductsOffSet(token, page, itemsPerScreen, lng);
 
       if (response.success) {
         setProducts(prev => ({
@@ -225,7 +225,10 @@ export default function CatalogServer({
             shadow: 'lg',
             borderColor: '#036753',
           }}
-          onClick={() => router.push(`/${lng}/product/${product.id}`)}
+          onClick={() => {
+            setLoading(true);
+            router.push(`/${lng}/product/${product.id}`);
+          }}
           height='280px'
           display='flex'
           justifyContent='space-between'
@@ -241,9 +244,9 @@ export default function CatalogServer({
             />
           )}
           <Heading size='sm' color='gray.700' textAlign='center'>
-            {product.title}
+            {lng === 'ru' ? product.title_ru : product.title}
           </Heading>
-          {product.description && (
+          {lng !== 'ru' && product.description && (
             <Text
               fontSize='sm'
               mt={2}
@@ -284,7 +287,10 @@ export default function CatalogServer({
             shadow: 'lg',
             borderColor: '#036753',
           }}
-          onClick={() => router.push(`/${lng}/product/${product.id}`)}
+          onClick={() => {
+            setLoading(true);
+            router.push(`/${lng}/product/${product.id}`);
+          }}
           height='280px'
           display='flex'
           justifyContent='space-between'
@@ -300,9 +306,9 @@ export default function CatalogServer({
             />
           )}
           <Heading size='sm' color='gray.700' textAlign='center'>
-            {product.title}
+            {lng === 'ru' ? product.title_ru : product.title}
           </Heading>
-          {product.description && (
+          {lng !== 'ru' && product.description && (
             <Text
               fontSize='sm'
               mt={2}
@@ -327,7 +333,11 @@ export default function CatalogServer({
     );
   };
 
-  return (
+  return loading ? (
+    <Flex h='888px' w='100%' justifyContent='center' alignItems='center'>
+      <Spinner size='xl' color='#036753' />
+    </Flex>
+  ) : (
     <Flex p={6} gap={6} position='relative' id='categories'>
       {isMobile && (
         <IconButton

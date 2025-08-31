@@ -16,9 +16,9 @@ export async function fetchBrandProducts(name: string): Promise<IProductResponse
   }
 }
 
-export async function fetchProductById(id: string): Promise<IProductResponse> {
+export async function fetchProductById(id: string, lng: string): Promise<IProductResponse> {
   try {
-    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}?lng=${lng}`, {
       next: { revalidate: 60 },
     });
 
@@ -30,9 +30,9 @@ export async function fetchProductById(id: string): Promise<IProductResponse> {
   }
 }
 
-export async function fetchProductByIdCache(id: string): Promise<IProductResponse> {
+export async function fetchProductByIdCache(id: string, lng: string): Promise<IProductResponse> {
   try {
-    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}`, {
+    const { data }: { data: IProductResponse } = await fetchWrapper(`${baseURL}/api/products/${id}?lng=${lng}`, {
       cache: 'force-cache',
     });
 
@@ -54,12 +54,13 @@ export async function fetchProductsOffSet(
   token: string,
   page: number,
   limit: number,
+  lng: string,
   isServerCall?: boolean,
 ): Promise<IFetchOffsetResp> {
   try {
     const prefixUrl = isServerCall ? baseURL : '';
     const response: { message: string; data: { products: IProductResponse[]; totalPages: number } } =
-      await fetchWrapper(`${prefixUrl}/api/products/offset?page=${page}&limit=${limit}`);
+      await fetchWrapper(`${prefixUrl}/api/products/offset?page=${page}&limit=${limit}&lng=${lng}`);
 
     return {
       success: true,
@@ -88,10 +89,14 @@ export async function fetchProductByCategoryUi(path: string): Promise<IProductRe
 
 export async function fetchProductByCategory(
   path: string,
+  lng: string,
   props?: { next: { revalidate: number } },
 ): Promise<IProductResponse[]> {
   try {
-    const { data }: { data: IProductResponse[] } = await fetchWrapper(`${baseURL}/api/categories/${path}`, props);
+    const { data }: { data: IProductResponse[] } = await fetchWrapper(
+      `${baseURL}/api/categories/${path}?lng=${lng}`,
+      props,
+    );
 
     return data;
   } catch (error) {
