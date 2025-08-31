@@ -52,7 +52,7 @@ export const addEntityDashboardFields: Record<
     { name: 'category', required: true, translateKey: 'columns.category' },
     { name: 'subCategory', translateKey: 'columns.subcategory' },
     { name: 'country', translateKey: 'columns.country' },
-    { name: 'title_ru', translateKey: 'columns.titleMeta_ru' },
+    { name: 'title_ru', translateKey: 'columns.title_ru' },
     { name: 'description_ru', type: 'textarea', translateKey: 'columns.description_ru' },
     { name: 'characteristics_ru', type: 'textarea', translateKey: 'columns.characteristics_ru' },
     { name: 'country_ry', translateKey: 'columns.country_ru' },
@@ -88,7 +88,3 @@ export const addEntityDashboardFields: Record<
     { name: 'heading_ru', translateKey: 'columns.heading_ru' },
   ],
 };
-//        "title_ru": "444",
-//         "description_ru": null,
-//         "characteristics_ru": null,
-//         "country_ru": null,

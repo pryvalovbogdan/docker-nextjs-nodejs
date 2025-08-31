@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
   const product = await getProductsByIdCached(id, lng);
 
   return generateMetadataGeneral(lng, {
-    titleKey: product.title,
+    titleKey: lng === 'ru' ? product.title_ru : product.title,
     descriptionKey: product.description || '',
     keywordsKeys: [product.brand || '', product.title, product.category?.name || ''],
   });

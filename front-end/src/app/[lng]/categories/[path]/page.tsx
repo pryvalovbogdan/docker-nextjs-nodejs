@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lng: stri
 
   return generateMetadataGeneral(lng, {
     keywordsKeys: keywords,
-    titleKey: products[0]?.category?.title,
+    titleKey: lng === 'ru' ? products[0]?.category?.title_ru : products[0]?.category?.title,
   });
 }
 

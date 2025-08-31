@@ -218,8 +218,6 @@ const BrandsCarousel = ({ lng }: { lng: string }) => {
     return brandData.map(brand => ({ ...brand, key: brand.name }));
   }, []);
 
-  console.log('cards', cards);
-
   return (
     <Box as='section' id='brands' py={20} bg='white'>
       <Heading as='h3' fontSize='36px' textAlign='center' mb={10}>

@@ -296,7 +296,6 @@ class ProductController {
         };
       }
 
-      console.log('data11122', result.data, data);
       responseHandler.sendSuccessResponse(res, 'Product data retrieved successfully', data);
     } catch (err) {
       console.error('Error querying products:', (err as Error).message);

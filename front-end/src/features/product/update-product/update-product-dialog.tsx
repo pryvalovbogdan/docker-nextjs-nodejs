@@ -82,8 +82,6 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
               pages: {
                 ...prev[selectedTab].pages,
                 [currentPage]: prev[selectedTab].pages[currentPage].map(item => {
-                  console.log('item', item, response.data);
-
                   if (item.id === response.data?.id) {
                     return response.data;
                   }
@@ -121,8 +119,6 @@ const UpdateProductDialog: React.FC<IUpdateProductDialogProps> = ({
     const newErrors: Record<string, string> = {};
 
     requiredFields.forEach(field => {
-      console.log('formData[field]', formData[field]);
-
       if (typeof formData[field] === 'string' && !formData[field]?.trim()) {
         newErrors[field] = t('fieldRequired');
       }
