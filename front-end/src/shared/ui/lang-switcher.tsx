@@ -1,11 +1,10 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { ElementType, useEffect, useMemo, useRef, useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { LuChevronDown, LuChevronUp } from 'react-icons/lu';
 
-import { Box, Button, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 
 type Locale = 'uk' | 'ru';
 
@@ -75,15 +74,6 @@ export default function LangSwitcher({ locales = ['uk', 'ru'] as Locale[] }: { l
         bg='transparent'
         color='white'
         borderColor='gray.300'
-        rightIcon={
-          <Icon
-            as={FaChevronDown as ElementType}
-            color='emerald.600'
-            transition='transform 0.15s ease'
-            transform={open ? 'rotate(180deg)' : 'rotate(0deg)'}
-            aria-hidden
-          />
-        }
         _hover={{ textDecoration: 'underline', borderColor: 'gray.100' }}
         _active={{ bg: 'gray.100' }}
         _focusVisible={{ boxShadow: '0 0 0 2px', borderColor: 'emerald.600' }}

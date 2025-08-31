@@ -13,6 +13,10 @@ class SubCategoryService {
     description?: string | null;
     keywords?: string | null;
     position?: number;
+    name_ru?: string | null;
+    title_ru?: string | null;
+    heading_ru?: string | null;
+    description_ru?: string | null;
   }): Promise<{ data?: SubCategory | null; errors: string[] }> {
     try {
       const created = await this.repository.createSubCategoryFull(data);

@@ -97,7 +97,14 @@
     "heading": "Heading",
     "path": "Url",
     "categoryId": "Category",
-    "titleMeta": "Meta-title"
+    "titleMeta": "Meta-title",
+    "title_ru": "Title rus",
+    "description_ru": "Description rus",
+    "heading_ru": "Heading rus",
+    "characteristics_ru": "Characteristics rus",
+    "titleMeta_ru": "Meta-title rus",
+    "name_ru": "Name rus",
+    "country_ru": "Country rus"
   },
   "pagination": {
     "page": "Page"

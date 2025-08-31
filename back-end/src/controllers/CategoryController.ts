@@ -44,7 +44,19 @@ class CategoryController {
   };
 
   createCategory = async (req: Request, res: Response): Promise<void> => {
-    const { name, path, title, heading, description, keywords, position } = req.body;
+    const {
+      name,
+      path,
+      title,
+      heading,
+      description,
+      keywords,
+      position,
+      name_ru,
+      title_ru,
+      heading_ru,
+      description_ru,
+    } = req.body;
 
     try {
       if (!name) {
@@ -60,6 +72,10 @@ class CategoryController {
         heading,
         description,
         keywords,
+        name_ru,
+        title_ru,
+        heading_ru,
+        description_ru,
         position: position ?? 10000,
       };
 
@@ -94,8 +110,24 @@ class CategoryController {
         description: string | null;
         keywords: string | null;
         position: number;
+        name_ru: string | null;
+        title_ru: string | null;
+        heading_ru: string | null;
+        description_ru: string | null;
       }
-    > = ['name', 'path', 'title', 'heading', 'description', 'keywords', 'position'];
+    > = [
+      'name',
+      'path',
+      'title',
+      'heading',
+      'description',
+      'keywords',
+      'position',
+      'name_ru',
+      'title_ru',
+      'heading_ru',
+      'description_ru',
+    ];
 
     const patch: Record<string, any> = {};
 

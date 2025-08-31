@@ -1,16 +1,19 @@
 import { redirect } from 'next/navigation';
+import { cache } from 'react';
 
-import { fetchProductById, fetchProductByIdCache } from '@/entities/product/api';
+import { fetchProductById } from '@/entities/product/api';
 import { ProductView } from '@/views';
 import { fallbackLng, languages } from '@i18n/settings';
 import { generateMetadataGeneral, generateStaticParams } from '@i18n/utils';
+
+const getProductsByIdCached = cache(fetchProductById);
 
 export { generateStaticParams };
 export async function generateMetadata({ params }: { params: Promise<{ lng: string; id: string }> }) {
   const { id, lng } = await params;
 
   // Request cached with force cache - https://nextjs.org/docs/app/building-your-application/data-fetching/fetching#reusing-data-across-multiple-functions
-  const product = await fetchProductByIdCache(id, lng);
+  const product = await getProductsByIdCached(id, lng);
 
   return generateMetadataGeneral(lng, {
     titleKey: product.title,
@@ -24,7 +27,7 @@ export default async function Page({ params }: { params: Promise<{ lng: string; 
 
   if (languages.indexOf(lng) < 0) lng = fallbackLng;
 
-  const product = await fetchProductById(id, lng);
+  const product = await getProductsByIdCached(id, lng);
 
   if (product.error) {
     redirect(`/${lng}`);

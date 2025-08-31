@@ -34,47 +34,60 @@ class CategoryRepository {
     };
 
     const key = this.normalizeLng(lng);
-    const fieldsWithTranslates = fields[key];
+    const f = fields[key];
 
     const rows = await this.categoryRepository.query(`
-      SELECT
-        c.id,
-        c.${fieldsWithTranslates.name} AS name,
-        c.path,
-        c.${fieldsWithTranslates.title} AS title,
-        c.${fieldsWithTranslates.heading} AS heading,
-        c.${fieldsWithTranslates.description} AS description,
-        c.${fieldsWithTranslates.keywords} AS keywords,
-        c.position,
-        COALESCE(sc.subcategories, '[]'::json) AS subcategories
-      FROM categories c
-      LEFT JOIN LATERAL (
-        SELECT json_agg(
-                 json_build_object(
-                   'id', s.id,
-                   'name', s.${fieldsWithTranslates.name},
-                   'path', s.path,
-                   'title', s.${fieldsWithTranslates.title},
-                   'heading', s.${fieldsWithTranslates.heading},
-                   'description', s.${fieldsWithTranslates.description},
-                   'keywords', s.${fieldsWithTranslates.keywords},
-                   'position', s.position
-                 )
-                 ORDER BY s.position ASC, s.id ASC
-               ) AS subcategories
-        FROM subcategories s
-        WHERE s.categoryId = c.id
-      ) sc ON TRUE
-      ORDER BY c.position ASC, c.id ASC;
-    `);
+    SELECT
+      c.id,
+      c.${f.name}         AS name,
+      c.path,
+      c.${f.title}        AS title,
+      c.${f.heading}      AS heading,
+      c.${f.description}  AS description,
+      c.${f.keywords}     AS keywords,
+      c.position,
+      c.name_ru           AS name_ru,
+      c.title_ru          AS title_ru,
+      c.heading_ru        AS heading_ru,
+      c.description_ru    AS description_ru,
+
+      COALESCE(sc.subcategories, '[]'::json) AS subcategories
+    FROM categories c
+    LEFT JOIN LATERAL (
+      SELECT json_agg(
+               json_build_object(
+                 'id', s.id,
+                 'name', s.${f.name},
+                 'name_ru', s.name_ru,
+                 'path', s.path,
+                 'title', s.${f.title},
+                 'title_ru', s.title_ru,
+                 'heading', s.${f.heading},
+                 'heading_ru', s.heading_ru,
+                 'description', s.${f.description},
+                 'description_ru', s.description_ru,
+                 'keywords', s.${f.keywords},
+                 'position', s.position
+               )
+               ORDER BY s.position ASC, s.id ASC
+             ) AS subcategories
+      FROM subcategories s
+      WHERE s.categoryId = c.id
+    ) sc ON TRUE
+    ORDER BY c.position ASC, c.id ASC;
+  `);
 
     return rows.map((r: any) => ({
       id: r.id,
       name: r.name,
+      name_ru: r.name_ru,
       path: r.path,
       title: r.title,
+      title_ru: r.title_ru,
       heading: r.heading,
+      heading_ru: r.heading_ru,
       description: r.description,
+      description_ru: r.description_ru,
       keywords: r.keywords,
       position: r.position,
       subCategories: r.subcategories ?? [],

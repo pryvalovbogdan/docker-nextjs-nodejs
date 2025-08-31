@@ -7,7 +7,20 @@ class SubCategoryController {
   private service: SubCategoryService = new SubCategoryService();
 
   createSubCategory = async (req: Request, res: Response): Promise<void> => {
-    const { name, categoryId, path, title, heading, description, keywords, position } = req.body;
+    const {
+      name,
+      categoryId,
+      path,
+      title,
+      heading,
+      description,
+      keywords,
+      position,
+      name_ru,
+      title_ru,
+      heading_ru,
+      description_ru,
+    } = req.body;
 
     try {
       if (!name) {
@@ -31,6 +44,10 @@ class SubCategoryController {
         description,
         keywords,
         position,
+        name_ru,
+        title_ru,
+        heading_ru,
+        description_ru,
       });
 
       if (result.errors.length) {
@@ -65,8 +82,25 @@ class SubCategoryController {
         keywords: string | null;
         position: number;
         categoryId: number;
+        name_ru: string | null;
+        title_ru: string | null;
+        heading_ru: string | null;
+        description_ru: string | null;
       }
-    > = ['name', 'path', 'title', 'heading', 'description', 'keywords', 'position', 'categoryId'];
+    > = [
+      'name',
+      'path',
+      'title',
+      'heading',
+      'description',
+      'keywords',
+      'position',
+      'categoryId',
+      'name_ru',
+      'title_ru',
+      'heading_ru',
+      'description_ru',
+    ];
 
     const patch: Record<string, any> = {};
 
