@@ -106,7 +106,6 @@ export default function LangSwitcher({ locales = ['uk', 'ru'] as Locale[] }: { l
               return (
                 <Box
                   as='button'
-                  type='button'
                   cursor='pointer'
                   key={loc}
                   borderRadius='sm'

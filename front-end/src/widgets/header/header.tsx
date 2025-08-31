@@ -8,6 +8,7 @@ import { LuMenu, LuX } from 'react-icons/lu';
 
 import SearchBar from '@/features/search/search-bar/search-bar';
 import { LogoWrapper } from '@/shared/ui';
+import LangSwitcher from '@/shared/ui/lang-switcher';
 import { Box, Flex, Icon, IconButton, Link, Text } from '@chakra-ui/react';
 import { useTranslation } from '@i18n/client';
 
@@ -145,7 +146,7 @@ const Header: React.FC<{ lng: string; officePhoneSecond: string; officePhone: st
                   </Link>
                 </Flex>
               </Flex>
-              {/* <LangSwitcher /> */}
+              <LangSwitcher />
             </Flex>
           )}
         </Flex>
@@ -197,7 +198,7 @@ const Header: React.FC<{ lng: string; officePhoneSecond: string; officePhone: st
               </Link>
             </Flex>
           </Flex>
-          {/* <LangSwitcher /> */}
+          <LangSwitcher />
         </Flex>
       )}
       {isMenuOpen && (
