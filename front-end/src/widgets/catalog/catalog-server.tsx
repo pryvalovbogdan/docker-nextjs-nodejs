@@ -244,7 +244,7 @@ export default function CatalogServer({
             />
           )}
           <Heading size='sm' color='gray.700' textAlign='center'>
-            {lng === 'ru' ? product.title_ru : product.title}
+            {lng === 'ru' && product.title_ru ? product.title_ru : product.title}
           </Heading>
           {lng !== 'ru' && product.description && (
             <Text
@@ -306,7 +306,7 @@ export default function CatalogServer({
             />
           )}
           <Heading size='sm' color='gray.700' textAlign='center'>
-            {lng === 'ru' ? product.title_ru : product.title}
+            {lng === 'ru' && product.title_ru ? product.title_ru : product.title}
           </Heading>
           {lng !== 'ru' && product.description && (
             <Text

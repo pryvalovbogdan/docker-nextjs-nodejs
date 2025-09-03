@@ -22,6 +22,8 @@ const MainView = ({
   subcategory?: string;
   totalPages?: number;
 }) => {
+  console.log('products', products);
+
   return (
     <Layout
       lng={lng}

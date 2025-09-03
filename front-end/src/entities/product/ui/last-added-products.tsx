@@ -18,12 +18,14 @@ const Card = ({
   width,
   id,
   lng,
+  title_ru,
 }: {
   style?: any;
   name?: string;
   title?: string;
   images?: string[];
   maxWidth?: string;
+  title_ru?: string;
   width?: string;
   id?: string;
   lng: string;
@@ -32,6 +34,8 @@ const Card = ({
   const handleRedirect = () => {
     router.push(`/${lng}/product/${id}`);
   };
+
+  const titleByLang = lng === 'ru' ? title_ru : title;
 
   return (
     <Flex
@@ -65,7 +69,7 @@ const Card = ({
       </Box>
       <Box p={4} textAlign='center' bg='gray.50' w='100%'>
         <Heading size='md' color='gray.800'>
-          {title}
+          {titleByLang}
         </Heading>
       </Box>
     </Flex>

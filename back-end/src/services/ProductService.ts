@@ -329,6 +329,10 @@ class ProductService {
         brand: product.brand || '',
         country: product.country || '',
         price: product.price ?? '',
+        title_ru: product.title_ru,
+        description_ru: product.description_ru || '',
+        characteristics_ru: product.characteristics_ru || '',
+        country_ru: product.country_ru || '',
         images: product.images ?? [],
       }));
 

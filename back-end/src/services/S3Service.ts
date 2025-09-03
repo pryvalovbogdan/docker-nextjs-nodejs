@@ -25,6 +25,7 @@ class S3Service {
         ContentType: contentType,
       };
 
+      console.log('params', params);
       const result = await this.s3.upload(params).promise();
 
       console.log(`File uploaded successfully`, result);
