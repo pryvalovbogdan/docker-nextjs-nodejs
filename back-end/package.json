@@ -15,7 +15,8 @@
     "migration:generate": "yarn typeorm migration:generate",
     "migrate:dev": "yarn migration:run -- -d src/data-source.ts",
     "migrate:prod": "NODE_ENV=production yarn migration:run -- -d dist/data-source.js",
-    "migrations:generate": "npx typeorm migration:create ./migrations/AddSubCategoryColumn"
+    "migrations:generate": "npx typeorm migration:create ./migrations/AddSubCategoryColumn",
+    "swagger-gen": "ts-node ./src/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
+    "swagger-autogen": "^2.23.7",
     "ts-node-dev": "^2.0.0",
     "typeorm": "^0.3.20"
   },
