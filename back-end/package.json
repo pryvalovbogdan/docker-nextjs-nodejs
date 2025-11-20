@@ -15,7 +15,8 @@
     "migration:generate": "yarn typeorm migration:generate",
     "migrate:dev": "yarn migration:run -- -d src/data-source.ts",
     "migrate:prod": "NODE_ENV=production yarn migration:run -- -d dist/data-source.js",
-    "migrations:generate": "npx typeorm migration:create ./migrations/AddSubCategoryColumn"
+    "migrations:generate": "npx typeorm migration:create ./migrations/AddSubCategoryColumn",
+    "swagger-gen": "ts-node ./src/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +25,7 @@
     "@types/cors": "^2.8.17",
     "@types/nodemailer": "^6.4.17",
     "aws-sdk": "^2.1692.0",
-    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "csv-stringify": "^6.5.2",
     "email-validator": "^2.0.4",
@@ -35,12 +36,13 @@
     "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
+    "swagger-autogen": "^2.23.7",
     "ts-node-dev": "^2.0.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
-    "@types/bcryptjs": "^2.4.6",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/multer": "^1.4.12",

@@ -10,11 +10,19 @@ type Product = {
   images?: { url: string }[];
 };
 
+function ensureNoTrailingSlash(u?: string) {
+  return (u || '').replace(/\/+$/, '');
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connection();
 
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const domain = process.env.NEXT_PUBLIC_DOMAIN_URL;
+  const domain = ensureNoTrailingSlash(process.env.NEXT_PUBLIC_DOMAIN_URL);
+  const apiUrl = process.env.BACKEND_URL || 'http://server:8080';
+
+  if (!domain) {
+    console.error('Missing NEXT_PUBLIC_DOMAIN_URL environment variable. Sitemap generation aborted.');
+  }
 
   const staticRoutes = ['', 'brand', 'contacts', 'about'].map(path => ({
     url: `${domain}/uk/${path}`,
@@ -25,8 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const [categories, products] = await Promise.all([
-      fetchWrapper<{ data: ICategoryResponse[] }>(`${baseUrl}/api/subcategories`),
-      fetchWrapper<{ data: Product[] }>(`${baseUrl}/api/products`),
+      fetchWrapper<{ data: ICategoryResponse[] }>(`${apiUrl}/api/subcategories`),
+      fetchWrapper<{ data: Product[] }>(`${apiUrl}/api/products`),
     ]);
 
     const categoriesRoutes = categories.data.flatMap((c: ICategoryResponse) => ({

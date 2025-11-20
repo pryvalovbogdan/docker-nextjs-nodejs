@@ -11,6 +11,7 @@ import {
 import CategoryController from '../controllers/CategoryController';
 import { validateAdminJWT } from '../middleware/jwtMiddleWare';
 import { validateProps } from '../utils/validation';
+import { exportLimiter } from '../configs/rateLimit.config';
 
 const router = Router();
 
@@ -39,8 +40,8 @@ router.post('/subcategories/:id', upload.array('image', 3), subCategoryControlle
 router.delete('/subcategories/:id', subCategoryController.deleteSubCategory);
 router.get('/orders', orderController.getOrders);
 router.post('/register', validateProps('register'), adminController.register);
-router.get('/products/export', productController.exportProductsCSV);
-router.get('/products/export-json', productController.exportProductsJSON);
+router.get('/products/export', exportLimiter, productController.exportProductsCSV);
+router.get('/products/export-json', exportLimiter, productController.exportProductsJSON);
 router.post('/products', validateProps('product'), upload.array('image', 3), productController.addProduct);
 router.post('/products/:id', validateProps('productId'), upload.array('image', 3), productController.updateProduct);
 router.delete('/products/:id', validateProps('productId'), productController.deleteProduct);
