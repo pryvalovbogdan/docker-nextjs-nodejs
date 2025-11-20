@@ -39,9 +39,9 @@ class ProductRepository {
   };
 
   getProducts = async (): Promise<Product[]> => {
-    return this.productRepository.find({
-      relations: ['category', 'subCategory'],
-    });
+    const query = this.productRepository.createQueryBuilder('product').select(['product.id']);
+
+    return query.getMany();
   };
 
   getProductsOffset = async (
@@ -156,16 +156,16 @@ class ProductRepository {
   };
 
   searchProducts = async (searchText: string): Promise<Product[]> => {
-    return this.productRepository.find({
-      relations: ['category', 'subCategory'],
-      where: [
-        { title: ILike(`%${searchText}%`) },
-        { brand: ILike(`%${searchText}%`) },
-        { category: { name: ILike(`%${searchText}%`) } },
-        { subCategory: { name: ILike(`%${searchText}%`) } },
-      ],
-      take: 15,
-    });
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.subCategory', 'subCategory')
+      .where('product.title ILIKE :search', { search: `%${searchText}%` })
+      .orWhere('product.brand ILIKE :search', { search: `%${searchText}%` })
+      .orWhere('category.name ILIKE :search', { search: `%${searchText}%` })
+      .orWhere('subCategory.name ILIKE :search', { search: `%${searchText}%` })
+      .take(15)
+      .getMany();
   };
 
   async countProductsByCategory(categoryId: number): Promise<number> {

@@ -2,7 +2,7 @@
 FROM node:18-alpine
 
 # Install bash and curl
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash curl python3 make g++
 
 # Set the working directory
 WORKDIR /app

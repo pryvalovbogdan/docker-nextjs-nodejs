@@ -393,7 +393,7 @@ export default function CatalogServer({
                     router.push(`/${lng}/categories/${category.path}`, { scroll: false });
                   }}
                 >
-                  <Flex justifyContent='space-between' w='100%' alignItems='baseline'>
+                  <Flex justifyContent='space-between' w='100%' alignItems='baseline' cursor='pointer'>
                     {category.name}
                     {category.subCategories?.length ? (
                       <Text ml={1} minWidth='15px'>

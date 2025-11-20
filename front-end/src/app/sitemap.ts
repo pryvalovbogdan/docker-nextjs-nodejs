@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connection();
 
   const domain = ensureNoTrailingSlash(process.env.NEXT_PUBLIC_DOMAIN_URL);
+  const apiUrl = process.env.BACKEND_URL || 'http://server:8080';
 
   if (!domain) {
     console.error('Missing NEXT_PUBLIC_DOMAIN_URL environment variable. Sitemap generation aborted.');
@@ -32,8 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const [categories, products] = await Promise.all([
-      fetchWrapper<{ data: ICategoryResponse[] }>(`${domain}/api/subcategories`),
-      fetchWrapper<{ data: Product[] }>(`${domain}/api/products`),
+      fetchWrapper<{ data: ICategoryResponse[] }>(`${apiUrl}/api/subcategories`),
+      fetchWrapper<{ data: Product[] }>(`${apiUrl}/api/products`),
     ]);
 
     const categoriesRoutes = categories.data.flatMap((c: ICategoryResponse) => ({
@@ -77,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error generating sitemap:', e);
 
     staticRoutes.push({
-      url: `Error generating sitemap: ${e} + ${process.env.NEXT_PUBLIC_DOMAIN_URL} +`,
+      url: `Error generating sitemap: ${e}`,
       lastModified: new Date().toISOString(),
       priority: 1,
       changeFrequency: 'monthly',

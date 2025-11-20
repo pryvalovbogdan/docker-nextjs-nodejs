@@ -1,5 +1,7 @@
 import { Readable } from 'stream';
 
+import { Category, SubCategory } from '../entities';
+
 export type TMethodValidation =
   | 'login'
   | 'register'
@@ -46,6 +48,9 @@ export interface ISebCategoryResponse {
 
 type Lang = 'uk' | 'ru';
 
+type CategoryField = keyof Category;
+type SubCategoryField = keyof SubCategory;
+
 type FieldKeys = 'name' | 'title' | 'heading' | 'description' | 'keywords';
 
-export type FieldsMap = Record<Lang, Record<FieldKeys, string>>;
+export type FieldsMap = Record<Lang, Record<FieldKeys, CategoryField & SubCategoryField>>;

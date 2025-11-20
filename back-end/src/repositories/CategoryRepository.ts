@@ -12,10 +12,12 @@ class CategoryRepository {
   private normalizeLng(lng?: string): 'uk' | 'ru' {
     const s = String(lng || 'uk').toLowerCase();
 
-    return s.startsWith('ru') ? 'ru' : 'uk';
+    return s.startsWith('ru ') ? 'ru' : 'uk';
   }
 
   getCategoriesWithSubcategories = async (lng?: string): Promise<ISebCategoryResponse[]> => {
+    const language = this.normalizeLng(lng);
+
     const fields: FieldsMap = {
       ru: {
         name: 'name_ru',
@@ -33,64 +35,37 @@ class CategoryRepository {
       },
     };
 
-    const key = this.normalizeLng(lng);
-    const f = fields[key];
+    const fieldsByLang = fields[language];
 
-    const rows = await this.categoryRepository.query(`
-    SELECT
-      c.id,
-      c.${f.name}         AS name,
-      c.path,
-      c.${f.title}        AS title,
-      c.${f.heading}      AS heading,
-      c.${f.description}  AS description,
-      c.${f.keywords}     AS keywords,
-      c.position,
-      c.name_ru           AS name_ru,
-      c.title_ru          AS title_ru,
-      c.heading_ru        AS heading_ru,
-      c.description_ru    AS description_ru,
+    const categories = await this.categoryRepository
+      .createQueryBuilder('category')
+      .leftJoinAndSelect('category.subCategories', 'subCategory')
+      .orderBy('category.position', 'ASC')
+      .addOrderBy('category.id', 'ASC')
+      .addOrderBy('subCategory.position', 'ASC')
+      .addOrderBy('subCategory.id', 'ASC')
+      .getMany();
 
-      COALESCE(sc.subcategories, '[]'::json) AS subcategories
-    FROM categories c
-    LEFT JOIN LATERAL (
-      SELECT json_agg(
-               json_build_object(
-                 'id', s.id,
-                 'name', s.${f.name},
-                 'name_ru', s.name_ru,
-                 'path', s.path,
-                 'title', s.${f.title},
-                 'title_ru', s.title_ru,
-                 'heading', s.${f.heading},
-                 'heading_ru', s.heading_ru,
-                 'description', s.${f.description},
-                 'description_ru', s.description_ru,
-                 'keywords', s.${f.keywords},
-                 'position', s.position
-               )
-               ORDER BY s.position ASC, s.id ASC
-             ) AS subcategories
-      FROM subcategories s
-      WHERE s.categoryId = c.id
-    ) sc ON TRUE
-    ORDER BY c.position ASC, c.id ASC;
-  `);
-
-    return rows.map((r: any) => ({
-      id: r.id,
-      name: r.name,
-      name_ru: r.name_ru,
-      path: r.path,
-      title: r.title,
-      title_ru: r.title_ru,
-      heading: r.heading,
-      heading_ru: r.heading_ru,
-      description: r.description,
-      description_ru: r.description_ru,
-      keywords: r.keywords,
-      position: r.position,
-      subCategories: r.subcategories ?? [],
+    return categories.map(category => ({
+      id: category.id,
+      name: category[fieldsByLang.name] as string,
+      path: category.path || '',
+      title: category[fieldsByLang.title] as string,
+      heading: category[fieldsByLang.heading] as string,
+      description: category[fieldsByLang.description] as string,
+      keywords: category.keywords,
+      position: category.position,
+      subCategories:
+        category.subCategories?.map(sub => ({
+          id: sub.id,
+          name: sub[fieldsByLang.name] as string,
+          path: sub.path,
+          title: sub[fieldsByLang.title] as string,
+          heading: sub[fieldsByLang.heading] as string,
+          description: sub[fieldsByLang.description] as string,
+          keywords: sub.keywords,
+          position: sub.position,
+        })) || [],
     }));
   };
 

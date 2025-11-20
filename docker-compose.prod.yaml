@@ -12,6 +12,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.60'
+          memory: 256M
+        reservations:
+          memory: 128M
 
   server:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-backend:latest
@@ -23,6 +30,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.60'
+          memory: 256M
+        reservations:
+          memory: 128M
 
   client:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-frontend:latest
@@ -32,6 +46,13 @@ services:
       - "3000"
     depends_on:
       - server
+    deploy:
+      resources:
+        limits:
+          cpus: '0.40'
+          memory: 256M
+        reservations:
+          memory: 192M
 
   nginx:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-nginx:latest
@@ -39,3 +60,8 @@ services:
       - client
     ports:
       - "80:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 256M
