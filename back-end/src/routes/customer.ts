@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { contactLimiter, exportLimiter, orderLimiter, searchLimiter } from '../configs/rateLimit.config';
+import { contactLimiter, orderLimiter, productsLimiter, searchLimiter } from '../configs/rateLimit.config';
 import { HealthController, NewsController, OrderController, ProductController } from '../controllers';
 import CategoryController from '../controllers/CategoryController';
 import { validateProps } from '../utils/validation';
@@ -15,7 +15,7 @@ const categoryController = new CategoryController();
 const healthController = new HealthController();
 
 router.get('/health', healthController.check);
-router.get('/products', exportLimiter, productController.getProducts);
+router.get('/products', productsLimiter, productController.getProducts);
 router.get('/products/offset', productController.getProductsOffset);
 router.get('/products/last-added', productController.getLastAddedProducts);
 router.get('/products/search/:query', searchLimiter, productController.searchProducts);

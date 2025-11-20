@@ -35,3 +35,10 @@ export const exportLimiter = rateLimit({
   message: { status: 'Error', message: 'Too many export requests, please try again later.' },
   standardHeaders: true,
 });
+
+export const productsLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 10,
+  message: { status: 'Error', message: 'Too many export requests, please try again later.' },
+  standardHeaders: true,
+});
