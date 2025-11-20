@@ -12,7 +12,7 @@ class CategoryRepository {
   private normalizeLng(lng?: string): 'uk' | 'ru' {
     const s = String(lng || 'uk').toLowerCase();
 
-    return s.startsWith('ru ') ? 'ru' : 'uk';
+    return s.startsWith('ru') ? 'ru' : 'uk';
   }
 
   getCategoriesWithSubcategories = async (lng?: string): Promise<ISebCategoryResponse[]> => {

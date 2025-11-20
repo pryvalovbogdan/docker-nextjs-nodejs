@@ -18,7 +18,7 @@ This project is a full-stack e-commerce application for medical products, built 
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/pryvalovbogdan/docker-nextjs-nodejs
     cd docker-nextjs-nodejs
     ```
 
