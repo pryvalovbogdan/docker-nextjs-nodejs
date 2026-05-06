@@ -19,7 +19,16 @@ const Layout: React.FC<{
   origin?: string;
 }> = ({ children, lng, officePhone, officePhoneSecond, officeEmail, categories, origin }) => {
   return (
-    <Box minH='100vh' display='flex' flexDirection='column' color='black' bg='#F7FCFD' id='layout'>
+    <Box
+      minH='100vh'
+      display='flex'
+      flexDirection='column'
+      color='black'
+      bg='#F7FCFD'
+      _dark={{ color: 'gray.100', bg: 'gray.900' }}
+      transition='background-color 0.3s ease, color 0.3s ease'
+      id='layout'
+    >
       <GoogleAnalytics gaId='G-N027DVBJZZ' />
       <GlobalStructuredData
         origin={origin}

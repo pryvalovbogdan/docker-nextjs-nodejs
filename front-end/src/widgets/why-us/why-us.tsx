@@ -41,7 +41,15 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
   return (
     <Box py={10} px={6} maxW='6xl' mx='auto'>
       {withHeading && (
-        <Heading as='h2' size='xl' color='gray.800' textAlign='center' mb={6} fontSize='36px'>
+        <Heading
+          as='h2'
+          size='xl'
+          color='gray.800'
+          _dark={{ color: 'gray.100' }}
+          textAlign='center'
+          mb={6}
+          fontSize='36px'
+        >
           {t('whyUs')}
         </Heading>
       )}
@@ -52,6 +60,7 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
             key={index}
             align='center'
             bg='white'
+            _dark={{ bg: 'gray.800', borderColor: 'gray.600' }}
             p={5}
             borderRadius='lg'
             boxShadow='md'
@@ -62,10 +71,12 @@ export default function WhyUs({ lng, withHeading }: { lng: string; withHeading?:
           >
             <Icon as={service.icon as ElementType} boxSize={10} color='#036753' mr={4} />
             <Box>
-              <Heading size='md' color='gray.800'>
+              <Heading size='md' color='gray.800' _dark={{ color: 'gray.100' }}>
                 {t(service.title as any)}
               </Heading>
-              <Text color='gray.700'>{t(service.description as any)}</Text>
+              <Text color='gray.700' _dark={{ color: 'gray.300' }}>
+                {t(service.description as any)}
+              </Text>
             </Box>
           </Flex>
         ))}
