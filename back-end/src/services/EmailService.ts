@@ -131,8 +131,9 @@ class EmailService {
         <div>
           <strong>Дякуємо за замовлення!</strong><br />
           Ваше замовлення прийнято, і наш менеджер зв'яжеться з вами найближчим часом.<br />
-          Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>${process.env
-            .OFFICE_PHONE!}</strong><br /><br />
+          Якщо у вас є додаткові запитання, звертайтесь на гарячу лінію: <strong>${
+            process.env.OFFICE_PHONE!
+          }</strong><br /><br />
           <strong>Деталі замовлення:</strong><br />
           ${orderDetails || 'Немає даних'}
         </div>`;
