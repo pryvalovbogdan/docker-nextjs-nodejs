@@ -3,14 +3,7 @@ import { Readable } from 'stream';
 import { Category, SubCategory } from '../entities';
 
 export type TMethodValidation =
-  | 'login'
-  | 'register'
-  | 'news'
-  | 'product'
-  | 'productId'
-  | 'orders'
-  | 'category'
-  | 'contact';
+  'login' | 'register' | 'news' | 'product' | 'productId' | 'orders' | 'category' | 'contact';
 
 export interface File {
   fieldname: string;

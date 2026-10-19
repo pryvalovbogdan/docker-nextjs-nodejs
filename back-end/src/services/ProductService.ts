@@ -281,7 +281,7 @@ class ProductService {
 
   async exportProductsToCSV(): Promise<{ data: Buffer; filename: string }> {
     try {
-      const products = await this.repository.getProducts();
+      const products = await this.repository.getProductsForExport();
 
       if (!products || products.length === 0) {
         throw new Error('No products available for export.');
@@ -315,7 +315,7 @@ class ProductService {
 
   async exportProductsToJSON(): Promise<{ data: Buffer; filename: string }> {
     try {
-      const products = await this.repository.getProducts();
+      const products = await this.repository.getProductsForExport();
 
       if (!products || products.length === 0) {
         throw new Error('No products available for export.');

@@ -1,6 +1,7 @@
 import { ICategoryResponse } from '@/entities/category/model/types';
 import CategoryDescription from '@/entities/category/ui/category-description';
 import SubCategoryGrid from '@/entities/category/ui/sub-category-grid';
+import { toCatalogProduct } from '@/entities/product/model/to-catalog-product';
 import { IProductResponse } from '@/entities/product/model/types';
 import { ItemListJsonLd } from '@/shared/ui';
 import { Catalog, Layout, WhyUs } from '@/widgets';
@@ -33,6 +34,12 @@ const CategoriesView = ({
       }, '')
     : categories.find(item => item.path === category)?.description;
 
+  // Catalog is a client component, so its props are serialized into the page: send only this
+  // subcategory's products, trimmed to card fields. SubCategoryGrid renders on the server and keeps the full list.
+  const catalogProducts = (subcategory ? products.filter(p => p.subCategory?.path === subcategory) : products).map(
+    toCatalogProduct,
+  );
+
   return (
     <Layout
       lng={lng}
@@ -59,7 +66,7 @@ const CategoriesView = ({
         {!!categories.length && (
           <Catalog
             lng={lng}
-            products={{ data: products, totalPages }}
+            products={{ data: catalogProducts, totalPages }}
             categories={categories}
             category={category}
             subcategory={subcategory}

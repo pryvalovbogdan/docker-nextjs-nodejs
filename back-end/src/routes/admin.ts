@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 
+import { exportLimiter } from '../configs/rateLimit.config';
 import {
   AdminController,
   NewsController,
@@ -11,7 +12,6 @@ import {
 import CategoryController from '../controllers/CategoryController';
 import { validateAdminJWT } from '../middleware/jwtMiddleWare';
 import { validateProps } from '../utils/validation';
-import { exportLimiter } from '../configs/rateLimit.config';
 
 const router = Router();
 
