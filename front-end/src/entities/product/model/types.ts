@@ -57,6 +57,11 @@ export interface IProductResponse {
   error?: boolean;
 }
 
+// What a catalog card reads. Passed from server to client components, so it must stay small.
+export type ICatalogProduct = Pick<IProductResponse, 'id' | 'title' | 'title_ru' | 'images' | 'description'> & {
+  subCategory?: Pick<NonNullable<IProductResponse['subCategory']>, 'path'>;
+};
+
 export interface ICategoryResponse {
   id: number;
   name: string;
