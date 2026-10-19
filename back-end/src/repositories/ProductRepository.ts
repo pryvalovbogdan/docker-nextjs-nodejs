@@ -44,6 +44,13 @@ class ProductRepository {
     return query.getMany();
   };
 
+  getProductsForExport = async (): Promise<Product[]> => {
+    return this.productRepository.find({
+      relations: ['category', 'subCategory'],
+      order: { id: 'ASC' },
+    });
+  };
+
   getProductsOffset = async (
     limit: number,
     offset: number,
