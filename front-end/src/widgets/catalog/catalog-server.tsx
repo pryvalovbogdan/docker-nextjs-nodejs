@@ -6,7 +6,7 @@ import { LuChevronDown, LuMenu, LuX } from 'react-icons/lu';
 
 import { ICategoryResponse } from '@/entities/category/model/types';
 import { fetchProductByCategoryUi, fetchProductsOffSet } from '@/entities/product/api';
-import { IProductResponse } from '@/entities/product/model/types';
+import { ICatalogProduct } from '@/entities/product/model/types';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot, Pagination } from '@/shared/ui';
 import { getInnerText } from '@/shared/utils';
@@ -24,7 +24,7 @@ export default function CatalogServer({
   subcategory,
 }: {
   products: {
-    data: IProductResponse[];
+    data: ICatalogProduct[];
     totalPages?: number;
   };
   categories: ICategoryResponse[];
@@ -37,7 +37,7 @@ export default function CatalogServer({
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>('default');
   const [selectedSubCategoryName, setSelectedSubCategoryName] = useState<string>();
   const [productState, setProducts] = useState<{
-    [key: string]: IProductResponse[] | { [key: string]: IProductResponse[] };
+    [key: string]: ICatalogProduct[] | { [key: string]: ICatalogProduct[] };
   }>({
     default: { 1: products.data },
   });
@@ -90,7 +90,7 @@ export default function CatalogServer({
       if (productState[name]?.length) return;
 
       setLoading(true);
-      const fetchedProducts: IProductResponse[] = await fetchProductByCategoryUi(name);
+      const fetchedProducts: ICatalogProduct[] = await fetchProductByCategoryUi(name);
 
       setProducts(prev => ({
         ...prev,
@@ -257,7 +257,7 @@ export default function CatalogServer({
               maxWidth='100%'
               display='block'
             >
-              {product.description ? getInnerText(product.description).slice(0, 150) : product.characteristics}
+              {getInnerText(product.description).slice(0, 150)}
             </Text>
           )}
         </Flex>
@@ -319,7 +319,7 @@ export default function CatalogServer({
               maxWidth='100%'
               display='block'
             >
-              {product.description ? getInnerText(product.description).slice(0, 150) : product.characteristics}
+              {getInnerText(product.description).slice(0, 150)}
             </Text>
           )}
         </Flex>
