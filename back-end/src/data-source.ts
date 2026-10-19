@@ -18,5 +18,5 @@ export const AppDataSource = new DataSource({
   entities: [Product, Order, News, Admin, Category, SubCategory],
   migrations: [__dirname + '/migrations/*.ts', __dirname + '/migrations/*.js'],
   synchronize: false, // Always false in production
-  logging: true,
+  logging: ['error'], // Query logging filled the EC2 disk via the container log
 } as DataSourceOptions);
