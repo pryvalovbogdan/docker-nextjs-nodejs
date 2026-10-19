@@ -1,7 +1,15 @@
 version: '3.8'
 
+# Cap each container's json-file log; unbounded logs filled the EC2 disk.
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "3"
+
 services:
   db:
+    logging: *default-logging
     image: postgres:15-alpine
     restart: always
     env_file: .env
@@ -23,6 +31,7 @@ services:
           memory: 128M
 
   server:
+    logging: *default-logging
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-backend:latest
     env_file: .env
     environment:
@@ -42,6 +51,7 @@ services:
     restart: unless-stopped
 
   client:
+    logging: *default-logging
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-frontend:latest
     env_file: .env
     restart: always
@@ -71,6 +81,7 @@ services:
       '
 
   nginx:
+    logging: *default-logging
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/med-store-nginx:latest
     depends_on:
       - client
